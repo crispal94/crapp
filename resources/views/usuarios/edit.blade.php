@@ -46,10 +46,10 @@
 									<label>Confirmar Contraseña</label>
 									<?php echo Form::password('password_confirmation', ['class' => 'form-control','placeholder'=>'Ingrese dato','maxlength'=>'100','disabled','id'=>'password_confirmation']); ?>
 						</div>
-					<!--	<div class="form-group">
+            <div class="form-group">
 									<label>Rol</label>
-
-						</div>-->
+									{!!Form::select('rol_id',$arrol,$rolid,['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'genr_id'])!!}
+						</div>
 						<div class="box-footer">
 					      <button type="submit" class="btn btn-primary">Grabar</button>
 					    </div>

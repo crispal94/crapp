@@ -10,6 +10,7 @@ use DB;
 use Session;
 use Redirect;
 use App\User;
+use App\RolUser;
 
 class UsuariosController extends Controller
 {
@@ -18,6 +19,12 @@ class UsuariosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
+     
     public function index()
     {
       //$usuario = User::with('roles:description')->orderBy('id')->get();
@@ -32,7 +39,12 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-       return view('usuarios.create');
+      $qrol = DB::select("select id,nombre from roles where deleted_at is null");
+       $arrol = [];
+       foreach($qrol as $r){
+           $arrol[$r->id] = $r->nombre;
+       }
+       return view('usuarios.create',compact('arrol'));
     }
 
     /**
@@ -44,7 +56,7 @@ class UsuariosController extends Controller
     public function store(Request $request)
     {
       $data = $request->all();
-    //  $roleId = $request->get('rol_id');
+       $roleId = $request->get('rol_id');
        $rules = array(
        'name' => 'required|string|max:255',
        'email' => 'required|string|email|max:255|unique:users',
@@ -65,7 +77,7 @@ class UsuariosController extends Controller
           'email' => $data['email'],
           'password' => bcrypt($data['password']),
           ]);
-        //  $user->roles()->attach($roleId);
+          $user->roles()->attach($roleId);
           Session::flash('message','Registro creado correctamente');
           return redirect()->action('UsuariosController@index');
           }
@@ -91,13 +103,13 @@ class UsuariosController extends Controller
     public function edit($id)
     {
         $usuario = User::find($id);
-        /*$qrol = DB::select("select id,description from roles where deleted_at is null");
+        $qrol = DB::select("select id,nombre from roles where deleted_at is null");
         $arrol = [];
         foreach($qrol as $r){
-            $arrol[$r->id] = $r->description;
+            $arrol[$r->id] = $r->nombre;
         }
         $rolide = RolUser::where('user_id',$id)->first();
-        $rolid = $rolide->role_id;*/
+        $rolid = $rolide->role_id;
         return view('usuarios.edit',compact('usuario','arrol','rolid','pagina'));
     }
 
@@ -112,7 +124,7 @@ class UsuariosController extends Controller
     {
       $data = $request->all();
       $cpass = $request->get('cpass');
-      //$roleId = $request->get('rol_id');
+      $roleId = $request->get('rol_id');
       if($cpass!=null){
        $rules = array(
        'name' => 'required|string|max:255',
@@ -132,16 +144,16 @@ class UsuariosController extends Controller
       else{
           $pantigua = $request->get('password_old');
           $user = User::find($id);
-        //  $roluser = RolUser::where('user_id',$id)->first();
+         $roluser = RolUser::where('user_id',$id)->first();
           $hashedPassword = $user->password;
           if($cpass!=null){
           if (Hash::check($pantigua, $hashedPassword)) {
               $user->name = $data['name'];
               $user->password = bcrypt($data['password']);
               $user->save();
-              //$user->roles()->attach($roleId);
-            //  $roluser->user_id = $roleId;
-            //  $roluser->save();
+              $user->roles()->attach($roleId);
+              $roluser->user_id = $roleId;
+              $roluser->save();
               Session::flash('message','Registro editado correctamente');
               return redirect()->action('UsuarioController@index');
           }else{
@@ -150,8 +162,8 @@ class UsuariosController extends Controller
           }}else{
              $user->name = $data['name'];
              $user->save();
-            // $roluser->role_id = $roleId;
-            //  $roluser->save();
+             $roluser->role_id = $roleId;
+            $roluser->save();
               Session::flash('message','Registro editado correctamente');
               return redirect()->action('UsuariosController@index');
           }

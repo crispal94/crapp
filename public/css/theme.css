@@ -285,7 +285,7 @@ section {
 @media (max-width: 991px) {
     .page-container {
         position: relative;
-        top: 88px;
+        top: 70px;
         padding-left: 0;
     }
 }
@@ -323,12 +323,13 @@ section {
 
 .page-content--bge5 {
     background: #200404;
-    height: 100vh;
+    height: auto;
 }
 
 .login-wrap {
     max-width: 540px;
-    padding-top: 8vh;
+    padding-top: 50px;
+    padding-bottom: 53px;
     margin: 0 auto;
 }
 
@@ -1179,7 +1180,7 @@ section {
     position: fixed;
     top: 0;
     right: 0;
-    left: 300px;
+    left: 250px;
     height: 75px;
     z-index: 3;
 }
@@ -1596,19 +1597,19 @@ section {
 }
 
 .menu-sidebar {
-    width: 300px;
+    width: 250px;
     position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    background: #fff;
+    background: #870b30;
     overflow-y: auto;
 }
 
 .menu-sidebar .logo {
-    background: #f5f5f5;
+    background: #502020;
     height: 75px;
-    padding: 0 35px;
+    padding: 0 50px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -1622,7 +1623,7 @@ section {
     -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    border-right: 1px solid #e5e5e5;
+    /*border-right: 1px solid #e5e5e5;*/
     position: relative;
     z-index: 3;
 }
@@ -1650,7 +1651,7 @@ section {
 
 .navbar-sidebar .navbar__list li a {
     display: block;
-    color: #555;
+    color: #fff;
     font-size: 16px;
     padding: 15px 0;
 }
@@ -1660,11 +1661,13 @@ section {
 }
 
 .navbar-sidebar .navbar__list li a:hover {
-    color: #4272d7;
+    color: #ffffff;
+    font-weight: bold;
 }
 
 .navbar-sidebar .navbar__list li.active > a {
-    color: #4272d7;
+    color: #ffffff;
+    font-weight: bold;
 }
 
 .has-sub {
@@ -1680,6 +1683,7 @@ section {
 
 .header-mobile .header-mobile__bar {
     padding: 15px 0;
+    background-color: #870b30;
 }
 
 .header-mobile .header-mobile-inner {
@@ -1706,7 +1710,7 @@ section {
     padding: 0;
     line-height: 1;
     vertical-align: top;
-    background: #fff;
+    background: #870b30;
     display: -webkit-box;
     display: -webkit-flex;
     display: -moz-box;
@@ -1753,7 +1757,7 @@ section {
     display: none;
     position: absolute;
     width: 100%;
-    top: 88px;
+    top: 70px;
     z-index: 20;
 }
 
@@ -1777,7 +1781,7 @@ section {
 }
 
 .header-mobile .navbar-mobile .navbar-mobile__list li a:hover {
-    color: #4272d7;
+    color: #502020;
 }
 
 .header-mobile .navbar-mobile .navbar-mobile__list li a > i {
@@ -14667,4 +14671,13 @@ section {
 
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
+}
+
+
+
+/*CSS PERSONALIZADOS*/
+
+.box-header{
+  background-color: #007bff;
+  color: white;
 }

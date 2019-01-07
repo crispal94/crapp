@@ -13,7 +13,7 @@
                                         <strong>Roles</strong>
                                    </div>
                                     <div class="card-body card-block">
-                                      {!!Form::open(['route'=>'roles.store','method'=>'POST'])!!}
+          {!!Form::model($rol,['route'=> ['roles.update',$rol->id],'method'=>'PUT'])!!}
         @include('includes/errors')
         <div class="form-group">
               <label>Nombre</label>

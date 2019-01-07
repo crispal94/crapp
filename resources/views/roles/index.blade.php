@@ -15,6 +15,10 @@
   td a {
   margin-right: 4px;
 }
+
+  .alinear{
+    float: left;
+  }
   </style>
 @endsection
 @section('content')
@@ -34,7 +38,7 @@
         <thead>
             <tr>
                 <th>Nombre</th>
-                <th>Fecha de Creación</th>
+                <th>Tipo</th>
                 <th></th>
             </tr>
         </thead>
@@ -42,8 +46,13 @@
             @foreach ($roles as $rol)
               <tr>
                 <td>{{ $rol->nombre }}</td>
-                <td>{{ $rol->created_at }}</td>
-                <td><div class="table-data-feature">
+                <td>@if ($rol->tipo=='A')
+                   Administrador
+                @elseif ($rol->tipo=='U')
+                   Usuario
+                @endif
+                </td>
+                <td><div class="table-data-feature alinear">
                   <a href="{{ route('roles.edit', $rol->id) }}">
                     <button type="submit" class="item"><i class="zmdi zmdi-edit"></i></button>
                   </a>
@@ -57,7 +66,7 @@
         <tfoot>
             <tr>
               <th>Nombre</th>
-              <th>Fecha de Creación</th>
+              <th>Tipo</th>
               <th></th>
             </tr>
         </tfoot>
@@ -72,8 +81,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $('#example').DataTable( {
-        "scrollY": 300,
-        "scrollX": true
+        "scrollY": 200,
+        "scrollX": true,
     } );
 } );
 </script>

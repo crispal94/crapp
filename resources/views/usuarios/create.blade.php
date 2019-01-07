@@ -14,7 +14,7 @@
                                    </div>
                                     <div class="card-body card-block">
                                       {!!Form::open(['route'=>'usuarios.store','method'=>'POST'])!!}
-        @include('includes/errors')                              
+        @include('includes/errors')
         <div class="form-group">
               <label>Nombre</label>
               {!!Form::text('name',null,['class'=>'form-control',
@@ -33,10 +33,10 @@
               <label>Confirmar Contraseña</label>
               <?php echo Form::password('password_confirmation', ['class' => 'form-control','placeholder'=>'Ingrese dato','maxlength'=>'100']); ?>
         </div>
-        <!--<div class="form-group">
-              <label>Rol</label>
-
-        </div>-->
+        <div class="form-group">
+									<label>Rol</label>
+									{!!Form::select('rol_id',$arrol,2,['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'genr_id'])!!}
+						</div>
         <div class="box-footer">
             <button type="submit" class="btn btn-primary">Grabar</button>
           </div>

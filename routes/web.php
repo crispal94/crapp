@@ -35,3 +35,10 @@ Route::get('roles/{id}/delete', [
     'as' => 'roles.delete',
     'uses' => 'RolesController@destroy',
 ]);
+
+//PARAMETROS
+Route::resource('parametros','ParamReferencialesController');
+Route::get('parametros/{id}/delete', [
+    'as' => 'usuarios.delete',
+    'uses' => 'UsuariosController@destroy',
+]);

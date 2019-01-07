@@ -35,6 +35,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Email</th>
+                <th>Rol</th>
                 <th>Fecha de Creación</th>
                 <th></th>
             </tr>
@@ -44,8 +45,11 @@
               <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
+                <td>@foreach($user->roles as $rol)
+                                         {{$rol->nombre}}
+                @endforeach</td>
                 <td>{{ $user->created_at }}</td>
-                <td><div class="table-data-feature">
+                <td><div class="table-data-feature alinear">
                   <a href="{{ route('usuarios.edit', $user->id) }}">
                     <button type="submit" class="item"><i class="zmdi zmdi-edit"></i></button>
                   </a>
@@ -60,6 +64,7 @@
             <tr>
               <th>Nombre</th>
               <th>Email</th>
+                <th>Rol</th>
               <th>Fecha de Creación</th>
               <th></th>
             </tr>
@@ -75,7 +80,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $('#example').DataTable( {
-        "scrollY": 300,
+        "scrollY": 200,
         "scrollX": true
     } );
 } );

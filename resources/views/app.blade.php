@@ -32,9 +32,16 @@
 
     <!-- Main CSS-->
     <link href="{{asset('css/theme.css')}}" rel="stylesheet" media="all">
+    <link href="{{asset('css/style.min.css')}}" rel="stylesheet" media="all">
 
     <!--Datatable-->
      <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css')}}">
+
+     <style type="text/css">
+     .alinear{
+       float: left;
+     }
+     </style>
 
      @yield('css')
 
@@ -48,7 +55,7 @@
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="index.html">
-                            <img src="{{asset('images/icon/logo.png')}}" alt="CoolAdmin" />
+                            <img src="{{asset('images/icon/logo-sidebar.png')}}" alt="UCSGTV" />
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -163,7 +170,7 @@
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
                 <a href="#">
-                    <img src="{{asset('images/icon/logo.png')}}" alt="Cool Admin" />
+                    <img src="{{asset('images/icon/logo-sidebar.png')}}" alt="UCSGTV" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
@@ -378,6 +385,34 @@
     <!-- Datatable JS-->
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
+
+    <script src="{{ asset('js/jstree.min.js') }}"></script>
+
+    <script type="text/javascript">
+		$(function () {
+
+			$("input[type=text]").focus(function(){
+  				this.select();
+			});
+
+			$(".select2").select2();
+
+			$(document).ajaxStart(function () {
+		        $('html, body').css("cursor", "wait");
+		    });
+		    $(document).ajaxComplete(function () {
+		        $('html, body').css("cursor", "default");
+		    });
+
+
+			$.ajaxSetup({
+			  headers: {
+			    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			          }
+			});
+
+		});
+	</script>
 
 
     @yield('js')

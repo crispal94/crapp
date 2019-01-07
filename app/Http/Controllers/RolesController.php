@@ -10,7 +10,7 @@ use DB;
 use Session;
 use Redirect;
 use App\User;
-use App\Roles;
+use App\Role;
 
 class RolesController extends Controller
 {
@@ -19,9 +19,15 @@ class RolesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
+     
     public function index()
     {
-        $roles = Roles::all();
+        $roles = Role::all();
         return view('roles.index',compact('roles'));
     }
 
@@ -32,7 +38,8 @@ class RolesController extends Controller
      */
     public function create()
     {
-       return view ('roles.create');
+       $tipo = ['A'=>'Administrador','U'=>'Usuario'];
+       return view ('roles.create',compact('tipo'));
     }
 
     /**
@@ -43,7 +50,7 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-      $data = $request->all();
+       $data = $request->all();
        $rules = array(
        'nombre' => 'required');
 
@@ -62,7 +69,7 @@ class RolesController extends Controller
               ->withInput();
       }
       else{
-          $rol = new Roles;
+          $rol = new Role;
           $input = array_filter($data,'strlen');
           $rol->fill($input);
           $rol->save();
@@ -91,7 +98,9 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        //
+      $rol = Role::find($id);
+      $tipo = ['A'=>'Administrador','U'=>'Usuario'];
+      return view ('roles.edit',compact('tipo','rol'));
     }
 
     /**
@@ -103,7 +112,32 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $data = $request->all();
+      $rules = array(
+      'nombre' => 'required');
+
+     // $eliminado = Inv_Operador::onlyTrashed()->where('invope_cedula',$data['invope_cedula'])->get()->first();
+
+   /*   if($eliminado){
+         $cargo = ['C'=>'Camarógrafo','P'=>'Productor','R'=>'Reportero','A'=>'Asistente de Cámara'];
+         $pagina = 'Operadores';
+         return view('operador.activar',compact('eliminado','cargo','pagina'));
+      }else{*/
+      $v = Validator::make($data,$rules);
+     if($v->fails())
+     {
+         return redirect()->back()
+             ->withErrors($v->errors())
+             ->withInput();
+     }
+     else{
+         $rol = Role::find($id);
+         $input = array_filter($data,'strlen');
+         $rol->fill($input);
+         $rol->save();
+         Session::flash('message','Registro editado correctamente');
+         return redirect()->action('RolesController@index');
+         }
     }
 
     /**
@@ -114,6 +148,16 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $rol = Role::find($id);
+    if(empty($rol))
+    {
+        Session::flash('message','Registro no encontrado');
+        return redirect(route('roles.index'));
+    }
+    $rol->delete();
+
+
+    Session::flash('message','Registro borrado sin problemas.');
+    return redirect(route('roles.index'));
     }
 }
