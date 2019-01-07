@@ -387,6 +387,7 @@
     <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
 
     <script src="{{ asset('js/jstree.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.numeric.js') }}"></script>
 
     <script type="text/javascript">
 		$(function () {

@@ -39,6 +39,14 @@ Route::get('roles/{id}/delete', [
 //PARAMETROS
 Route::resource('parametros','ParamReferencialesController');
 Route::get('parametros/{id}/delete', [
-    'as' => 'usuarios.delete',
-    'uses' => 'UsuariosController@destroy',
+    'as' => 'parametros.delete',
+    'uses' => 'ParamReferencialesController@destroy',
+]);
+
+
+//PRIORIDADES
+Route::resource('prioridades','PrioridadesController');
+Route::get('prioridades/{id}/delete', [
+    'as' => 'prioridades.delete',
+    'uses' => 'PrioridadesController@destroy',
 ]);
