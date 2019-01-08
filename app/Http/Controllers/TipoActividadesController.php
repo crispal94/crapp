@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Session;
 use Redirect;
-use App\ParamReferenciales;
+use App\TipoActividades;
 
-class ParamReferencialesController extends Controller
+class TipoActividadesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +18,8 @@ class ParamReferencialesController extends Controller
      */
     public function index()
     {
-        $parametros = ParamReferenciales::all();
-        return view('parametros.index',compact('parametros'));
+        $tactividades = TipoActividades::all();
+        return view('tipoactividades.index',compact('tactividades'));
     }
 
     /**
@@ -30,7 +29,15 @@ class ParamReferencialesController extends Controller
      */
     public function create()
     {
-        return view('parametros.create');
+        $referencia = DB::select("select id, valor from param_referenciales where grupo = 'General-Actividades' and clave = 'Tipo'
+        and deleted_at is null");
+
+        $arefer = [];
+        foreach($referencia as $refer){
+            $arefer[$refer->id] = $refer->valor;
+        }
+
+        return view('TipoActividades.create',compact('arefer'));
     }
 
     /**
@@ -43,9 +50,6 @@ class ParamReferencialesController extends Controller
     {
       $data = $request->all();
       $rules = array(
-      'grupo' => 'required',
-      'clave' => 'required',
-      'valor' => 'required',
       'descripcion' => 'required');
 
        $v = Validator::make($data,$rules);
@@ -56,12 +60,12 @@ class ParamReferencialesController extends Controller
                ->withInput();
        }
        else{
-           $parametro = new ParamReferenciales;
+           $tactividad = new TipoActividades;
            $input = array_filter($data,'strlen');
-           $parametro->fill($input);
-           $parametro->save();
+           $tactividad->fill($input);
+           $tactividad->save();
            Session::flash('message','Registro creado correctamente');
-           return redirect()->action('ParamReferencialesController@index');
+           return redirect()->action('TipoActividadesController@index');
            }
     }
 
@@ -84,8 +88,17 @@ class ParamReferencialesController extends Controller
      */
     public function edit($id)
     {
-        $parametro = ParamReferenciales::find($id);
-        return view('parametros.edit',compact('parametro'));
+      $referencia = DB::select("select id, valor from param_referenciales where grupo = 'General-Actividades' and clave = 'Tipo'
+      and deleted_at is null");
+
+      $arefer = [];
+      foreach($referencia as $refer){
+          $arefer[$refer->id] = $refer->valor;
+      }
+
+      $tactividad = TipoActividades::find($id);
+
+      return view('tipoactividades.edit',compact('arefer','tactividad'));
     }
 
     /**
@@ -99,7 +112,6 @@ class ParamReferencialesController extends Controller
     {
       $data = $request->all();
       $rules = array(
-      'valor' => 'required',
       'descripcion' => 'required');
 
        $v = Validator::make($data,$rules);
@@ -110,12 +122,12 @@ class ParamReferencialesController extends Controller
                ->withInput();
        }
        else{
-           $parametro = ParamReferenciales::find($id);
+           $tactividad = TipoActividades::find($id);
            $input = array_filter($data,'strlen');
-           $parametro->fill($input);
-           $parametro->save();
+           $tactividad->fill($input);
+           $tactividad->save();
            Session::flash('message','Registro editado correctamente');
-           return redirect()->action('ParamReferencialesController@index');
+           return redirect()->action('TipoActividadesController@index');
            }
     }
 
@@ -127,16 +139,16 @@ class ParamReferencialesController extends Controller
      */
     public function destroy($id)
     {
-      $parametro = ParamReferenciales::find($id);
-      if(empty($parametro))
+      $tactividad = TipoActividades::find($id);
+      if(empty($tactividad))
       {
           Session::flash('message','Registro no encontrado');
-          return redirect(route('parametros.index'));
+          return redirect(route('tipoactividades.index'));
       }
-      $parametro->delete();
+      $tactividad->delete();
 
 
       Session::flash('message','Registro borrado sin problemas.');
-      return redirect(route('parametros.index'));
+      return redirect(route('tipoactividades.index'));
     }
 }

@@ -1,7 +1,20 @@
 @extends('app')
 @section('css')
   <style type="text/css">
+  th, td { white-space: nowrap;
+padding-right: 1cm; }
 
+div.dataTables_wrapper {
+      margin: 0 auto;
+}
+
+div.container {
+      width: 80%;
+}
+
+td a {
+margin-right: 4px;
+}
   </style>
 @endsection
 @section('content')
@@ -105,6 +118,8 @@ $('#usuarios').DataTable({
             },
             // scrollY:        "500px",
              "ordering": false,
+             "scrollY": 200,
+             "scrollX": true,
              "pageLength": 100,
             "order": [[ 1, "desc" ]],
         });

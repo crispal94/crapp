@@ -57,3 +57,10 @@ Route::get('grupousuarios/{id}/delete', [
     'as' => 'grupousuarios.delete',
     'uses' => 'GrupoUsuariosController@destroy',
 ]);
+
+//TIPO DE ACTIVIDADES
+Route::resource('tipoactividades','TipoActividadesController');
+Route::get('tipoactividades/{id}/delete', [
+    'as' => 'tipoactividades.delete',
+    'uses' => 'TipoActividadesController@destroy',
+]);
