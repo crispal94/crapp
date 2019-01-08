@@ -24,7 +24,7 @@ class RolesController extends Controller
      {
          $this->middleware('auth');
      }
-     
+
     public function index()
     {
         $roles = Role::all();
@@ -148,7 +148,7 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-      $rol = Role::find($id);
+    $rol = Role::find($id);
     if(empty($rol))
     {
         Session::flash('message','Registro no encontrado');

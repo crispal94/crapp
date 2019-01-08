@@ -24,7 +24,7 @@ class UsuariosController extends Controller
      {
          $this->middleware('auth');
      }
-     
+
     public function index()
     {
       //$usuario = User::with('roles:description')->orderBy('id')->get();
@@ -75,6 +75,7 @@ class UsuariosController extends Controller
           $user = User::create([
           'name' => $data['name'],
           'email' => $data['email'],
+          'nickname' =>$data['nickname'],
           'password' => bcrypt($data['password']),
           ]);
           $user->roles()->attach($roleId);
@@ -149,6 +150,7 @@ class UsuariosController extends Controller
           if($cpass!=null){
           if (Hash::check($pantigua, $hashedPassword)) {
               $user->name = $data['name'];
+              $user->nickname = $data['nickname'];
               $user->password = bcrypt($data['password']);
               $user->save();
               $user->roles()->attach($roleId);
@@ -161,6 +163,7 @@ class UsuariosController extends Controller
               return redirect()->back()->withInput();
           }}else{
              $user->name = $data['name'];
+             $user->nickname = $data['nickname'];
              $user->save();
              $roluser->role_id = $roleId;
             $roluser->save();

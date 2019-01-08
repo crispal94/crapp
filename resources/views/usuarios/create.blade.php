@@ -21,6 +21,11 @@
                           'placeholder'=>'Ingrese dato','maxlength'=>'100'])!!}
         </div>
         <div class="form-group">
+              <label>Nickname</label>
+              {!!Form::text('nickname',null,['class'=>'form-control',
+                          'placeholder'=>'Ingrese dato','maxlength'=>'100'])!!}
+        </div>
+        <div class="form-group">
               <label>Email</label>
               {!!Form::text('email',null,['class'=>'form-control',
                           'placeholder'=>'Ingrese dato','maxlength'=>'100'])!!}

@@ -50,3 +50,10 @@ Route::get('prioridades/{id}/delete', [
     'as' => 'prioridades.delete',
     'uses' => 'PrioridadesController@destroy',
 ]);
+
+//GRUPO DE USUARIOS
+Route::resource('grupousuarios','GrupoUsuariosController');
+Route::get('grupousuarios/{id}/delete', [
+    'as' => 'grupousuarios.delete',
+    'uses' => 'GrupoUsuariosController@destroy',
+]);
