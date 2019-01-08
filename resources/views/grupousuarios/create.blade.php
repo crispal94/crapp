@@ -120,7 +120,6 @@ $('#usuarios').DataTable({
              "ordering": false,
              "scrollY": 200,
              "scrollX": true,
-             "pageLength": 100,
             "order": [[ 1, "desc" ]],
         });
 

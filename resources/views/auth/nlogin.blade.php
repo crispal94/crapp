@@ -39,6 +39,10 @@
                 padding-bottom: 20px;
         }
 
+        .au-btn--login {
+          background: #200404 !important;
+        }
+
         /*body {
             background: #200404;
         }*/
@@ -76,7 +80,7 @@
                                         <a href="#">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                                <button class="au-btn au-btn--block au-btn--login m-b-20" type="submit">sign in</button>
                             </form>
                             <div class="register-link">
                                 <p>

@@ -109,7 +109,11 @@
                         <li>
                             <a href="{{ url('grupousuarios') }}">
                                 <i class="fas fa-table"></i>G. Trabajos</a>
-                        </li>  
+                        </li>
+                        <li>
+                            <a href="{{ url('tipoactividades') }}">
+                                <i class="fas fa-table"></i>T. Actividades</a>
+                        </li>
 
                     </ul>
                 </div>
@@ -168,6 +172,10 @@
                         <li>
                             <a href="{{ url('grupousuarios') }}">
                                 <i class="fas fa-table"></i>G. Trabajos</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('tipoactividades') }}">
+                                <i class="fas fa-table"></i>T. Actividades</a>
                         </li>
 
                     </ul>
