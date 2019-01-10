@@ -10,7 +10,7 @@
 
       <div class="card">
           <div class="card-header box-header">
-              <strong>Roles</strong>
+              <strong>Tipo de Actividades</strong>
          </div>
                 <div class="card-body card-block">
                   {!!Form::model($tactividad,['route'=> ['tipoactividades.update',$tactividad->id],'method'=>'PUT'])!!}

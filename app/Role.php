@@ -12,7 +12,7 @@ class Role extends Model
 	protected $softDelete = true;
 
   protected $fillable = [
-      'nombre','tipo'
+      'nombre','id_param'
   ];
 
   public function users()
@@ -20,5 +20,10 @@ class Role extends Model
     return $this
           ->belongsToMany('App\User')
           ->withTimestamps();
+}
+
+public function tipo()
+{
+    return $this->hasOne('App\ParamReferenciales','id', 'id_param');
 }
 }

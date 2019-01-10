@@ -64,3 +64,10 @@ Route::get('tipoactividades/{id}/delete', [
     'as' => 'tipoactividades.delete',
     'uses' => 'TipoActividadesController@destroy',
 ]);
+
+//ESTADOS
+Route::resource('estados','EstadosController');
+Route::get('estados/{id}/delete', [
+    'as' => 'estados.delete',
+    'uses' => 'EstadosController@destroy',
+]);

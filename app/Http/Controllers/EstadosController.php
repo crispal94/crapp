@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use DB;
+use Session;
+use Redirect;
+use App\Estados;
 
 class EstadosController extends Controller
 {
@@ -11,9 +16,15 @@ class EstadosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function __construct()
+     {
+         $this->middleware('auth');
+     }
+
     public function index()
     {
-        //
+       $estados = Estados::all();
+       return view('estados.index',compact('estados'));
     }
 
     /**
@@ -23,7 +34,7 @@ class EstadosController extends Controller
      */
     public function create()
     {
-        //
+        return view('estados.create');
     }
 
     /**
@@ -34,7 +45,30 @@ class EstadosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+      $colorh = $request->input('hcolor');
+      $data = $request->all();
+      var_dump($data);
+      $rules = array(
+      'descripcion' => 'required',
+      'hcolor' =>'required');
+
+       $v = Validator::make($data,$rules);
+       if($v->fails())
+       {
+           return redirect()->back()
+               ->withErrors($v->errors())
+               ->withInput();
+       }
+       else{
+           $estado = new Estados;
+           $input = array_filter($data,'strlen');
+           $estado->fill($input);
+           $estado->color = $colorh;
+           $estado->save();
+           Session::flash('message','Registro creado correctamente');
+           return redirect()->action('EstadosController@index');
+         }
     }
 
     /**
@@ -56,7 +90,8 @@ class EstadosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $estado = Estados::find($id);
+        return view('estados.edit',compact('estado'));
     }
 
     /**
@@ -68,7 +103,29 @@ class EstadosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $colorh = $request->input('hcolor');
+      $data = $request->all();
+      var_dump($data);
+      $rules = array(
+      'descripcion' => 'required',
+      'hcolor' =>'required');
+
+       $v = Validator::make($data,$rules);
+       if($v->fails())
+       {
+           return redirect()->back()
+               ->withErrors($v->errors())
+               ->withInput();
+       }
+       else{
+           $estado = Estados::find($id);
+           $input = array_filter($data,'strlen');
+           $estado->fill($input);
+           $estado->color = $colorh;
+           $estado->save();
+           Session::flash('message','Registro editado correctamente');
+           return redirect()->action('EstadosController@index');
+         }
     }
 
     /**
@@ -79,6 +136,16 @@ class EstadosController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $estado = Estados::find($id);
+      if(empty($estado))
+      {
+          Session::flash('message','Registro no encontrado');
+          return redirect(route('estados.index'));
+      }
+      $estado->delete();
+
+
+      Session::flash('message','Registro borrado sin problemas.');
+      return redirect(route('estados.index'));
     }
 }

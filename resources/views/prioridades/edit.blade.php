@@ -10,7 +10,7 @@
 
       <div class="card">
           <div class="card-header box-header">
-              <strong>Roles</strong>
+              <strong>Prioridades</strong>
          </div>
                 <div class="card-body card-block">
                   {!!Form::model($prioridad,['route'=> ['prioridades.update',$prioridad->id],'method'=>'PUT'])!!}

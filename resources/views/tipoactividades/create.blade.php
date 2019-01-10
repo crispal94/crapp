@@ -10,7 +10,7 @@
 
       <div class="card">
           <div class="card-header box-header">
-              <strong>Roles</strong>
+              <strong>Tipo de Actvidades</strong>
          </div>
                 <div class="card-body card-block">
                     {!!Form::open(['route'=>'tipoactividades.store', 'method'=>'POST','id'=>'formcrea'])!!}

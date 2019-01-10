@@ -15,10 +15,6 @@
   td a {
   margin-right: 4px;
 }
-
-  .alinear{
-    float: left;
-  }
   </style>
 @endsection
 @section('content')
@@ -30,29 +26,28 @@
                   </div>
                   <section class="card">
                     <div class="card-body text-secondary">
-                      <a href="{{ route('roles.create', null) }}">
+                      <a href="{{ route('estados.create', null) }}">
                         <button style="margin-bottom:10px;" class="au-btn au-btn-icon au-btn--green au-btn--small">
                         <i class="zmdi zmdi-plus"></i>Nuevo</button>
                       </a>
                       <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Color</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($roles as $rol)
+            @foreach ($estados as $esta)
               <tr>
-                <td>{{ $rol->nombre }}</td>
-                <td>{{ $rol->tipo->valor }}
-                </td>
+                <td>{{ $esta->descripcion }}</td>
+                <td>{{ $esta->color }}</td>
                 <td><div class="table-data-feature alinear">
-                  <a href="{{ route('roles.edit', $rol->id) }}">
+                  <a href="{{ route('estados.edit', $esta->id) }}">
                     <button type="submit" class="item"><i class="zmdi zmdi-edit"></i></button>
                   </a>
-                  <a onclick="return confirm('Estás seguro de borrar este registro?')" href="{{ route('roles.delete', $rol->id) }}">
+                  <a onclick="return confirm('Estás seguro de borrar este registro?')" href="{{ route('estados.delete', $esta->id) }}">
                     <button type="submit" class="item"><i class="zmdi zmdi-delete"></i></button>
                   </a>
                 </div></td>
@@ -61,8 +56,8 @@
         </tbody>
         <tfoot>
             <tr>
-              <th>Nombre</th>
-              <th>Tipo</th>
+              <th>Descripción</th>
+              <th>Color</th>
               <th></th>
             </tr>
         </tfoot>
@@ -78,7 +73,7 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         "scrollY": 200,
-        "scrollX": true,
+        "scrollX": true
     } );
 } );
 </script>

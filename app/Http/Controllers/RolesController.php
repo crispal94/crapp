@@ -11,6 +11,7 @@ use Session;
 use Redirect;
 use App\User;
 use App\Role;
+use App\ParamReferenciales;
 
 class RolesController extends Controller
 {
@@ -38,8 +39,15 @@ class RolesController extends Controller
      */
     public function create()
     {
-       $tipo = ['A'=>'Administrador','U'=>'Usuario'];
-       return view ('roles.create',compact('tipo'));
+      // $tipo = ['A'=>'Administrador','U'=>'Usuario'];
+      $tipo = ParamReferenciales::where('grupo','Seguridad')->where('clave','Roles')->get();
+
+      $arrtipo  = [];
+
+      foreach($tipo as $t){
+        $arrtipo[$t->id] = $t->valor;
+      }
+       return view ('roles.create',compact('arrtipo'));
     }
 
     /**
@@ -99,8 +107,16 @@ class RolesController extends Controller
     public function edit($id)
     {
       $rol = Role::find($id);
-      $tipo = ['A'=>'Administrador','U'=>'Usuario'];
-      return view ('roles.edit',compact('tipo','rol'));
+      //$tipo = ['A'=>'Administrador','U'=>'Usuario'];
+
+      $tipo = ParamReferenciales::where('grupo','Seguridad')->where('clave','Roles')->get();
+
+      $arrtipo  = [];
+
+      foreach($tipo as $t){
+        $arrtipo[$t->id] = $t->valor;
+      }
+      return view ('roles.edit',compact('arrtipo','rol'));
     }
 
     /**

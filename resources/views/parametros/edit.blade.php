@@ -10,7 +10,7 @@
 
       <div class="card">
           <div class="card-header box-header">
-              <strong>Roles</strong>
+              <strong>Parametros Referenciales</strong>
          </div>
                 <div class="card-body card-block">
                       {!!Form::model($parametro,['route'=> ['parametros.update',$parametro->id],'method'=>'PUT'])!!}

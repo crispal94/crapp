@@ -37,6 +37,9 @@
     <!--Datatable-->
      <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css')}}">
 
+      <link rel="stylesheet" href="{{ asset('css/bootstrap-colorpicker.css')}}">
+
+
      <style type="text/css">
      .alinear{
        float: left;
@@ -114,6 +117,10 @@
                             <a href="{{ url('tipoactividades') }}">
                                 <i class="fas fa-table"></i>T. Actividades</a>
                         </li>
+                        <li>
+                            <a href="{{ url('tipoactividades') }}">
+                                <i class="fas fa-table"></i>Estados</a>
+                        </li>
 
                     </ul>
                 </div>
@@ -176,6 +183,10 @@
                         <li>
                             <a href="{{ url('tipoactividades') }}">
                                 <i class="fas fa-table"></i>T. Actividades</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('tipoactividades') }}">
+                                <i class="fas fa-table"></i>Estados</a>
                         </li>
 
                     </ul>
@@ -294,6 +305,9 @@
 
     <script src="{{ asset('js/jstree.min.js') }}"></script>
     <script src="{{ asset('js/jquery.numeric.js') }}"></script>
+
+    <script src="{{ asset('js/bootstrap-colorpicker.js') }}"></script>
+
 
     <script type="text/javascript">
 		$(function () {
