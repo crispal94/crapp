@@ -39,6 +39,10 @@
 
       <link rel="stylesheet" href="{{ asset('css/bootstrap-colorpicker.css')}}">
 
+      <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css')}}">
+
+
+
 
      <style type="text/css">
      .alinear{
@@ -308,8 +312,13 @@
 
     <script src="{{ asset('js/bootstrap-colorpicker.js') }}"></script>
 
+    <script src="{{ asset('js/moment.js') }}"></script>
+
+    <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
+
 
     <script type="text/javascript">
+    var pathname = window.location.pathname;
 		$(function () {
 
 			$("input[type=text]").focus(function(){

@@ -71,3 +71,14 @@ Route::get('estados/{id}/delete', [
     'as' => 'estados.delete',
     'uses' => 'EstadosController@destroy',
 ]);
+
+
+//PROYECTOS
+Route::resource('proyectos','ProyectosController');
+Route::get('proyectos/{id}/delete', [
+    'as' => 'proyectos.delete',
+    'uses' => 'ProyectosController@destroy',
+]);
+
+Route::get('proyectos/create/getrecursos','ProyectosController@getrecursos');
+Route::get('proyectos/{id}/edit/getrecursos','ProyectosController@getrecursos');
