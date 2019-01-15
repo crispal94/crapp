@@ -214,8 +214,10 @@ class ProyectosController extends Controller
            $proyecto->id_responsable  = $data['supervisores'];
            if($data['op_recursos']=='u'){
              $proyecto->id_user = $data['v_recursos'];
+             $proyecto->id_grupo = null;
            }else{
              $proyecto->id_grupo = $data['v_recursos'];
+             $proyecto->id_user = null;
            }
            $proyecto->tipo_recurso = $data['op_recursos'];
            $proyecto->save();

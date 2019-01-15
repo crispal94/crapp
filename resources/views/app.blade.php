@@ -5,9 +5,11 @@
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
+
 
     <!-- Title Page-->
     <title>Dashboard</title>
@@ -36,6 +38,8 @@
 
     <!--Datatable-->
      <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css')}}">
+
+     <link rel="stylesheet" href="{{ asset('css/select.bootstrap4.min.css')}}">
 
       <link rel="stylesheet" href="{{ asset('css/bootstrap-colorpicker.css')}}">
 
@@ -125,6 +129,14 @@
                             <a href="{{ url('tipoactividades') }}">
                                 <i class="fas fa-table"></i>Estados</a>
                         </li>
+                        <li>
+                            <a href="{{ url('proyectos') }}">
+                                <i class="fas fa-table"></i>Proyectos</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('actividades') }}">
+                                <i class="fas fa-table"></i>Definición de Actividades</a>
+                        </li>
 
                     </ul>
                 </div>
@@ -191,6 +203,14 @@
                         <li>
                             <a href="{{ url('tipoactividades') }}">
                                 <i class="fas fa-table"></i>Estados</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('proyectos') }}">
+                                <i class="fas fa-table"></i>Proyectos</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('actividades') }}">
+                                <i class="fas fa-table"></i>Definición de Actividades</a>
                         </li>
 
                     </ul>
@@ -306,6 +326,8 @@
     <!-- Datatable JS-->
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('js/dataTables.select.min.js') }}"></script>
+
 
     <script src="{{ asset('js/jstree.min.js') }}"></script>
     <script src="{{ asset('js/jquery.numeric.js') }}"></script>
@@ -315,6 +337,7 @@
     <script src="{{ asset('js/moment.js') }}"></script>
 
     <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
+    <script src="{{ asset('js/animatescroll.js') }}"></script>
 
 
     <script type="text/javascript">

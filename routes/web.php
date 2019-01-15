@@ -73,7 +73,7 @@ Route::get('estados/{id}/delete', [
 ]);
 
 
-//PROYECTOS
+//PROYECTOS - CABECERA
 Route::resource('proyectos','ProyectosController');
 Route::get('proyectos/{id}/delete', [
     'as' => 'proyectos.delete',
@@ -82,3 +82,9 @@ Route::get('proyectos/{id}/delete', [
 
 Route::get('proyectos/create/getrecursos','ProyectosController@getrecursos');
 Route::get('proyectos/{id}/edit/getrecursos','ProyectosController@getrecursos');
+
+
+//ACTIVIDADES - DETALLE
+Route::get('actividades','ActividadesController@index');
+Route::get('actividades/getproyectos','ActividadesController@getproyectos');
+Route::post('actividades/ingresaractividad','ActividadesController@ingresaractividad');

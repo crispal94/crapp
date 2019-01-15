@@ -20,7 +20,7 @@
               {!!Form::text('nombre',null,['class'=>'form-control',
                           'placeholder'=>'Ingrese dato','maxlength'=>'100'])!!}
         </div>
-        <div class="form-group">
+             <div class="form-group">
 									<label>Tipo</label>
 									{!!Form::select('id_param',$arrtipo,'U',['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'genr_id'])!!}
 						</div>

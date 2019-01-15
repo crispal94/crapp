@@ -37,7 +37,7 @@
                 <th>Descripción</th>
                 <th>Responsable</th>
                 <th>Recursos</th>
-                <th>Duración</th>
+                <th>Duración (semanas)</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Fin</th>
                 <th></th>
@@ -70,7 +70,7 @@
               <th>Descripción</th>
               <th>Responsable</th>
               <th>Recursos</th>
-              <th>Duración</th>
+              <th>Duración (semanas)</th>
               <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
               <th></th>
