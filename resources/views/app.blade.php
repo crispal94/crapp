@@ -45,7 +45,7 @@
 
       <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css')}}">
 
-
+        <link rel="stylesheet" href="{{ asset('css/bootstrap-slider.min.css')}}">
 
 
      <style type="text/css">
@@ -338,6 +338,7 @@
 
     <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <script src="{{ asset('js/animatescroll.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-slider.min.js') }}"></script>
 
 
     <script type="text/javascript">

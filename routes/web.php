@@ -88,3 +88,10 @@ Route::get('proyectos/{id}/edit/getrecursos','ProyectosController@getrecursos');
 Route::get('actividades','ActividadesController@index');
 Route::get('actividades/getproyectos','ActividadesController@getproyectos');
 Route::post('actividades/ingresaractividad','ActividadesController@ingresaractividad');
+
+
+//ACTIVIDADES - AVANCES - SEGUIMIENTO
+Route::get('avances','AvancesController@index');
+Route::get('avances/seguimiento/{id}','AvancesController@seguimiento');
+Route::post('avances/seguimiento/{id}/postavance','AvancesController@postavance');
+Route::get('avances/getproyectos','AvancesController@getproyectos');
