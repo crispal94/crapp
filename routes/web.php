@@ -15,8 +15,28 @@
     return view('app');
 });*/
 
+Route::get('vis',function(){
+  return view('pdf.template');
+});
+
+Route::get ('pdfprueba', 'PdfController@github');
+
+Route::get('/test', function()
+{
+	$beautymail = app()->make(Snowfire\Beautymail\Beautymail::class);
+    $beautymail->send('email.welcome', [], function($message)
+    {
+        $message
+			->from('info@pure.ec','Christian')
+			->to('crispal94@hotmail.com', 'John Smith')
+			->subject('Welcome!');
+    });
+
+});
+
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('email', 'HomeController@email');
 
 Auth::routes();
 

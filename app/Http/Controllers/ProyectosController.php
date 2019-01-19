@@ -8,6 +8,9 @@ use DB;
 use Session;
 use Redirect;
 use App\Proyectos;
+use App\Mail\NotificaProyecto;
+use App\User;
+use Mail;
 use Illuminate\Support\Facades\Input;
 
 class ProyectosController extends Controller
@@ -109,6 +112,24 @@ class ProyectosController extends Controller
                $fechapf = date("Y-m-d",strtotime($fechap."+ ".$request->input('duracion')." week"));
                $proyecto->fechafin = $fechapf;
                $proyecto->id_responsable  = $data['supervisores'];
+               $proyecto->notifica = $data['notifica'];
+               if($proyecto->notifica=='s'&&$data['op_recursos']=='u'){
+                 $arregmail = [];
+                 $usuario = User::find($data['v_recursos']);
+                 array_push($arregmail,$usuario->name);
+                 array_push($arregmail,$data['nombre']);
+                 $supervisores = DB::select("select u.id as id, u.name as usuario
+                 from users u
+                 inner join role_user ru on (ru.user_id = u.id)
+                 inner join roles r on (r.id = ru.role_id)
+                 inner join param_referenciales pr on (pr.id = r.id_param)
+                 where pr.valor = 'Supervisor' and u.id = ? and u.deleted_at is null",[$data['supervisores']])[0];
+                 array_push($arregmail,$supervisores->usuario);
+                 array_push($arregmail,$data['descripcion']);
+                 array_push($arregmail,$data['fechainicio']);
+                 array_push($arregmail,$data['duracion']);
+                 Mail::to('crispal94@hotmail.com')->send(new NotificaProyecto($arregmail));
+               }
                if($data['op_recursos']=='u'){
                  $proyecto->id_user = $data['v_recursos'];
                }else{
@@ -118,7 +139,7 @@ class ProyectosController extends Controller
                $proyecto->save();
                Session::flash('message','Registro creado correctamente');
                return redirect()->action('ProyectosController@index');
-               }
+             }
      }
 
     /**

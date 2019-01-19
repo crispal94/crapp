@@ -55,6 +55,17 @@
                           </div>
                           {!!Form::select('v_recursos',[],null,['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'v_recursos'])!!}
                         </div>
+                        <div class="form-group">
+                        <label>Desea recibir notificaciones automáticas de actividades y avances?</label>
+                        <div class="form-check-inline form-check">
+                            <label for="inline-checkbox1" class="form-check-label ">
+                                <input type="checkbox" id="sinoti" name="notifica" value="s" class="form-check-input">Si
+                            </label>
+                            <label for="inline-checkbox2" class="form-check-label ">
+                                <input type="checkbox" id="nonoti" name="notifica" value="n" class="form-check-input">No
+                            </label>
+                        </div>
+                        </div>
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">Grabar</button>
                           </div>
@@ -91,6 +102,18 @@
                             $select.append('<option value=' + key + '>' + value + '</option>');
                         });
               });
+          });
+
+          $('#sinoti').on('change',function(){
+                if($(this).is(':checked')){
+                    $('#nonoti').prop('checked',false);
+                }
+          });
+
+          $('#nonoti').on('change',function(){
+                if($(this).is(':checked')){
+                    $('#sinoti').prop('checked',false);
+                }
           });
 </script>
 @endsection

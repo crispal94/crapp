@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Input;
 use App\Actividades;
 use App\GrupoUsuarios;
 use App\User;
+use App\Mail\NotificaActividad;
+use Mail;
 
 
 class ActividadesController extends Controller
@@ -129,6 +131,16 @@ class ActividadesController extends Controller
               $actividad->fechainicio = $fechainicio;
               $actividad->duracion = $duracionact;
               $actividad->fechafin = $fechapf;
+              $arregmail = [];
+              $proyecto = Proyectos::find($idcabecera);
+              $usuario = User::find($userid);
+              array_push($arregmail,$usuario->name);
+              array_push($arregmail,$proyecto->nombre);
+              array_push($arregmail,$actividad->nombre);
+              array_push($arregmail,$actividad->fechainicio);
+              array_push($arregmail,$actividad->duracion);
+
+              Mail::to('crispal94@hotmail.com')->send(new NotificaActividad($arregmail));
               $actividad->save();
 
               $actividades = DB::select("

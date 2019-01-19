@@ -14,6 +14,8 @@ use App\GrupoUsuarios;
 use App\User;
 use App\Avances;
 use App\Estados;
+use Mail;
+use App\Mail\NotificaAvance;
 
 
 class AvancesController extends Controller
@@ -125,7 +127,24 @@ class AvancesController extends Controller
        $segui->avance = $avance.'%';
        $segui->fechaavance =  date("Y-m-d H:i:s");
        $segui->observacion = $observacion;
+       $proyecto = Proyectos::find($id_cabecera);
+       $idusactividad = $actividad->id_responsable;
+       $id_responsable = $proyecto->id_responsable;
+       $usuariosupervisor = User::find($id_responsable);
+       $usuarioactividad = User::find($idusactividad);
+       $nsupervisor = $usuariosupervisor->name;
+       $nresponsable = $usuarioactividad->name;
+       $estado = Estados::find($estado);
+       $arregmail = [];
+       array_push($arregmail,$nsupervisor);
+       array_push($arregmail,$actividad->nombre);
+       array_push($arregmail,$nresponsable);
+       array_push($arregmail,$estado->descripcion);
+       array_push($arregmail,$segui->avance);
+       array_push($arregmail,$segui->fechaavance);
+       Mail::to('crispal94@hotmail.com')->send(new NotificaAvance($arregmail));
        $segui->save();
+
        return response()->json(['mensaje'=>1]);
 
     }
