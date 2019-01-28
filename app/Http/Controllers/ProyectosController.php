@@ -12,6 +12,7 @@ use App\Mail\NotificaProyecto;
 use App\User;
 use Mail;
 use Illuminate\Support\Facades\Input;
+use App\ParamReferenciales;
 
 class ProyectosController extends Controller
 {
@@ -23,12 +24,13 @@ class ProyectosController extends Controller
     public function index()
     {
         $proyectos = DB::select("select cab.id as id, cab.nombre as nombre, cab.descripcion as descripcion, cab.duracion as duracion,
-        us.name as responsable, cab.fechainicio as fechainicio, cab.fechafin as fechafin,
+        us.name as responsable, cab.fechainicio as fechainicio, cab.fechafin as fechafin, pt.valor as tiempo,
         CASE WHEN cab.id_user IS NOT NULL THEN u.name ELSE gt.descripcion END recursos
         from cab_actividad cab
         left join users u on (u.id = cab.id_user)
         left join users us on (us.id = cab.id_responsable)
         left join grupos_trabajos gt on (gt.id = cab.id_grupo)
+        left join param_referenciales pt on (pt.id = cab.id_refertiempo)
         where cab.deleted_at is null");
 
         return view('proyectos.index',compact('proyectos'));
@@ -53,7 +55,16 @@ class ProyectosController extends Controller
         foreach($supervisores as $sus){
           $arrsupervisores[$sus->id] = $sus->usuario;
         }
-        return view('proyectos.create',compact('arrsupervisores'));
+
+        $tiempo = ParamReferenciales::where('grupo','Proyecto')->where('clave','Tiempo')->get();
+
+      /*  $arrtiempo = [];
+
+        foreach($tiempo as $t){
+          $arrtiempo[$t->id] = $t->valor;
+        }*/
+
+        return view('proyectos.create',compact('arrsupervisores','tiempo'));
     }
 
     public function getrecursos(Request $request){
@@ -108,8 +119,32 @@ class ProyectosController extends Controller
                $proyecto->descripcion = $data['descripcion'];
                $proyecto->duracion = $data['duracion'];
                $proyecto->fechainicio = $data['fechainicio'];
-               $fechap = date("Y-m-d", strtotime($request->input('fechainicio')));
-               $fechapf = date("Y-m-d",strtotime($fechap."+ ".$request->input('duracion')." week"));
+               $proyecto->id_refertiempo = $data['tiempo'];
+               $fechap = date("Y-m-d H:i:s", strtotime($request->input('fechainicio')));
+               $qtiempo = ParamReferenciales::find($data['tiempo']);
+               switch ($qtiempo->valor) {
+                 case 'Hora':
+                   $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." hour"));
+                   break;
+
+                 case 'Día':
+                 $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." day"));
+                   break;
+
+                 case 'Semana':
+                 $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." week"));
+                   break;
+
+                 case 'Mes':
+                 $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." month"));
+                   break;
+
+                 case 'Año':
+                 $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." year"));
+                   break;
+               }
+
+               //$fechapf = date("Y-m-d",strtotime($fechap."+ ".$request->input('duracion')." week"));
                $proyecto->fechafin = $fechapf;
                $proyecto->id_responsable  = $data['supervisores'];
                $proyecto->notifica = $data['notifica'];

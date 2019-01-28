@@ -1,7 +1,15 @@
 @extends('app')
 @section('css')
   <style type="text/css">
+        .toptiempo{
+            padding-top: 6%;
+        }
 
+        @media (max-width: 425px) {
+          .toptiempo{
+              padding-top: 5%;
+          }
+        }
   </style>
 @endsection
 @section('content')
@@ -25,11 +33,26 @@
                            {!!Form::text('descripcion',Null,['class'=>'form-control',
                             'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombre'])!!}
                         </div>
-                        <div class="form-group">
-                          <label>Duración (semanas)</label>
-                         {!!Form::text('duracion',Null,['class'=>'form-control',
-                          'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombre'])!!}
-                      </div>
+                          <div class="row form-group">
+                                <div class="col col-md-4">
+                                  <label>Duración</label>
+                                  {!!Form::text('duracion',Null,['class'=>'form-control',
+                                  'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombre'])!!}
+                                </div>
+                                <div class="col col-md-8">
+                                  <div class="form-check-inline form-check toptiempo">
+                                    @php
+                                      $cont = 0;
+                                    @endphp
+                                      @foreach ($tiempo as $t)
+                                       @php ++$cont; @endphp
+                                       <label for="inline-radio1" class="form-check-label ">
+                                           <input type="radio" id="tiempo{{ $cont }}" name="tiempo" value="{{ $t->id }}" class="form-check-input">{{ $t->valor }}
+                                       </label>
+                                      @endforeach
+                                 </div>
+                                </div>
+                          </div>
                             <div class="form-group">
                               <label>Fecha Inicio</label>
                               <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
@@ -79,7 +102,7 @@
 <script type="text/javascript">
           $(function () {
             $('#datetimepicker4').datetimepicker({
-                  format: 'YYYY-MM-DD',
+                  format: 'YYYY-MM-DD HH:mm:ss',
                   allowInputToggle: true,
                   widgetPositioning: {
                        horizontal: 'left',

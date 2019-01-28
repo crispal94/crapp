@@ -23,7 +23,7 @@ class EstadosController extends Controller
 
     public function index()
     {
-       $estados = Estados::all();
+       $estados = Estados::orderBy('id','asc')->get();
        return view('estados.index',compact('estados'));
     }
 
@@ -45,13 +45,12 @@ class EstadosController extends Controller
      */
     public function store(Request $request)
     {
-
-      $colorh = $request->input('hcolor');
+      $valor = $request->input('valor');
       $data = $request->all();
       var_dump($data);
       $rules = array(
       'descripcion' => 'required',
-      'hcolor' =>'required');
+      'valor' =>'required');
 
        $v = Validator::make($data,$rules);
        if($v->fails())
@@ -64,7 +63,7 @@ class EstadosController extends Controller
            $estado = new Estados;
            $input = array_filter($data,'strlen');
            $estado->fill($input);
-           $estado->color = $colorh;
+           $estado->valor = $valor.'%';
            $estado->save();
            Session::flash('message','Registro creado correctamente');
            return redirect()->action('EstadosController@index');
@@ -91,7 +90,10 @@ class EstadosController extends Controller
     public function edit($id)
     {
         $estado = Estados::find($id);
-        return view('estados.edit',compact('estado'));
+        $valor = $estado->valor;
+        $valor = trim($valor, '%');
+        //dd($valor);
+        return view('estados.edit',compact('estado','valor'));
     }
 
     /**
@@ -103,12 +105,11 @@ class EstadosController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $colorh = $request->input('hcolor');
+      $valor = $request->input('valor');
       $data = $request->all();
-      var_dump($data);
       $rules = array(
       'descripcion' => 'required',
-      'hcolor' =>'required');
+      'valor' =>'required');
 
        $v = Validator::make($data,$rules);
        if($v->fails())
@@ -121,7 +122,7 @@ class EstadosController extends Controller
            $estado = Estados::find($id);
            $input = array_filter($data,'strlen');
            $estado->fill($input);
-           $estado->color = $colorh;
+           $estado->valor = $valor.'%';
            $estado->save();
            Session::flash('message','Registro editado correctamente');
            return redirect()->action('EstadosController@index');

@@ -113,5 +113,17 @@ Route::post('actividades/ingresaractividad','ActividadesController@ingresaractiv
 //ACTIVIDADES - AVANCES - SEGUIMIENTO
 Route::get('avances','AvancesController@index');
 Route::get('avances/seguimiento/{id}','AvancesController@seguimiento');
+Route::get('avances/seguimiento/{id}/editar/{idavance}','AvancesController@editar');
 Route::post('avances/seguimiento/{id}/postavance','AvancesController@postavance');
+Route::post('avances/seguimiento/{id}/editaravance','AvancesController@editaravance');
 Route::get('avances/getproyectos','AvancesController@getproyectos');
+
+//REPORTES
+Route::get('reportes','ReportesController@index');
+Route::get('reportes/getproyectos','ReportesController@getproyectos');
+Route::get('reportes/seguimiento/{id}','ReportesController@seguimiento');
+Route::get('reportes/seguimiento/{id}/reporte','ReportesController@reporte');
+Route::post('reportes/proyectos',[
+        'as' => 'reportes.proyectos',
+        'uses' => 'ReportesController@imprimir'
+    ]);

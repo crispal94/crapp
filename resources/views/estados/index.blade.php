@@ -34,7 +34,7 @@
         <thead>
             <tr>
                 <th>Descripción</th>
-                <th>Color</th>
+                <th>Valor</th>
                 <th></th>
             </tr>
         </thead>
@@ -42,7 +42,7 @@
             @foreach ($estados as $esta)
               <tr>
                 <td>{{ $esta->descripcion }}</td>
-                <td>{{ $esta->color }}</td>
+                <td>{{ $esta->valor }}</td>
                 <td><div class="table-data-feature alinear">
                   <a href="{{ route('estados.edit', $esta->id) }}">
                     <button type="submit" class="item"><i class="zmdi zmdi-edit"></i></button>
@@ -57,7 +57,7 @@
         <tfoot>
             <tr>
               <th>Descripción</th>
-              <th>Color</th>
+              <th>Valor</th>
               <th></th>
             </tr>
         </tfoot>
@@ -73,7 +73,9 @@
 $(document).ready(function() {
     $('#example').DataTable( {
         "scrollY": 200,
-        "scrollX": true
+        "scrollX": true,
+        //"ordering": false
+         "order": [[ 1, "asc" ]]
     } );
 } );
 </script>

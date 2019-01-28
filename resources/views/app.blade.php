@@ -45,7 +45,9 @@
 
       <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css')}}">
 
-        <link rel="stylesheet" href="{{ asset('css/bootstrap-slider.min.css')}}">
+      <link rel="stylesheet" href="{{ asset('css/bootstrap-slider.min.css')}}">
+
+      <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
 
 
      <style type="text/css">
@@ -292,8 +294,34 @@
                     </div>
                 </div>
             </div>
+
+            @yield('modal')
+
+
             <!-- END MAIN CONTENT-->
             <!-- END PAGE CONTAINER-->
+
+            <!--MODAL PARA MOSTRAR ALERTAR-->
+            <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="mediumModalLabel">Alerta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p id="contenido">
+
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                      </div>
+                    </div>
+                  </div>
+             </div>
         </div>
 
     </div>
@@ -339,6 +367,8 @@
     <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <script src="{{ asset('js/animatescroll.js') }}"></script>
     <script src="{{ asset('js/bootstrap-slider.min.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+
 
 
     <script type="text/javascript">

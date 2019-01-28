@@ -1,7 +1,9 @@
 @extends('app')
 @section('css')
   <style type="text/css">
-      th, td { white-space: nowrap;
+
+
+    .app th, .app td { white-space: nowrap;
   padding-right: 1cm; }
 
   div.dataTables_wrapper {
@@ -15,6 +17,17 @@
   td a {
   margin-right: 4px;
 }
+
+.toptiempo{
+    padding-top: 6%;
+}
+
+@media (max-width: 425px) {
+  .toptiempo{
+      padding-top: 5%;
+  }
+}
+
   </style>
 @endsection
 @section('content')
@@ -43,7 +56,7 @@
                     <div class="card-body text-secondary">
                       <div class="row form-group">
                             <div class="col col-md-3">
-                                <label class=" form-control-label"><strong>Duración (semanas)</strong></label>
+                                <label class=" form-control-label"><strong>Duración</strong></label>
                             </div>
                             <div class="col-12 col-md-9">
                                 <p id="duracion" class="form-control-static"></p>
@@ -65,6 +78,14 @@
                                 <p id="fechainicio" class="form-control-static"></p>
                             </div>
                       </div>
+                      <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label"><strong>Fecha Fin</strong></label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <p id="fechafin" class="form-control-static"></p>
+                            </div>
+                      </div>
                     </div>
                   </section>
                 </div>
@@ -78,7 +99,7 @@
             <strong>Actividades</strong>
        </div>
        <div class="card-body text-secondary" id="posdet">
-         <table id="detactividades" class="table table-striped table-bordered" style="width:100%">
+         <table id="detactividades" class="table table-striped table-bordered app" style="width:100%">
                 <thead>
                 <tr>
                    <th>Nombre</th>
@@ -117,11 +138,26 @@
            {!!Form::text('nombreact',Null,['class'=>'form-control',
             'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombreact'])!!}
         </div>
-        <div class="form-group">
-          <label>Duración</label>
-         {!!Form::text('duracionact',Null,['class'=>'form-control',
-          'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'duracionact'])!!}
-      </div>
+        <div class="row form-group">
+              <div class="col col-md-4">
+                <label>Duración</label>
+                {!!Form::text('duracion',Null,['class'=>'form-control',
+                'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'duracionact'])!!}
+              </div>
+              <div class="col col-md-8">
+                <div class="form-check-inline form-check toptiempo">
+                  @php
+                    $cont = 0;
+                  @endphp
+                    @foreach ($tiempo as $t)
+                     @php ++$cont; @endphp
+                     <label for="inline-radio1" class="form-check-label ">
+                         <input type="radio" id="tiempo{{ $cont }}" name="tiempo" value="{{ $t->id }}" class="form-check-input">{{ $t->valor }}
+                     </label>
+                    @endforeach
+               </div>
+              </div>
+        </div>
         <div class="form-group">
           <label>Fecha Inicio</label>
           <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
@@ -144,6 +180,31 @@
     </div>
   </div>
 @endsection
+
+@section('modal')
+  <div class="modal fade" id="actividadModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="mediumModalLabel">Alerta</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p id="acontenido">
+
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+   </div>
+@endsection
+
+
 
 @section('js')
 <script type="text/javascript">
@@ -168,12 +229,14 @@
                   } );
 
                   $('#datetimepicker4').datetimepicker({
-                        format: 'YYYY-MM-DD',
+                        format: 'YYYY-MM-DD HH:mm:ss',
                         allowInputToggle: true,
                         widgetPositioning: {
                              horizontal: 'left',
-                             vertical: 'bottom'
+                             vertical: 'top'
                          },
+                         minDate:new Date(),
+                         //disabledDates: [new Date()],
                          defaultDate: new Date()
                     });
               } );
@@ -188,15 +251,24 @@
 
                     console.log(data.user);
                     $('#descripcion').val(data.cont.descripcion);
-                    $('#duracion').text(data.cont.duracion);
+                    $('#duracion').text(data.cont.duracion+' '+data.tiempo+'(s)');
                     $('#fechainicio').text(data.cont.fechainicio);
+                    $('#fechafin').text(data.cont.fechafin);
                     $('#responsable').text(data.responsable);
                     var table = $('#detactividades').DataTable();
                     console.log(data.detalle);
                     table.clear().draw();
                     table.rows.add(data.detalle); // Add new data
                     table.columns.adjust().draw();
-
+                    var cont = 0;
+                    $.each(data.arrayflags,function(index,value){
+                      ++cont;
+                      if(value==1){
+                          $('#tiempo'+cont).prop('disabled',false);
+                      }else{
+                          $('#tiempo'+cont).prop('disabled',true);
+                      }
+                    });
 
                     $('#bodyresp').empty();
                     if(data.tr=='gt'){
@@ -329,6 +401,7 @@
                   fechainicio="";
                   nombre = $("#nombreact").val();
                   duracion = $('#duracionact').val();
+                  tiempo = $("input[name='tiempo']:checked").val();
                   fechainicio = $("#datetimepicker4").find("input").val();
                   userid = null;
                   console.log(id);
@@ -338,16 +411,25 @@
                  id = null;
                  nombre = $("#nombreact").val();
                  duracion = $('#duracionact').val();
+                 tiempo = $("input[name='tiempo']:checked").val();
                  fechainicio = $("#datetimepicker4").find("input").val();
                  userid = '';
                  userid = $('#bodyresp #responsablei').val();
                  console.log(userid);
                }
 
-              $.post(pathname+'/ingresaractividad',{ids:id,userid:userid,nombreact:nombre,duracionact:duracion,fechainicio:fechainicio,idcabecera:idcabecera,tiporecurso:tiporecurso},function(){
+              $.post(pathname+'/ingresaractividad',{ids:id,userid:userid,nombreact:nombre,duracionact:duracion,tiempo:tiempo,fechainicio:fechainicio,idcabecera:idcabecera,tiporecurso:tiporecurso},function(){
                }).done(function(data){
-                    if(data.mensaje==1){
-                    alert('Actividad Ingresada y Sincronizada con éxito');
+
+                    if(data.flag==1){
+                      $('#acontenido').empty();
+                      $('#actividadModal').modal();
+                      $('#acontenido').append(data.mensaje);
+                    }else if(data.flag==2){
+                    //alert('Actividad Ingresada y Sincronizada con éxito');
+                    $('#acontenido').empty();
+                    $('#actividadModal').modal();
+                    $('#acontenido').append(data.mensaje);
                     var tabled = $('#detactividades').DataTable();
                   //  console.log(data.detalle);
                     tabled.clear().draw();

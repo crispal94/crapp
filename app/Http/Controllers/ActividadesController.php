@@ -14,7 +14,7 @@ use App\GrupoUsuarios;
 use App\User;
 use App\Mail\NotificaActividad;
 use Mail;
-
+use App\ParamReferenciales;
 
 class ActividadesController extends Controller
 {
@@ -30,7 +30,9 @@ class ActividadesController extends Controller
         foreach($proyectos as $pro){
           $arrproy[$pro->id] = $pro->nombre;
         }
-        return view('actividades.index',compact('arrproy'));
+        $tiempo = ParamReferenciales::where('grupo','Proyecto')->where('clave','Tiempo')->orderBy('id', 'asc')->get();
+
+        return view('actividades.index',compact('arrproy','tiempo'));
     }
 
     public function getproyectos(Request $request){
@@ -38,10 +40,23 @@ class ActividadesController extends Controller
       $proyecto = Proyectos::find($idpro);
       $supervisor = $proyecto->responsable->name;
       $tiporecurso = $proyecto->tipo_recurso;
+      $tiempo = $proyecto->tiempo->valor;
+      $idtiempo = $proyecto->tiempo->id;
+      $qtiempo = ParamReferenciales::where('grupo','Proyecto')->where('clave','Tiempo')->orderBy('id', 'asc')->get();
+      $arrayflags = [];
+      foreach($qtiempo as $t){
+          if($t->id<=$idtiempo){
+            array_push($arrayflags,1);
+          }else{
+            array_push($arrayflags,0);
+          }
+      }
+
       $actividades = DB::select("
-      select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin
+      select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin, pt.valor
       from det_actividad det
       inner join users u on (u.id = det.id_responsable)
+      left join param_referenciales pt on (pt.id = det.id_refertiempo)
       where det.id_cabecera = ? and det.deleted_at is null
       order by det.fechainicio asc",[$idpro]);
       $arreglotd = [];
@@ -49,7 +64,7 @@ class ActividadesController extends Controller
         $arr = [];
         array_push($arr,$act->actividad);
         array_push($arr,$act->usuario);
-        array_push($arr,$act->duracion);
+        array_push($arr,$act->duracion.' '.$act->valor.'(s)');
         array_push($arr,$act->fechainicio);
         array_push($arr,$act->fechafin);
         array_push($arreglotd,$arr);
@@ -69,12 +84,12 @@ class ActividadesController extends Controller
                       $arr2['id'] = $us->id;
                     array_push($arreglot,$arr2);
                 }
-        return response()->json(['cont'=>$proyecto,'responsable'=>$supervisor,'tr'=>$tiporecurso,'usersa'=>$arreglot,'detalle'=>$arreglotd]);
+        return response()->json(['cont'=>$proyecto,'responsable'=>$supervisor,'tr'=>$tiporecurso,'usersa'=>$arreglot,'detalle'=>$arreglotd,'tiempo'=>$tiempo,'arrayflags'=>$arrayflags]);
       }else{
         $usuario = User::find($proyecto->id_user);
         $nombre = $usuario->name;
         $userid = $usuario->id;
-          return response()->json(['cont'=>$proyecto,'responsable'=>$supervisor,'tr'=>$tiporecurso,'user'=>$nombre,'userid'=>$userid,'detalle'=>$arreglotd]);
+          return response()->json(['cont'=>$proyecto,'responsable'=>$supervisor,'tr'=>$tiporecurso,'user'=>$nombre,'userid'=>$userid,'detalle'=>$arreglotd,'tiempo'=>$tiempo,'arrayflags'=>$arrayflags]);
 
       }
 
@@ -86,9 +101,39 @@ class ActividadesController extends Controller
         $nombreact = Input::get('nombreact');
         $duracionact = Input::get('duracionact');
         $fechainicio = Input::get('fechainicio');
+        $tiempo = Input::get('tiempo');
         $userid = Input::get('userid');
-        $fechap = date("Y-m-d", strtotime($fechainicio));
-        $fechapf = date("Y-m-d",strtotime($fechap."+ ".$duracionact." week"));
+        $proyecto = Proyectos::find($idcabecera);
+        $usuario = User::find($userid);
+        $fechap = date("Y-m-d H:i:s", strtotime($fechainicio));
+        $qtiempo = ParamReferenciales::find($tiempo);
+        switch ($qtiempo->valor) {
+          case 'Hora':
+            $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." hour"));
+            break;
+
+          case 'Día':
+          $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." day"));
+            break;
+
+          case 'Semana':
+          $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." week"));
+            break;
+
+          case 'Mes':
+          $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." month"));
+            break;
+
+          case 'Año':
+          $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." year"));
+            break;
+        }
+
+        $ffinalproyecto = strtotime($proyecto->fechafin);
+
+        if(strtotime($fechapf)>$ffinalproyecto){
+            return response()->json(['flag'=>1,'mensaje'=>'La fecha final de esta actividad supera la fecha final del proyecto, por favor cambie la duración de la actividad']);
+        }else{
         if($tiporecurso=='gt'){
           $ids = Input::get('ids');
            $jids = json_decode($ids);
@@ -99,15 +144,17 @@ class ActividadesController extends Controller
               $actividad->nombre = $nombreact;
               $actividad->fechainicio = $fechainicio;
               $actividad->duracion = $duracionact;
+              $actividad->id_refertiempo = $tiempo;
               $actividad->fechafin = $fechapf;
               $actividad->save();
 
            }
 
            $actividades = DB::select("
-           select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin
+           select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin,det.fechafin,pt.valor
            from det_actividad det
            inner join users u on (u.id = det.id_responsable)
+           left join param_referenciales pt on (pt.id = det.id_refertiempo)
            where det.id_cabecera = ? and det.deleted_at is null
            order by det.fechainicio asc",[$idcabecera]);
 
@@ -116,13 +163,13 @@ class ActividadesController extends Controller
              $arr = [];
              array_push($arr,$act->actividad);
              array_push($arr,$act->usuario);
-             array_push($arr,$act->duracion);
+             array_push($arr,$act->duracion.' '.$act->valor.'(s)');
              array_push($arr,$act->fechainicio);
              array_push($arr,$act->fechafin);
              array_push($arreglotd,$arr);
            }
 
-            return response()->json(['mensaje'=>1,'detalle'=>$arreglotd]);
+            return response()->json(['flag'=>2,'mensaje'=>'Actividad Ingresada y Sincronizada con éxito','detalle'=>$arreglotd]);
         }else{
               $actividad = new Actividades;
               $actividad->id_cabecera = $idcabecera;
@@ -130,10 +177,10 @@ class ActividadesController extends Controller
               $actividad->nombre = $nombreact;
               $actividad->fechainicio = $fechainicio;
               $actividad->duracion = $duracionact;
+              $actividad->id_refertiempo = $tiempo;
               $actividad->fechafin = $fechapf;
+              $actividad->activo = 1;
               $arregmail = [];
-              $proyecto = Proyectos::find($idcabecera);
-              $usuario = User::find($userid);
               array_push($arregmail,$usuario->name);
               array_push($arregmail,$proyecto->nombre);
               array_push($arregmail,$actividad->nombre);
@@ -144,9 +191,10 @@ class ActividadesController extends Controller
               $actividad->save();
 
               $actividades = DB::select("
-              select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin
+              select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin,pt.valor
               from det_actividad det
               inner join users u on (u.id = det.id_responsable)
+              left join param_referenciales pt on (pt.id = det.id_refertiempo)
               where det.id_cabecera = ? and det.deleted_at is null
               order by det.fechainicio asc",[$idcabecera]);
 
@@ -155,14 +203,15 @@ class ActividadesController extends Controller
                 $arr = [];
                 array_push($arr,$act->actividad);
                 array_push($arr,$act->usuario);
-                array_push($arr,$act->duracion);
+                array_push($arr,$act->duracion.' '.$act->valor.'(s)');
                 array_push($arr,$act->fechainicio);
                 array_push($arr,$act->fechafin);
                 array_push($arreglotd,$arr);
               }
 
-              return response()->json(['mensaje'=>1,'detalle'=>$arreglotd]);
-        }
+              return response()->json(['flag'=>2,'mensaje'=>'Actividad Ingresada y Sincronizada con éxito','mensaje'=>1,'detalle'=>$arreglotd]);
+          }
+       }
     }
 
     /**

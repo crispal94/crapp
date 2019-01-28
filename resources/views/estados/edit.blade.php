@@ -1,7 +1,12 @@
 @extends('app')
 @section('css')
   <style type="text/css">
+  .slider {
+      width: 100% !important;
+  }
 
+  .slider.slider-horizontal .tooltip.tooltip-main.in,
+  .slider.slider-vertical .tooltip.tooltip-main.in { opacity: 1 !important; }
   </style>
 @endsection
 @section('content')
@@ -21,13 +26,14 @@
                               'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombre'])!!}
                           </div>
                           <div class="form-group">
-                  					<label>Color</label>
+                  					<label>Valor</label>
                             <!--<input id="color" name="color" type="text" class="form-control" value="rgb(255, 128, 0)" />-->
-                            <div id="cp5a" name="color" class="input-group" title="Using format option">
+                            <!--<div id="cp5a" name="color" class="input-group" title="Using format option">
                             <input type="text" class="form-control input-lg"/>
                             <span class="input-group-append">
                               <span class="input-group-text colorpicker-input-addon"><i></i></span>
-                            </span></div>
+                            </span></div>-->
+                            <input type="text" class="form-control" name="valor" id="valor">
                   						</div>
                             <input type="hidden" name="hcolor" id="hcolor">
                             <div class="box-footer">
@@ -42,18 +48,26 @@
 @section('js')
 <script type="text/javascript">
 $(function () {
-        $('#cp5a').colorpicker({
+        $("#valor").slider({
+            ticks: [20, 40, 60, 80, 100],
+            ticks_labels: ['20%', '40%', '60%', '80%', '100%'],
+            tooltip: 'show',
+            tooltip_position: 'bottom',
+            value: {{ $valor }}
+          //  ticks_snap_bounds: 30
+        });
+              /*$('#cp5a').colorpicker({
         format: 'hex',
-        'color': "{{ $estado->color }}"
-      });
+        'color': ""
+      });*/
       // Basic instantiation:
       //$('#color').colorpicker();
 
       // Example using an event, to change the color of the .jumbotron background:
-      $('#cp5a').on('colorpickerChange', function(event) {
+      /*$('#cp5a').on('colorpickerChange', function(event) {
         $('#hcolor').val(event.color.toString());
       //  $('.jumbotron').css('background-color', event.color.toString());
-      });
+      });*/
     });
 </script>
 @endsection

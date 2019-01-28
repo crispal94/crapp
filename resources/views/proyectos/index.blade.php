@@ -37,7 +37,7 @@
                 <th>Descripción</th>
                 <th>Responsable</th>
                 <th>Recursos</th>
-                <th>Duración (semanas)</th>
+                <th>Duración</th>
                 <th>Fecha Inicio</th>
                 <th>Fecha Fin</th>
                 <th></th>
@@ -50,7 +50,7 @@
                 <td>{{ $pro->descripcion }}</td>
                 <td>{{ $pro->responsable }}</td>
                 <td>{{ $pro->recursos }}</td>
-                <td>{{ $pro->duracion }}</td>
+                <td>{{ $pro->duracion }} {{ $pro->tiempo }}(s)</td>
                 <td>{{ $pro->fechainicio }}</td>
                 <td>{{ $pro->fechafin }}</td>
                 <td><div class="table-data-feature alinear">
@@ -70,7 +70,7 @@
               <th>Descripción</th>
               <th>Responsable</th>
               <th>Recursos</th>
-              <th>Duración (semanas)</th>
+              <th>Duración</th>
               <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
               <th></th>

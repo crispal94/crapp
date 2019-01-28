@@ -30,23 +30,38 @@
                     <div class="card-body text-secondary">
                       <div class="row">
                         <div class="col-lg-6">
-                          <div class="form-group">
-                              <label>Proyecto</label>
-                              {!!Form::select('nombreproyecto',$arrproy,'N',['class'=>'form-control select2','autofocus',
-                                'style'=>'width:100%;','id'=>'nombreproyecto'])!!}
-                        </div>
-                        <div class="form-group">
-                          <label>Descripción</label>
-                         <textarea name="descripcion" id="descripcion" readonly rows="2" placeholder="..." class="form-control"></textarea>
-                      </div>
+                          <div class="row form-group">
+                                 <div class="col col-md-3">
+                                     <label class=" form-control-label"><strong>Proyecto</strong></label>
+                                 </div>
+                                 <div class="col-12 col-md-9">
+                                     <p id="proyecto" class="form-control-static">{{ $proyecto->nombre }}</p>
+                                 </div>
+                          </div>
+                          <div class="row form-group">
+                                 <div class="col col-md-3">
+                                     <label class=" form-control-label"><strong>Descripción</strong></label>
+                                 </div>
+                                 <div class="col-12 col-md-9">
+                                     <p id="descripcion" class="form-control-static">{{ $proyecto->descripcion }}</p>
+                                 </div>
+                          </div>
+                          <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label class=" form-control-label"><strong>Fecha Inicio</strong></label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <p id="fechainicio" class="form-control-static">{{ $proyecto->fechainicio }}</p>
+                                </div>
+                          </div>
                         </div>
                         <div class="col-lg-6">
-                          <div class="row form-group">
+                         <div class="row form-group">
                                 <div class="col col-md-3">
                                     <label class=" form-control-label"><strong>Duración</strong></label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <p id="duracion" class="form-control-static"></p>
+                                    <p id="duracion" class="form-control-static">{{ $proyecto->duracion }} {{ $tiempo }}(s)</p>
                                 </div>
                           </div>
                           <div class="row form-group">
@@ -54,25 +69,26 @@
                                     <label class=" form-control-label"><strong>Responsable</strong></label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <p id="responsable" class="form-control-static"></p>
+                                    <p id="responsable" class="form-control-static">{{ $supervisor }}</p>
                                 </div>
                           </div>
                           <div class="row form-group">
                                 <div class="col col-md-3">
-                                    <label class=" form-control-label"><strong>Fecha Inicio</strong></label>
+                                    <label class=" form-control-label"><strong>Fecha Fin</strong></label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <p id="fechainicio" class="form-control-static"></p>
+                                    <p id="fechainicio" class="form-control-static">{{ $proyecto->fechafin }}</p>
                                 </div>
                           </div>
                         </div>
                      </div>
+                     <div class="row">
+                       <div class="col-lg-12">
+                             <button type="button" class="btn btn-primary" id="reporte">Generar Reporte</button>
+                       </div>
+                     </div>
                     </div>
                   </section>
-                </div>
-
-                <div class="col-lg-12">
-
                 </div>
     </div>
 
@@ -92,12 +108,21 @@
                    <th>Duración</th>
                    <th>Fecha Inicio</th>
                    <th>Fecha Fin</th>
-                   <th>Estado</th>
                    <th>id</th>
                 </tr>
                 </thead>
                 <tbody>
-
+                    @foreach ($arreglotd as $a)
+                      <tr>
+                        <td><button type="button" class="btn btn-primary" id="seguimiento">Avances</button></td>
+                        <td>{{ $a[0] }}</td>
+                        <td>{{ $a[1] }}</td>
+                        <td>{{ $a[2] }}</td>
+                        <td>{{ $a[3] }}</td>
+                        <td>{{ $a[4] }}</td>
+                        <td>{{ $a[5] }}</td>
+                      </tr>
+                    @endforeach
                 </tbody>
                 <tfoot>
                 <tr>
@@ -107,7 +132,6 @@
                   <th>Duración</th>
                   <th>Fecha Inicio</th>
                   <th>Fecha Fin</th>
-                  <th>Estado</th>
                   <th>id</th>
                 </tr>
                 </tfoot>
@@ -135,7 +159,7 @@
                 "order": [[ 4, "asc" ]],
                 "columnDefs" : [
                   {
-                      "targets":[ 7 ],
+                      "targets":[ 6 ],
                       "visible":false,
                   }
                 ]
@@ -167,9 +191,14 @@
                  var table = $('#actividades').DataTable();
                  var $row = $(this).closest('tr');
                  var data = table.row($row).data();
-                 var id = data[7];
+                 var id = data[6];
                  var path = {!! json_encode(url('/')) !!};
                  window.open(pathname+'/seguimiento/'+id, "_blank");
              });
+
+             $('#reporte').on('click', function (event) {
+                  var path = {!! json_encode(url('/')) !!};
+                  window.open(pathname+'/reporte/', "_blank");
+              });
             </script>
             @endsection

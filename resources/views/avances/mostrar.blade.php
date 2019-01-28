@@ -18,10 +18,30 @@
 
 .slider {
     width: 100% !important;
+    vertical-align: middle !important;
+    margin-bottom: 0px !important;
+}
+
+.centeralg{
+    margin: auto;
+    display: block;
 }
 
 .slider.slider-horizontal .tooltip.tooltip-main.in,
 .slider.slider-vertical .tooltip.tooltip-main.in { opacity: 1 !important; }
+
+.slider.slider-disabled .slider-handle{
+  background-image: linear-gradient(to bottom,#007bff 0,#007bff 100%);
+}
+
+#addavance .slider-tick-label-container{
+  margin-left: -27px !important;
+}
+
+#addavance .slider-tick-label{
+  width: 58.75px !important;
+}
+
 
   </style>
 @endsection
@@ -83,9 +103,6 @@
                   </section>
                 </div>
 
-                <div class="col-lg-12">
-
-                </div>
     </div>
 
     <div class="row">
@@ -96,28 +113,56 @@
                       <div class="col-lg-4">
                         <div class="form-group">
                               <label>Estado</label>
-                              {!!Form::select('estado',$arrestados,null,['class'=>'form-control select2','autofocus'
-                                ,'id'=>'estado'])!!}
+                              @if ($bloqueo)
+                                <select class="form-control select2" name="estado" id="estado" disabled>
+                                    <!--<option data-por="0" value="N" selected>Elija un Estado...</option>-->
+                                    @foreach ($estados as $est)
+                                      <option data-por="{{ trim($est->valor, '%') }}" value="{{ $est->id }}">{{ $est->descripcion }}</option>
+                                    @endforeach
+                                </select>
+                              @else
+                                <select class="form-control select2" name="estado" id="estado">
+                                    <!--<option data-por="0" value="N" selected>Elija un Estado...</option>-->
+                                    @foreach ($estados as $est)
+                                      <option data-por="{{ trim($est->valor, '%') }}" value="{{ $est->id }}">{{ $est->descripcion }}</option>
+                                    @endforeach
+                                </select>
+                              @endif
+
                         </div>
                       </div>
 
                       <div class="col-lg-4">
                         <div class="form-group">
                               <label>Avance</label><br>
+                              @if ($bloqueo)
+                              <input type="text" class="form-control" name="avance" id="avance" disabled>
+                              @else
                               <input type="text" class="form-control" name="avance" id="avance">
+                              @endif
+
                         </div>
                       </div>
 
                       <div class="col-lg-4">
                         <div class="form-group">
                               <label>Observación</label>
-                              <textarea name="observacion" id="observacion" rows="2" placeholder="..." class="form-control"></textarea>
+                              @if ($bloqueo)
+                                <textarea name="observacion" id="observacion" rows="2" placeholder="..." class="form-control" disabled></textarea>
+                              @else
+                                <textarea name="observacion" id="observacion" rows="2" placeholder="..." class="form-control"></textarea>
+                              @endif
+
                         </div>
                       </div>
                   </div>
-                  <div class="box-footer">
-                      <button type="button" class="btn btn-primary" onclick="insertarnovedad();">Grabar</button>
-                </div>
+
+                  @if (!$bloqueo)
+                    <div class="box-footer">
+                        <button type="button" class="btn btn-primary" onclick="insertarnovedad();">Grabar</button>
+                    </div>
+                  @endif
+
                 </div>
 
             </section>
@@ -134,6 +179,7 @@
          <table id="avances" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                 <tr>
+                   <th></th>
                    <th>Estado</th>
                    <th>Avance</th>
                    <th>Fecha</th>
@@ -143,15 +189,21 @@
                 <tbody>
                   @foreach($avances as $av)
                         <tr>
+
+                          <td>@if($av->avance!='20%')
+                            <button type="button" class="btn btn-primary centeralg" id="editar">Modificar</button>
+                           @endif</td>
                           <td>{{$av->estado}}</td>
                           <td>{{$av->avance}}</td>
                           <td>{{$av->fechaavance}}</td>
                           <td>{{$av->observacion}}</td>
+                          <td>{{$av->id}}</td>
                         </tr>
                   @endforeach
                 </tbody>
                 <tfoot>
                 <tr>
+                  <th></th>
                   <th>Estado</th>
                   <th>Avance</th>
                   <th>Fecha</th>
@@ -164,6 +216,80 @@
     </div>
   </div>
 
+
+@endsection
+
+@section('modal')
+  <!--MODAL PARA MOSTRAR EDITAR AVANCES-->
+  <div class="modal fade" id="avanceModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content">
+ <div class="modal-header">
+   <h5 class="modal-title" id="largeModalLabel">Large Modal</h5>
+   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+   </button>
+ </div>
+ <div class="modal-body">
+   <p id="contenido-editar">
+     <div class="row">
+         <div class="col-lg-4">
+           <div class="form-group">
+                 <label>Estado</label>
+
+                 <select class="form-control select2" name="eestado" id="eestado">
+                     <!--<option data-por="0" value="N" selected>Elija un Estado...</option>-->
+                     @foreach ($estados as $est)
+                       <option data-por="{{ trim($est->valor, '%') }}" value="{{ $est->id }}">{{ $est->descripcion }}</option>
+                     @endforeach
+                 </select>
+           </div>
+         </div>
+
+         <div class="col-lg-4">
+           <div class="form-group" id="addavance">
+                 <label>Avance</label><br>
+
+           </div>
+         </div>
+
+         <div class="col-lg-4">
+           <div class="form-group">
+                 <label>Observación</label>
+                 <textarea name="eobservacion" id="eobservacion" rows="2" placeholder="..." class="form-control"></textarea>
+           </div>
+         </div>
+     </div>
+   </p>
+ </div>
+ <div class="modal-footer">
+   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+   <button type="button" class="btn btn-primary" onclick="modificaravance();">Confirm</button>
+ </div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="meditarModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mediumModalLabel">Alerta</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="mcontenido">
+
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+ </div>
 @endsection
 
             @section('js')
@@ -184,19 +310,34 @@
                       tooltip_position: 'bottom'
                     //  ticks_snap_bounds: 30
                   });
-            } );
+                $("#avance").slider("disable");
+            });
+
+
 
             $('#avances').DataTable( {
                 "scrollY": 200,
                 "scrollX": true,
-                "order": [[ 2, "asc" ]],
+                //"order": [[ 2, "asc" ]],
                 "columnDefs" : [
                   {
-                    /*  "targets":[ 6 ],
-                      "visible":false,*/
-                  }
-                ]
+                      "targets":[ 0 ],
+                      "visible":true,
+                    //  className: 'dt-body-center'
+                  },
+                  {
+                      "targets":[ 5 ],
+                      "visible":false,
+                    //  className: 'dt-body-center'
+                  },
+                ],
+                'ordering': false
             } );
+
+            $('#estado').on('change', function() {
+                var por = $(this).find(':selected').data('por');
+                $("#avance").slider('setValue',por, true);
+            });
 
             function insertarnovedad(){
               var estado = $('#estado').val();
@@ -207,16 +348,105 @@
 
               if((observacion==''||observacion==null)||
               (avance==''||avance==null)){
-              alert('Existen espacios en blancos');
+            //  alert('Existen espacios en blancos');
+            $('#contenido').empty();
+            $('#mediumModal').modal();
+            $('#contenido').append('Existen espacios en blancos');
             }else{
               $.post(pathname+'/postavance',{estado:estado,observacion:observacion,avance:avance},function(){
 
-              }).done(function(){
-                  alert('Avance ingresado correctamente');
-                  location.reload(true);
+              }).done(function(data){
+                if(data.flag==1){
+                  $('#contenido').empty();
+                  $('#mediumModal').modal();
+                  $('#contenido').append(data.mensaje);
+                }else if(data.flag==2){
+                  $('#contenido').empty();
+                  $('#mediumModal').modal();
+                  $('#contenido').append(data.mensaje);
+                }
+
+                //console.log(data.mensaje);
+                /*  alert('Avance ingresado correctamente');
+                  location.reload(true);*/
               });
             }
             }
+
+            $('#mediumModal').on('hidden.bs.modal', function (e) {
+              location.reload(true);
+            });
+
+            var idavance;
+            $('#avances tbody').on('click', '#editar', function (event) {
+                 //console.log('s');
+                 var table = $('#avances').DataTable();
+                 var $row = $(this).closest('tr');
+                 var data = table.row($row).data();
+                 var id = data[5];
+                 idavance = id;
+                 var path = {!! json_encode(url('/')) !!};
+                // window.open(pathname+'/editar/'+id, "_self"); -- PUEDE SERVIR XD
+                 thisModal =$('#avanceModal');
+  	             thisModal.modal('show');
+                //  $("#avance-editar").slider("refresh");
+
+                // $("#avance-editar").slider("relayout");
+
+                //
+
+             });
+
+             $('#avanceModal').on('show.bs.modal', function (e) {
+                $('#eobservacion').val('');
+                $("#eestado").val($("#eestado option:first").val());
+                var input = '<input type="text" class="form-control" name="eavance" id="eavance">';
+                var input2 = '<label>Avance</label><br>';
+                $('#addavance').empty();
+                $('#addavance').append(input2);
+                $('#addavance').append(input);
+                $("#eavance").slider({
+                    ticks: [20, 40, 60, 80, 100],
+                    ticks_labels: ['20%', '40%', '60%', '80%', '100%'],
+                    tooltip: 'show',
+                    tooltip_position: 'bottom'
+                });
+                $("#eavance").slider("disable");
+
+             });
+
+             $('#eestado').on('change', function() {
+                 var por = $(this).find(':selected').data('por');
+                 $("#eavance").slider('setValue',por, true);
+             });
+
+
+             function modificaravance(){
+               var estado = $('#eestado').val();
+               var observacion = $('#eobservacion').val();
+             //  var avance = $('#avance').val();
+               var avance = $("#eavance").slider("getValue");
+               $.post(pathname+'/editaravance',{idavance:idavance,estado:estado,observacion:observacion,avance:avance},function(){
+
+               }).done(function(data){
+                 if(data.flag==1){
+                   $('#mcontenido').empty();
+                   $('#meditarModal').modal();
+                   $('#mcontenido').append(data.mensaje);
+                 }else if(data.flag==2){
+                   thisModal =$('#avanceModal');
+    	             thisModal.modal('hide');
+                   $('#mcontenido').empty();
+                   $('#meditarModal').modal();
+                   $('#mcontenido').append(data.mensaje);
+                   var tabled = $('#avances').DataTable();
+                   tabled.clear().draw();
+                   tabled.rows.add(data.detalle); // Add new data
+                   tabled.columns.adjust().draw();
+                 }
+                });
+
+             }
 
 
             </script>
