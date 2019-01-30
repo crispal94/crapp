@@ -15,6 +15,9 @@
     return view('app');
 });*/
 
+
+Route::get ('proestado', 'ReportesController@proestado');
+
 Route::get('vis',function(){
   return view('pdf.template');
 });

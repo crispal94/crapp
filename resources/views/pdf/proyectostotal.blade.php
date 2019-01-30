@@ -52,9 +52,10 @@
           <div class="col-md-12">
               <div class="box box-primary">
                   <div class="box-body table-responsive" id="fo">
-                      <table class="table table-borderless table-striped table-earning">
+                      <table class="table table-borderless table-striped table-earning table-sm">
                         <thead class="thead-dark">
                           <tr>
+                            <th>Estado</th>
                             <th>Nombre</th>
                             <th>Responsable</th>
                             <th>Recurso</th>
@@ -66,12 +67,26 @@
                           <tbody>
                             @foreach($aconsulta as $k => $v)
                                 <tr>
-                                  <td>{{$v[1]}}</td>
+                                  <td><h5>
+                                    @switch($v[9])
+                                            @case('rojo')
+                                                <span class="badge badge-danger">Peligro</span>
+                                                @break
+
+                                            @case('anaranjado')
+                                                <span class="badge badge-warning">Alerta</span>
+                                                @break
+
+                                            @default
+                                                <span class="badge badge-primary">Estable</span>
+                                    @endswitch
+                                  </h5></td>
                                   <td>{{$v[2]}}</td>
                                   <td>{{$v[3]}}</td>
                                   <td>{{$v[4]}}</td>
                                   <td>{{$v[5]}}</td>
                                   <td>{{$v[6]}}</td>
+                                  <td>{{$v[7]}}</td>
                                 </tr>
                           @endforeach
                           </tbody>

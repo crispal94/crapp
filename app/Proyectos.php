@@ -25,4 +25,9 @@ class Proyectos extends Model
       return $this->hasOne('App\ParamReferenciales','id', 'id_refertiempo');
   }
 
+  public function actividades()
+    {
+        return $this->hasMany('App\Actividades','id_cabecera','id');
+    }
+
 }

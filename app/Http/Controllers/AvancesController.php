@@ -122,7 +122,7 @@ class AvancesController extends Controller
         where av.id_detalle = ? and av.deleted_at is null
         order by av.secuencial_avance",[$id]);
 
-        $favance = Avances::where('avance','100%')->first();
+        $favance = Avances::where('avance','100%')->where('id_detalle',$id)->first();
 
         if($favance){
           $bloqueo = true;
@@ -161,6 +161,7 @@ class AvancesController extends Controller
          $segui->id_detalle = $id_detalle;
          $segui->id_estado = $estado;
          $segui->avance = $avance.'%';
+         $actividad->ultavance = $segui->avance;
          $segui->secuencial_avance = $nextsecuencial;
          $segui->fechaavance =  date("Y-m-d H:i:s");
          $segui->observacion = $observacion;
@@ -179,11 +180,12 @@ class AvancesController extends Controller
          array_push($arregmail,$estado->descripcion);
          array_push($arregmail,$segui->avance);
          array_push($arregmail,$segui->fechaavance);
-         Mail::to('crispal94@hotmail.com')->send(new NotificaAvance($arregmail));
+        // Mail::to('crispal94@hotmail.com')->send(new NotificaAvance($arregmail));
          if($segui->avance=='100%'){
            $actividad->activo = 0;
-           $actividad->save();
          }
+         $actividad->fecha_ultavance = date("Y-m-d H:i:s");
+         $actividad->save();
          $segui->save();
 
          return response()->json(['flag'=>2,'mensaje'=>'Avance ingresado correctamente']);
@@ -219,14 +221,19 @@ class AvancesController extends Controller
 
       $eavance = Avances::find($idavance);
       $secavance = $eavance->secuencial_avance;
+      if($secavance!=1){
       $secavanceant = $secavance - 1;
+      }else{
+      $secavanceant = $secavance;
+      }
+
 
       $avanceant = Avances::where('id_detalle',$id)->where('secuencial_avance',$secavanceant)->first();
 
       $vavanceant = trim($avanceant->avance,'%');
 
 
-      if($avance<=$vavanceant){
+      if(($avance<=$vavanceant)&&($secavanceant>1)){
       return response()->json(['flag'=>1,'mensaje'=>'Inconsistencia al modificar el avance por favor corrija los errores']);
       }else{
       $valorant = $eavance->avance;
@@ -239,8 +246,11 @@ class AvancesController extends Controller
       $eavance->observacion = $observacion;
       if($eavance->avance=='100%'){
         $actividad->activo = 0;
-        $actividad->save();
+
       }
+      $actividad->ultavance = $avance.'%';
+      $actividad->fecha_ultavance = date("Y-m-d H:i:s");
+      $actividad->save();
       $eavance->save();
 
       $novedades = new Novedades;

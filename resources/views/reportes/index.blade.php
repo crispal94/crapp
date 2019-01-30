@@ -109,6 +109,7 @@
                 <thead>
                 <tr>
                   <th></th>
+                  <th>Estado</th>
                   <th>Nombre</th>
                   <th>Responsable</th>
                   <th>Recurso</th>
@@ -116,6 +117,7 @@
                   <th>Fecha Inicio</th>
                   <th>Fecha Fin</th>
                   <th>id</th>
+                  <th>color</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -124,6 +126,7 @@
                 <tfoot>
                 <tr>
                   <th></th>
+                  <th>Estado</th>
                   <th>Nombre</th>
                   <th>Responsable</th>
                   <th>Recurso</th>
@@ -131,6 +134,7 @@
                   <th>Fecha Inicio</th>
                   <th>Fecha Fin</th>
                   <th>id</th>
+                  <th>color</th>
                 </tr>
                 </tfoot>
           </table>
@@ -172,7 +176,11 @@ $('#rangodefechas').daterangepicker({
                   },
               "columnDefs": [
                             {
-                                "targets":[ 7 ],
+                                "targets":[ 8 ],
+                                "visible":false,
+                            },
+                            {
+                                "targets":[ 9 ],
                                 "visible":false,
                             }
                       ],
@@ -239,7 +247,7 @@ $('#rangodefechas').daterangepicker({
            var table = $('#proyectos').DataTable();
            var $row = $(this).closest('tr');
            var data = table.row($row).data();
-           var id = data[7];
+           var id = data[8];
            var path = {!! json_encode(url('/')) !!};
            window.open(pathname+'/seguimiento/'+id, "_blank");
        });

@@ -109,7 +109,23 @@ class ReportesController extends Controller
         foreach($query as $q){
           $arr = [];
           $boton1 = '<button type="button" class="btn btn-primary" id="seguimiento">Seguimiento</button>';
+          $color = getEstadoProyecto($q->id);
+          switch ($color) {
+            case 'rojo':
+              $estado = '<h3><span class="badge badge-danger">Peligro</span></h3>';
+              break;
+
+            case 'anaranjado':
+            $estado = '<h3><span class="badge badge-warning">Alerta</span></h3>';
+              break;
+
+            case 'azul':
+            $estado = '<h3><span class="badge badge-primary">Estable</span></h3>';
+              break;
+
+          }
           array_push($arr,$boton1);
+          array_push($arr,$estado);
           array_push($arr,$q->nombre);
           array_push($arr,$q->responsable);
           array_push($arr,$q->recursos.'-'.$q->tipo);
@@ -117,6 +133,7 @@ class ReportesController extends Controller
           array_push($arr,$q->fechainicio);
           array_push($arr,$q->fechafin);
           array_push($arr,$q->id);
+          array_push($arr,$color);
           array_push($arreglot,$arr);
         }
 
@@ -140,6 +157,8 @@ class ReportesController extends Controller
       $arreglotd = [];
       foreach($actividades as $act){
         $arr = [];
+        $color = getEstadoActividad($act->id);
+        array_push($arr,$color);
         array_push($arr,$act->actividad);
         array_push($arr,$act->usuario);
         array_push($arr,$act->duracion.' '.$act->valor.'(s)');
@@ -278,7 +297,16 @@ class ReportesController extends Controller
         ];
        $pdf = PDF::loadView('pdf.proyectostotal',$data);
         return $pdf->stream('reporteproyectos.pdf');
-        //return view('reportes.consolidado',compact('aconsulta','arrfecha'));
+      //  return view('pdf.proyectostotal',compact('aconsulta','fecha'));
+    }
+
+
+    public function proestado(){
+
+      $estado = getEstadoProyecto(12);
+
+      dd($estado);
+
     }
 
     /**

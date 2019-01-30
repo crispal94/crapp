@@ -103,6 +103,7 @@
                 <thead>
                 <tr>
                    <th></th>
+                   <th>Estado</th>
                    <th>Nombre</th>
                    <th>Responsable</th>
                    <th>Duración</th>
@@ -115,18 +116,33 @@
                     @foreach ($arreglotd as $a)
                       <tr>
                         <td><button type="button" class="btn btn-primary" id="seguimiento">Avances</button></td>
-                        <td>{{ $a[0] }}</td>
+                        <td><h3>
+                          @switch($a[0])
+                                  @case('rojo')
+                                      <span class="badge badge-danger">Peligro</span>
+                                      @break
+
+                                  @case('anaranjado')
+                                      <span class="badge badge-warning">Alerta</span>
+                                      @break
+
+                                  @default
+                                      <span class="badge badge-primary">Estable</span>
+                          @endswitch
+                        </h3></td>
                         <td>{{ $a[1] }}</td>
                         <td>{{ $a[2] }}</td>
                         <td>{{ $a[3] }}</td>
                         <td>{{ $a[4] }}</td>
                         <td>{{ $a[5] }}</td>
+                        <td>{{ $a[6] }}</td>
                       </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                 <tr>
                   <th></th>
+                  <th>Estado</th>
                   <th>Nombre</th>
                   <th>Responsable</th>
                   <th>Duración</th>
@@ -159,7 +175,7 @@
                 "order": [[ 4, "asc" ]],
                 "columnDefs" : [
                   {
-                      "targets":[ 6 ],
+                      "targets":[ 7 ],
                       "visible":false,
                   }
                 ]
@@ -191,7 +207,7 @@
                  var table = $('#actividades').DataTable();
                  var $row = $(this).closest('tr');
                  var data = table.row($row).data();
-                 var id = data[6];
+                 var id = data[7];
                  var path = {!! json_encode(url('/')) !!};
                  window.open(pathname+'/seguimiento/'+id, "_blank");
              });

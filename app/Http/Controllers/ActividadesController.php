@@ -187,7 +187,7 @@ class ActividadesController extends Controller
               array_push($arregmail,$actividad->fechainicio);
               array_push($arregmail,$actividad->duracion);
 
-              Mail::to('crispal94@hotmail.com')->send(new NotificaActividad($arregmail));
+              //Mail::to('crispal94@hotmail.com')->send(new NotificaActividad($arregmail));
               $actividad->save();
 
               $actividades = DB::select("
