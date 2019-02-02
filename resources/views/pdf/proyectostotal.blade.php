@@ -56,6 +56,7 @@
                         <thead class="thead-dark">
                           <tr>
                             <th>Estado</th>
+                            <th>Avance</th>
                             <th>Nombre</th>
                             <th>Responsable</th>
                             <th>Recurso</th>
@@ -68,17 +69,21 @@
                             @foreach($aconsulta as $k => $v)
                                 <tr>
                                   <td><h5>
-                                    @switch($v[9])
+                                    @switch($v[10])
                                             @case('rojo')
                                                 <span class="badge badge-danger">Peligro</span>
                                                 @break
 
-                                            @case('anaranjado')
-                                                <span class="badge badge-warning">Alerta</span>
-                                                @break
+                                                @case('anaranjado')
+                                                    <span class="badge badge-warning">Alerta</span>
+                                                    @break
 
-                                            @default
-                                                <span class="badge badge-primary">Estable</span>
+                                                @case('azul')
+                                                    <span class="badge badge-primary">Estable</span>
+                                                    @break
+
+                                                @default
+                                                    <span class="badge badge-secondary">Sin Actividades</span>
                                     @endswitch
                                   </h5></td>
                                   <td>{{$v[2]}}</td>
@@ -87,6 +92,7 @@
                                   <td>{{$v[5]}}</td>
                                   <td>{{$v[6]}}</td>
                                   <td>{{$v[7]}}</td>
+                                  <td>{{$v[8]}}</td>
                                 </tr>
                           @endforeach
                           </tbody>

@@ -45,9 +45,7 @@
               <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
-                <td>@foreach($user->roles as $rol)
-                                         {{$rol->nombre}}
-                @endforeach</td>
+                <td>{{ $user->roltipo->nombre }}</td>
                 <td>{{ $user->created_at }}</td>
                 <td><div class="table-data-feature alinear">
                   <a href="{{ route('usuarios.edit', $user->id) }}">

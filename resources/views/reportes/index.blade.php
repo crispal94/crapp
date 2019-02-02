@@ -55,7 +55,11 @@
                   <section class="card">
                     <div class="card-body text-secondary">
                       <div class="form-group">
-                         {!!Form::select('supervisor',$arrsupervisores,'N',['class'=>'form-control select2','autofocus','id'=>'supervisor'])!!}
+                         @if($role=='super')
+                         {!!Form::select('supervisor',$arrsupervisores,Auth::id(),['class'=>'form-control select2','autofocus','id'=>'supervisor','disabled'])!!}
+                        @else
+                          {!!Form::select('supervisor',$arrsupervisores,null,['class'=>'form-control select2','autofocus','id'=>'supervisor'])!!}
+                        @endif
                     </div>
                     </div>
                   </section>
@@ -110,6 +114,7 @@
                 <tr>
                   <th></th>
                   <th>Estado</th>
+                  <th>Avance</th>
                   <th>Nombre</th>
                   <th>Responsable</th>
                   <th>Recurso</th>
@@ -127,6 +132,7 @@
                 <tr>
                   <th></th>
                   <th>Estado</th>
+                  <th>Avance</th>
                   <th>Nombre</th>
                   <th>Responsable</th>
                   <th>Recurso</th>
@@ -176,11 +182,11 @@ $('#rangodefechas').daterangepicker({
                   },
               "columnDefs": [
                             {
-                                "targets":[ 8 ],
+                                "targets":[ 9 ],
                                 "visible":false,
                             },
                             {
-                                "targets":[ 9 ],
+                                "targets":[ 10 ],
                                 "visible":false,
                             }
                       ],
@@ -247,7 +253,7 @@ $('#rangodefechas').daterangepicker({
            var table = $('#proyectos').DataTable();
            var $row = $(this).closest('tr');
            var data = table.row($row).data();
-           var id = data[8];
+           var id = data[9];
            var path = {!! json_encode(url('/')) !!};
            window.open(pathname+'/seguimiento/'+id, "_blank");
        });

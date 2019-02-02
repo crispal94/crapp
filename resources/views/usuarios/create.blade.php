@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
 									<label>Rol</label>
-									{!!Form::select('rol_id',$arrol,2,['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'genr_id'])!!}
+									{!!Form::select('id_roltipo',$arrol,2,['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'genr_id'])!!}
 						</div>
         <div class="box-footer">
             <button type="submit" class="btn btn-primary">Grabar</button>

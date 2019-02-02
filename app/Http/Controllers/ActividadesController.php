@@ -25,7 +25,8 @@ class ActividadesController extends Controller
      */
     public function index()
     {
-        $proyectos = Proyectos::all();
+        //$proyectos = Proyectos::all();
+        $proyectos = getRoleProyectoQuery();
         $arrproy = ['N'=>'Ingrese Dato'];
         foreach($proyectos as $pro){
           $arrproy[$pro->id] = $pro->nombre;
@@ -209,7 +210,7 @@ class ActividadesController extends Controller
                 array_push($arreglotd,$arr);
               }
 
-              return response()->json(['flag'=>2,'mensaje'=>'Actividad Ingresada y Sincronizada con éxito','mensaje'=>1,'detalle'=>$arreglotd]);
+              return response()->json(['flag'=>2,'mensaje'=>'Actividad Ingresada y Sincronizada con éxito','detalle'=>$arreglotd]);
           }
        }
     }

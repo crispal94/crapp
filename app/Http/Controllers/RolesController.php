@@ -10,7 +10,8 @@ use DB;
 use Session;
 use Redirect;
 use App\User;
-use App\Role;
+use App\RolesTipo;
+use App\Roles;
 use App\ParamReferenciales;
 
 class RolesController extends Controller
@@ -28,7 +29,7 @@ class RolesController extends Controller
 
     public function index()
     {
-        $roles = Role::all();
+        $roles = RolesTipo::all();
         return view('roles.index',compact('roles'));
     }
 
@@ -40,12 +41,13 @@ class RolesController extends Controller
     public function create()
     {
       // $tipo = ['A'=>'Administrador','U'=>'Usuario'];
-      $tipo = ParamReferenciales::where('grupo','Seguridad')->where('clave','Roles')->get();
+    //  $tipo = ParamReferenciales::where('grupo','Seguridad')->where('clave','Roles')->get();
+      $tipo = Roles::all();
 
       $arrtipo  = [];
 
       foreach($tipo as $t){
-        $arrtipo[$t->id] = $t->valor;
+        $arrtipo[$t->id] = $t->title;
       }
        return view ('roles.create',compact('arrtipo'));
     }
@@ -77,7 +79,7 @@ class RolesController extends Controller
               ->withInput();
       }
       else{
-          $rol = new Role;
+          $rol = new RolesTipo;
           $input = array_filter($data,'strlen');
           $rol->fill($input);
           $rol->save();
@@ -106,11 +108,12 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-      $rol = Role::find($id);
+      $rol = RolesTipo::find($id);
       //$tipo = ['A'=>'Administrador','U'=>'Usuario'];
 
-      $tipo = ParamReferenciales::where('grupo','Seguridad')->where('clave','Roles')->get();
-
+      //$tipo = ParamReferenciales::where('grupo','Seguridad')->where('clave','Roles')->get();
+      $tipo = Roles::all();
+      
       $arrtipo  = [];
 
       foreach($tipo as $t){
@@ -147,7 +150,7 @@ class RolesController extends Controller
              ->withInput();
      }
      else{
-         $rol = Role::find($id);
+         $rol = RolesTipo::find($id);
          $input = array_filter($data,'strlen');
          $rol->fill($input);
          $rol->save();
@@ -164,7 +167,7 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-    $rol = Role::find($id);
+    $rol = RolesTipo::find($id);
     if(empty($rol))
     {
         Session::flash('message','Registro no encontrado');

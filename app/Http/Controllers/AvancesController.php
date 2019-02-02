@@ -17,7 +17,8 @@ use App\Novedades;
 use App\Estados;
 use Mail;
 use App\Mail\NotificaAvance;
-
+use Bouncer;
+use Illuminate\Support\Facades\Auth;
 
 class AvancesController extends Controller
 {
@@ -33,7 +34,8 @@ class AvancesController extends Controller
 
     public function index()
     {
-      $proyectos = Proyectos::all();
+      //dd($role);
+      $proyectos = getRoleProyectoQuery();
       $arrproy = ['N'=>'Ingrese Dato'];
       foreach($proyectos as $pro){
         $arrproy[$pro->id] = $pro->nombre;
@@ -233,7 +235,7 @@ class AvancesController extends Controller
       $vavanceant = trim($avanceant->avance,'%');
 
 
-      if(($avance<=$vavanceant)&&($secavanceant>1)){
+      if(($avance<=$vavanceant)&&($secavanceant>=1)){
       return response()->json(['flag'=>1,'mensaje'=>'Inconsistencia al modificar el avance por favor corrija los errores']);
       }else{
       $valorant = $eavance->avance;

@@ -46,7 +46,7 @@
             @foreach ($roles as $rol)
               <tr>
                 <td>{{ $rol->nombre }}</td>
-                <td>{{ $rol->tipo->valor }}
+                <td>{{ $rol->tipo->title }}
                 </td>
                 <td><div class="table-data-feature alinear">
                   <a href="{{ route('roles.edit', $rol->id) }}">

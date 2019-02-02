@@ -10,7 +10,8 @@ use DB;
 use Session;
 use Redirect;
 use App\User;
-use App\RolUser;
+use App\RolesTipo;
+use Bouncer;
 
 class UsuariosController extends Controller
 {
@@ -22,7 +23,7 @@ class UsuariosController extends Controller
 
      public function __construct()
      {
-         $this->middleware('auth');
+         //$this->middleware('auth');
      }
 
     public function index()
@@ -39,7 +40,7 @@ class UsuariosController extends Controller
      */
     public function create()
     {
-      $qrol = DB::select("select id,nombre from roles where deleted_at is null");
+      $qrol = DB::select("select id,nombre from roles_tipo where deleted_at is null");
        $arrol = [];
        foreach($qrol as $r){
            $arrol[$r->id] = $r->nombre;
@@ -56,7 +57,7 @@ class UsuariosController extends Controller
     public function store(Request $request)
     {
       $data = $request->all();
-       $roleId = $request->get('rol_id');
+       //$roleId = $request->get('rol_id');
        $rules = array(
        'name' => 'required|string|max:255',
        'email' => 'required|string|email|max:255|unique:users',
@@ -77,8 +78,23 @@ class UsuariosController extends Controller
           'email' => $data['email'],
           'nickname' =>$data['nickname'],
           'password' => bcrypt($data['password']),
+          'id_roltipo' => $data['id_roltipo']
           ]);
-          $user->roles()->attach($roleId);
+
+          $rolestipo = RolesTipo::find($data['id_roltipo']);
+          switch ($rolestipo->tipo->title) {
+            case 'Administrador':
+              $user->assign('admin');
+              break;
+
+            case 'Supervisor':
+              $user->assign('super');
+              break;
+
+            case 'Recurso':
+              $user->assign('recur');
+              break;
+          }
           Session::flash('message','Registro creado correctamente');
           return redirect()->action('UsuariosController@index');
           }
@@ -104,13 +120,13 @@ class UsuariosController extends Controller
     public function edit($id)
     {
         $usuario = User::find($id);
-        $qrol = DB::select("select id,nombre from roles where deleted_at is null");
+        $qrol = DB::select("select id,nombre from roles_tipo where deleted_at is null");
         $arrol = [];
         foreach($qrol as $r){
             $arrol[$r->id] = $r->nombre;
         }
-        $rolide = RolUser::where('user_id',$id)->first();
-        $rolid = $rolide->role_id;
+        /*$rolide = RolUser::where('user_id',$id)->first();
+        $rolid = $rolide->role_id;*/
         return view('usuarios.edit',compact('usuario','arrol','rolid','pagina'));
     }
 
@@ -125,7 +141,7 @@ class UsuariosController extends Controller
     {
       $data = $request->all();
       $cpass = $request->get('cpass');
-      $roleId = $request->get('rol_id');
+      $roleId = $request->get('id_roltipo');
       if($cpass!=null){
        $rules = array(
        'name' => 'required|string|max:255',
@@ -145,17 +161,18 @@ class UsuariosController extends Controller
       else{
           $pantigua = $request->get('password_old');
           $user = User::find($id);
-         $roluser = RolUser::where('user_id',$id)->first();
+          //$roluser = RolUser::where('user_id',$id)->first();
           $hashedPassword = $user->password;
           if($cpass!=null){
           if (Hash::check($pantigua, $hashedPassword)) {
               $user->name = $data['name'];
               $user->nickname = $data['nickname'];
               $user->password = bcrypt($data['password']);
+              $user->id_roltipo = $data['id_roltipo'];
               $user->save();
-              $user->roles()->attach($roleId);
-              $roluser->user_id = $roleId;
-              $roluser->save();
+              //$user->roles()->attach($roleId);
+              /*$roluser->user_id = $roleId;
+              $roluser->save();*/
               Session::flash('message','Registro editado correctamente');
               return redirect()->action('UsuarioController@index');
           }else{
@@ -164,9 +181,28 @@ class UsuariosController extends Controller
           }}else{
              $user->name = $data['name'];
              $user->nickname = $data['nickname'];
+             $user->id_roltipo = $data['id_roltipo'];
+             $rolestipo = RolesTipo::find($data['id_roltipo']);
+             switch ($rolestipo->tipo->title) {
+               case 'Administrador':
+                 //$roles = Bouncer::role()->where('name','admin')->first();
+                 Bouncer::sync($user)->roles('admin');
+                 break;
+
+               case 'Supervisor':
+                 //$roles = Bouncer::role()->where('name','super')->first();
+                 //dd($roles);
+                 Bouncer::sync($user)->roles('super');
+                 break;
+
+               case 'Recurso':
+               //$roles = Bouncer::role()->where('name','recur')->first();
+                Bouncer::sync($user)->roles('recur');
+                 break;
+             }
              $user->save();
-             $roluser->role_id = $roleId;
-            $roluser->save();
+            /*$roluser->role_id = $roleId;
+            $roluser->save();*/
               Session::flash('message','Registro editado correctamente');
               return redirect()->action('UsuariosController@index');
           }

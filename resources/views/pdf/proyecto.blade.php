@@ -70,6 +70,23 @@
                 <div class="box box-primary">
                   <label style="font-weight: bold">Actividad</label>
                   <label></label>{{ $value['actividad'] }}<br>
+                  <label style="font-weight: bold">Estado</label>
+                    @switch($value['color'])
+                            @case('rojo')
+                                <span class="badge badge-danger">Peligro</span>
+                                @break
+                            @case('anaranjado')
+                                <span class="badge badge-warning">Alerta</span>
+                                @break
+                            @case('azul')
+                                <span class="badge badge-primary">Estable</span>
+                                @break
+                            @case('gris')
+                                <span class="badge badge-secondary">Sin Avances</span>
+                                @break
+                    @endswitch<br>
+                  <label style="font-weight: bold">Avance</label>
+                  <label></label>{{ $value['ultavance'] }}<br>
                   <label style="font-weight: bold">Supervisor</label>
                   <label></label>{{ $value['supervisor'] }}<br>
                   <label style="font-weight: bold">Duración</label>

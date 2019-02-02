@@ -106,6 +106,7 @@
                    <th>Estado</th>
                    <th>Nombre</th>
                    <th>Responsable</th>
+                   <th>Avance</th>
                    <th>Duración</th>
                    <th>Fecha Inicio</th>
                    <th>Fecha Fin</th>
@@ -125,9 +126,12 @@
                                   @case('anaranjado')
                                       <span class="badge badge-warning">Alerta</span>
                                       @break
-
-                                  @default
+                                  @case('azul')
                                       <span class="badge badge-primary">Estable</span>
+                                      @break
+                                  @case('gris')
+                                      <span class="badge badge-secondary">Sin Avances</span>
+                                      @break
                           @endswitch
                         </h3></td>
                         <td>{{ $a[1] }}</td>
@@ -136,6 +140,7 @@
                         <td>{{ $a[4] }}</td>
                         <td>{{ $a[5] }}</td>
                         <td>{{ $a[6] }}</td>
+                        <td>{{ $a[7] }}</td>
                       </tr>
                     @endforeach
                 </tbody>
@@ -145,6 +150,7 @@
                   <th>Estado</th>
                   <th>Nombre</th>
                   <th>Responsable</th>
+                  <th>Avance</th>
                   <th>Duración</th>
                   <th>Fecha Inicio</th>
                   <th>Fecha Fin</th>
@@ -175,7 +181,7 @@
                 "order": [[ 4, "asc" ]],
                 "columnDefs" : [
                   {
-                      "targets":[ 7 ],
+                      "targets":[ 8 ],
                       "visible":false,
                   }
                 ]
@@ -207,9 +213,10 @@
                  var table = $('#actividades').DataTable();
                  var $row = $(this).closest('tr');
                  var data = table.row($row).data();
-                 var id = data[7];
+                 var id = data[8];
                  var path = {!! json_encode(url('/')) !!};
-                 window.open(pathname+'/seguimiento/'+id, "_blank");
+                 var base = '{{ url('/') }}';
+                 window.open(base+'/avances/seguimiento/'+id, "_blank");
              });
 
              $('#reporte').on('click', function (event) {

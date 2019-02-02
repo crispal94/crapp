@@ -15,4 +15,9 @@ class Actividades extends Model
   {
       return $this->hasOne('App\ParamReferenciales','id', 'id_refertiempo');
   }
+
+  public function avances()
+    {
+        return $this->hasMany('App\Avances','id_detalle','id');
+    }
 }

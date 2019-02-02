@@ -64,8 +64,12 @@
                               <span class="badge badge-warning">Alerta</span>
                               @break
 
+                          @case('azul')
+                              <span class="badge badge-warning">Estable</span>
+                              @break
+
                           @default
-                              <span class="badge badge-primary">Estable</span>
+                              <span class="badge badge-secondary">Sin Actividades</span>
                   @endswitch
                 </h3></td>
                 <td>{{ $pro->nombre }}</td>
@@ -115,7 +119,7 @@
 				<div class="modal-dialog modal-sm" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="smallmodalLabel">Small Modal</h5>
+							<h5 class="modal-title" id="smallmodalLabel">Confirmación</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -124,14 +128,37 @@
 							<p id="ccontenido">
 
 							</p>
+              <input type="hidden" name="idproyecto" id="idproyecto">
+              <input type="hidden" name="tipo" id="tipo">
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
-							<button type="button" class="btn btn-primary">SI</button>
+							<button type="button" class="btn btn-primary" onclick="bajaproyecto();">SI</button>
 						</div>
 					</div>
 				</div>
 			</div>
+
+      <div class="modal fade" id="exitomodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+    				<div class="modal-dialog modal-sm" role="document">
+    					<div class="modal-content">
+    						<div class="modal-header">
+    							<h5 class="modal-title" id="smallmodalLabel">Confirmación</h5>
+    							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    								<span aria-hidden="true">&times;</span>
+    							</button>
+    						</div>
+    						<div class="modal-body">
+    							<p id="econtenido">
+
+    							</p>
+    						</div>
+    						<div class="modal-footer">
+    							<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
 @endsection
 
 @section('js')
@@ -154,7 +181,50 @@ $('#example tbody').on('click', '#baja', function (event) {
      var $row = $(this).closest('tr');
      var data = table.row($row).data();
      var id = data[9];
+     $('#ccontenido').empty();
+     $('#idproyecto').val(id);
+     $('#tipo').val('b');
+     var mensaje = '<div class="row"><div class="col-lg-12"><div class="form-group"><label>Observación</label><textarea name="observacion" id="observacion" rows="2" placeholder="..." class="form-control"></textarea></div></div></div>';
+     $('#ccontenido').append('Desea dar de baja a este proyecto?');
+     $('#ccontenido').append(mensaje);
+     $('#confirmarmodal').modal();
 
  });
+
+ $('#example tbody').on('click', '#cerrar', function (event) {
+      var table = $('#example').DataTable();
+      var $row = $(this).closest('tr');
+      var data = table.row($row).data();
+      var id = data[9];
+      $('#ccontenido').empty();
+      $('#idproyecto').val(id);
+      $('#tipo').val('c');
+      $('#ccontenido').append('Desea cerrar este proyecto como finalizado?');
+      $('#confirmarmodal').modal();
+
+  });
+
+ function bajaproyecto(){
+   var idproyecto = $('#idproyecto').val();
+   var tipo = $('#tipo').val();
+   var observacion = $('#observacion').val();
+   $.post(pathname+'/bajaproyecto',{idproyecto:idproyecto,tipo:tipo,observacion:observacion},function(){
+
+   }).done(function(data){
+     if(data.flag==2){
+        $('#econtenido').empty();
+        $('#econtenido').append(data.mensaje);
+        $('#exitomodal').modal();
+     }
+   });
+ }
+
+  $('#exitomodal').on('show.bs.modal', function (e) {
+      $('#confirmarmodal').modal('hide');
+  });
+
+  $('#exitomodal').on('hidden.bs.modal', function (e) {
+      location.reload(true);
+  });
 </script>
 @endsection

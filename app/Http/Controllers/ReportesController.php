@@ -16,6 +16,7 @@ use App\Avances;
 use App\Estados;
 use Mail;
 use PDF;
+use App\Roles;
 
 class ReportesController extends Controller
 {
@@ -26,12 +27,15 @@ class ReportesController extends Controller
      */
     public function index()
     {
+      $role = getRole();
+
+      $roleid = Roles::where('name',$role)->first();
+
       $supervisores = DB::select("select u.id as id, u.name as usuario
       from users u
-      inner join role_user ru on (ru.user_id = u.id)
-      inner join roles r on (r.id = ru.role_id)
-      inner join param_referenciales pr on (pr.id = r.id_param)
-      where pr.valor = 'Supervisor'");
+      inner join roles_tipo r on (r.id = u.id_roltipo)
+      inner join roles ru on (ru.id = r.id_roles)
+      where ru.title = 'Supervisor'");
 
       $arrsupervisores = ['N'=>'Ingrese Dato'];
 
@@ -39,12 +43,18 @@ class ReportesController extends Controller
         $arrsupervisores[$sus->id] = $sus->usuario;
       }
 
-      $usuarios = User::all();
+      //$usuarios = User::all();
+      //$
+      $usuarios = DB::select("select u.id as id, u.name as usuario
+      from users u
+      inner join roles_tipo r on (r.id = u.id_roltipo)
+      inner join roles ru on (ru.id = r.id_roles)
+      where ru.title not in ('Supervisor','Administrador')");
 
       $arrusuarios = ['N'=>'Ingrese Dato'];
 
       foreach($usuarios as $user){
-        $arrusuarios[$user->id] = $user->name;
+        $arrusuarios[$user->id] = $user->usuario;
       }
 
       $grupos = GrupoUsuarios::all();
@@ -56,7 +66,7 @@ class ReportesController extends Controller
       }
 
 
-      return view('reportes.index',compact('arrsupervisores','arrusuarios','arrgrupo'));
+      return view('reportes.index',compact('arrsupervisores','arrusuarios','arrgrupo','role','roleid'));
 
     }
 
@@ -66,7 +76,7 @@ class ReportesController extends Controller
         $fechahasta = Input::get('fechahasta');
         $supervisor = Input::get('supervisor');
         $tiporecurso = Input::get('tiporecurso');
-        $usuario = Input::get('supervisor');
+        $usuario = Input::get('usuario');
         $gtrabajo = Input::get('gtrabajo');
 
         $qbase = "select cab.id as id, cab.nombre as nombre, cab.descripcion as descripcion, cab.duracion as duracion,
@@ -110,6 +120,7 @@ class ReportesController extends Controller
           $arr = [];
           $boton1 = '<button type="button" class="btn btn-primary" id="seguimiento">Seguimiento</button>';
           $color = getEstadoProyecto($q->id);
+          $avapor = getAvanceProyecto($q->id);
           switch ($color) {
             case 'rojo':
               $estado = '<h3><span class="badge badge-danger">Peligro</span></h3>';
@@ -122,10 +133,14 @@ class ReportesController extends Controller
             case 'azul':
             $estado = '<h3><span class="badge badge-primary">Estable</span></h3>';
               break;
+            case 'gris':
+            $estado = '<h3><span class="badge badge-secondary">Sin Actividad</span></h3>';
+              break;
 
           }
           array_push($arr,$boton1);
           array_push($arr,$estado);
+          array_push($arr,$avapor);
           array_push($arr,$q->nombre);
           array_push($arr,$q->responsable);
           array_push($arr,$q->recursos.'-'.$q->tipo);
@@ -148,8 +163,8 @@ class ReportesController extends Controller
       $tiporecurso = $proyecto->tipo_recurso;
       $tiempo = $proyecto->tiempo->valor;
       $actividades = DB::select("
-      select det.id, det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin, pt.valor
-      from det_actividad det
+      select det.id, det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin, pt.valor,
+      det.ultavance from det_actividad det
       inner join users u on (u.id = det.id_responsable)
       left join param_referenciales pt on (pt.id = det.id_refertiempo)
       where det.id_cabecera = ? and det.deleted_at is null
@@ -161,6 +176,12 @@ class ReportesController extends Controller
         array_push($arr,$color);
         array_push($arr,$act->actividad);
         array_push($arr,$act->usuario);
+        if($act->ultavance==null){
+          $avance = '0%';
+        }else{
+          $avance = $act->ultavance;
+        }
+        array_push($arr,$avance);
         array_push($arr,$act->duracion.' '.$act->valor.'(s)');
         array_push($arr,$act->fechainicio);
         array_push($arr,$act->fechafin);
@@ -179,14 +200,14 @@ class ReportesController extends Controller
       $fecha = date("Y-m-d H:i:s");
 
       $query = DB::select("select det.id as idactividad, det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin, pt.valor,
-              seg.id as idavance, est.descripcion as estado, seg.avance, seg.fechaavance, seg.observacion
+              seg.id as idavance, est.descripcion as estado, seg.avance, seg.fechaavance, seg.observacion, det.ultavance
               from det_actividad det
               inner join cab_actividad cab on (cab.id = det.id_cabecera)
               inner join users u on (u.id = det.id_responsable)
               left join seg_actividades seg on (det.id = seg.id_detalle)
               left join param_referenciales pt on (pt.id = det.id_refertiempo)
               left join estado est on (est.id = seg.id_estado)
-              where det.id_cabecera = ?",[$id]);
+              where det.id_cabecera = ? order by det.id",[$id]);
 
         $primera = true;
 
@@ -194,6 +215,7 @@ class ReportesController extends Controller
         $arregloactividad = [];
         $contotal = 0;
         foreach($query as $q){
+          $color = getEstadoActividad($q->idactividad);
           ++$contotal;
           if($primera){
               $idantactividad = $q->idactividad;
@@ -203,7 +225,9 @@ class ReportesController extends Controller
                 'supervisor' => $q->usuario,
                 'duracion' => $q->duracion.' '.$q->valor,
                 'fechainicio' => $q->fechainicio,
-                'fechafin' => $q->fechafin
+                'fechafin' => $q->fechafin,
+                'color' =>$color,
+                'ultavance' =>$q->ultavance
               ];
                 $arrato = [];
                 $arrate = [
@@ -231,6 +255,8 @@ class ReportesController extends Controller
                  'duracion' => $q->duracion.' '.$q->valor,
                  'fechainicio' => $q->fechainicio,
                  'fechafin' => $q->fechafin,
+                 'color' =>$color,
+                 'ultavance'=>$q->ultavance
                ];
                $arrato = [];
                $arrate = [
@@ -265,9 +291,12 @@ class ReportesController extends Controller
                  array_push($arreglo,$arregloactividad);
                }
              }
+          }else if($contotal==1){
+            $arregloactividad['avances'] = $arrato;
+            array_push($arreglo,$arregloactividad);
           }
         }
-
+        //dd($arreglo);
         $data = [
           'fecha' => $fecha,
           'nombre' =>$proyecto->nombre,
@@ -277,10 +306,10 @@ class ReportesController extends Controller
           'fechafin' =>$proyecto->fechafin,
           'arreglo' => $arreglo
         ];
-        //dd($arreglo);
-        //return view('pdf.proyecto',$data);
-       $pdf = PDF::loadView('pdf.proyecto',$data);
-        return $pdf->stream('reporte.pdf');
+
+        return view('pdf.proyecto',$data);
+      /* $pdf = PDF::loadView('pdf.proyecto',$data);
+        return $pdf->stream('reporte.pdf');*/
 
     }
 
@@ -297,15 +326,17 @@ class ReportesController extends Controller
         ];
        $pdf = PDF::loadView('pdf.proyectostotal',$data);
         return $pdf->stream('reporteproyectos.pdf');
-      //  return view('pdf.proyectostotal',compact('aconsulta','fecha'));
+       //return view('pdf.proyectostotal',compact('aconsulta','fecha'));
     }
 
 
     public function proestado(){
 
-      $estado = getEstadoProyecto(12);
+       $valor = getEstadoActividad(43);
+      //$
+      //$valor = getAvanceProyecto(16);
 
-      dd($estado);
+      dd($valor);
 
     }
 

@@ -8,6 +8,7 @@ use DB;
 use Session;
 use Redirect;
 use App\Proyectos;
+use App\Historia;
 use App\Mail\NotificaProyecto;
 use App\User;
 use Mail;
@@ -31,7 +32,7 @@ class ProyectosController extends Controller
         left join users us on (us.id = cab.id_responsable)
         left join grupos_trabajos gt on (gt.id = cab.id_grupo)
         left join param_referenciales pt on (pt.id = cab.id_refertiempo)
-        where cab.deleted_at is null");
+        where cab.deleted_at is null and cab.activo = 1");
 
         return view('proyectos.index',compact('proyectos'));
     }
@@ -45,10 +46,9 @@ class ProyectosController extends Controller
     {
         $supervisores = DB::select("select u.id as id, u.name as usuario
         from users u
-        inner join role_user ru on (ru.user_id = u.id)
-        inner join roles r on (r.id = ru.role_id)
-        inner join param_referenciales pr on (pr.id = r.id_param)
-        where pr.valor = 'Supervisor'");
+        inner join roles_tipo r on (r.id = u.id_roltipo)
+        inner join roles ru on (ru.id = r.id_roles)
+        where ru.title = 'Supervisor'");
 
         $arrsupervisores = [];
 
@@ -72,11 +72,10 @@ class ProyectosController extends Controller
       $arrgrecur = [];
       if($vrecur=='u'){
          $query = DB::select("select u.id as id, u.name as usuario
-          from users u
-          inner join role_user ru on (ru.user_id = u.id)
-          inner join roles r on (r.id = ru.role_id)
-          inner join param_referenciales pr on (pr.id = r.id_param)
-          where pr.valor = 'Recurso'");
+         from users u
+         inner join roles_tipo r on (r.id = u.id_roltipo)
+         inner join roles ru on (ru.id = r.id_roles)
+         where ru.title = 'Recurso'");
          foreach($query as $q){
             $arrgrecur[$q->id] = $q->usuario;
           }
@@ -89,6 +88,53 @@ class ProyectosController extends Controller
          }
            return response()->json(['cont'=>$arrgrecur]);
          }
+    }
+
+
+    public function bajaproyecto(Request $request){
+      date_default_timezone_set('America/Bogota');
+      $observacion = Input::get('observacion');
+      $idproyecto = Input::get('idproyecto');
+      $tipo = Input::get('tipo');
+      $actividades = Proyectos::find($idproyecto)->actividades;
+
+      foreach($actividades as $actividad){
+        $avances = $actividad->avances;
+        foreach($avances as $avance){
+          $avance->delete();
+        }
+        $actividad->activo = 0;
+        $actividad->save();
+        $actividad->delete();
+      }
+
+      $proyecto = Proyectos::find($idproyecto);
+      $proyecto->activo = 0;
+      switch ($tipo) {
+        case 'c':
+          $proyecto->fecha_completo = date('Y-m-d H:i:s');
+          $historia = new Historia;
+          $historia->id_cabecera = $idproyecto;
+          $historia->tipo = 'Completo';
+          $historia->fechahistoria = date('Y-m-d H:i:s');
+          $historia->observacion = 'Proyecto Completo 100%';
+          $historia->save();
+          break;
+
+        case 'b':
+          $proyecto->fecha_baja = date('Y-m-d H:i:s');
+          $historia = new Historia;
+          $historia->id_cabecera = $idproyecto;
+          $historia->tipo = 'Baja';
+          $historia->fechahistoria = date('Y-m-d H:i:s');
+          $historia->observacion = $observacion;
+          $historia->save();
+      }
+      $proyecto->save();
+      $proyecto->delete();
+
+      return response()->json(['flag'=>2,'mensaje'=>'Proceso realizado con éxito!']);
+
     }
 
     /**
@@ -120,6 +166,7 @@ class ProyectosController extends Controller
                $proyecto->duracion = $data['duracion'];
                $proyecto->fechainicio = $data['fechainicio'];
                $proyecto->id_refertiempo = $data['tiempo'];
+               $proyecto->activo = 1;
                $fechap = date("Y-m-d H:i:s", strtotime($request->input('fechainicio')));
                $qtiempo = ParamReferenciales::find($data['tiempo']);
                switch ($qtiempo->valor) {
@@ -155,15 +202,14 @@ class ProyectosController extends Controller
                  array_push($arregmail,$data['nombre']);
                  $supervisores = DB::select("select u.id as id, u.name as usuario
                  from users u
-                 inner join role_user ru on (ru.user_id = u.id)
-                 inner join roles r on (r.id = ru.role_id)
-                 inner join param_referenciales pr on (pr.id = r.id_param)
-                 where pr.valor = 'Supervisor' and u.id = ? and u.deleted_at is null",[$data['supervisores']])[0];
+                 inner join roles_tipo r on (r.id = u.id_roltipo)
+                 inner join roles ru on (ru.id = r.id_roles)
+                 where ru.title = 'Supervisor' and u.id = ? and u.deleted_at is null",[$data['supervisores']])[0];
                  array_push($arregmail,$supervisores->usuario);
                  array_push($arregmail,$data['descripcion']);
                  array_push($arregmail,$data['fechainicio']);
                  array_push($arregmail,$data['duracion']);
-                 Mail::to('crispal94@hotmail.com')->send(new NotificaProyecto($arregmail));
+                // Mail::to('crispal94@hotmail.com')->send(new NotificaProyecto($arregmail));
                }
                if($data['op_recursos']=='u'){
                  $proyecto->id_user = $data['v_recursos'];
@@ -199,10 +245,9 @@ class ProyectosController extends Controller
         $proyecto=Proyectos::find($id);
         $supervisores = DB::select("select u.id as id, u.name as usuario
         from users u
-        inner join role_user ru on (ru.user_id = u.id)
-        inner join roles r on (r.id = ru.role_id)
-        inner join param_referenciales pr on (pr.id = r.id_param)
-        where pr.valor = 'Supervisor'");
+        inner join roles_tipo r on (r.id = u.id_roltipo)
+        inner join roles ru on (ru.id = r.id_roles)
+        where ru.title = 'Supervisor'");
 
         $arrsupervisores = [];
 
@@ -214,11 +259,10 @@ class ProyectosController extends Controller
         $arrgrecur = [];
         if($vrecur=='u'){
            $query = DB::select("select u.id as id, u.name as usuario
-            from users u
-            inner join role_user ru on (ru.user_id = u.id)
-            inner join roles r on (r.id = ru.role_id)
-            inner join param_referenciales pr on (pr.id = r.id_param)
-            where pr.valor = 'Recurso'");
+           from users u
+           inner join roles_tipo r on (r.id = u.id_roltipo)
+           inner join roles ru on (ru.id = r.id_roles)
+           where ru.title = 'Recurso'");
            foreach($query as $q){
               $arrgrecur[$q->id] = $q->usuario;
             }

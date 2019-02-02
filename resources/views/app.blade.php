@@ -99,46 +99,77 @@
                                 </li>
                             </ul>
                         </li>-->
+
+                        @can ('mantenimientos-general')
+                        <li class="has-sub">
+                          <a class="js-arrow" href="#">
+  								            <i class="fa fa-lock"></i>Seguridad</a>
+                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                         <li>
                             <a href="{{ url('usuarios') }}">
-                                <i class="fas fa-table"></i>Usuarios</a>
+                                <i class="fa fa-user"></i>Usuarios</a>
                         </li>
                         <li>
                             <a href="{{ url('roles') }}">
-                                <i class="fas fa-table"></i>Roles</a>
+                                <i class="fa fa-check-square"></i>Roles</a>
                         </li>
+                        </ul>
+                        </li>
+                        @endcan
+                        @can('mantenimientos-general')
+                        <li class="has-sub">
+                          <a class="js-arrow" href="#">
+                              <i class="fas fa-table"></i>Generales</a>
+                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                         <li>
                             <a href="{{ url('parametros') }}">
-                                <i class="fas fa-table"></i>Parametros</a>
+                                <i class="fa fa-pencil-square"></i>Parametros</a>
                         </li>
                         <li>
                             <a href="{{ url('prioridades') }}">
-                                <i class="fas fa-table"></i>Prioridades</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('grupousuarios') }}">
-                                <i class="fas fa-table"></i>G. Trabajos</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('grupousuarios') }}">
-                                <i class="fas fa-table"></i>G. Trabajos</a>
+                                <i class="fa fa-location-arrow"></i>Prioridades</a>
                         </li>
                         <li>
                             <a href="{{ url('tipoactividades') }}">
-                                <i class="fas fa-table"></i>T. Actividades</a>
+                                <i class="fa fa-bars"></i>T. Actividades</a>
                         </li>
                         <li>
                             <a href="{{ url('tipoactividades') }}">
-                                <i class="fas fa-table"></i>Estados</a>
+                                <i class="fa fa-tag"></i>Estados</a>
                         </li>
+                        </ul>
+                        </li>
+                        @endcan
+                        @can('mantenimientos-general')
                         <li>
-                            <a href="{{ url('proyectos') }}">
-                                <i class="fas fa-table"></i>Proyectos</a>
+                            <a href="{{ url('grupousuarios') }}">
+                                <i class="fa fa-group"></i>G. Trabajos</a>
                         </li>
+                        @endcan
+                        @can ('crear-proyecto')
+                          <li>
+                              <a href="{{ url('proyectos') }}">
+                                  <i class="fa fa-desktop"></i>Proyectos</a>
+                          </li>
+                        @endcan
+                        @can ('crear-actividad')
                         <li>
                             <a href="{{ url('actividades') }}">
-                                <i class="fas fa-table"></i>Definición de Actividades</a>
+                                <i class="fa fa-tasks"></i>Actividades</a>
                         </li>
+                        @endcan
+                        @can ('crear-avance')
+                        <li>
+                            <a href="{{ url('avances') }}">
+                                <i class="fa fa-sort-alpha-asc"></i>Avances</a>
+                        </li>
+                        @endcan
+                        @can ('reportes')
+                        <li>
+                            <a href="{{ url('reportes') }}">
+                                <i class="fa fa-list"></i>Reportes</a>
+                        </li>
+                        @endcan
 
                     </ul>
                 </div>
@@ -178,43 +209,76 @@
                                 </li>
                             </ul>
                         </li>-->
+                        @can ('mantenimientos-general')
+                        <li class="has-sub">
+                          <a class="js-arrow" href="#">
+  								            <i class="fa fa-lock"></i>Seguridad</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
                         <li>
                             <a href="{{ url('usuarios') }}">
-                                <i class="fas fa-table"></i>Usuarios</a>
+                                <i class="fa fa-user"></i>Usuarios</a>
                         </li>
                         <li>
-                            <a href="{{ url('roles') }}">
-                                <i class="fas fa-table"></i>Roles</a>
+                            <a  href="{{ url('roles') }}">
+                                <i class="fa fa-check-square"></i>Roles</a>
                         </li>
+                        </ul>
+                        </li>
+                        @endcan
+                        @can('mantenimientos-general')
+                        <li class="has-sub">
+                          <a class="js-arrow" href="#">
+                              <i class="fas fa-table"></i>Generales</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
                         <li>
                             <a href="{{ url('parametros') }}">
-                                <i class="fas fa-table"></i>Parametros</a>
+                                <i class="fa fa-pencil-square"></i>Parametros</a>
                         </li>
                         <li>
                             <a href="{{ url('prioridades') }}">
-                                <i class="fas fa-table"></i>Prioridades</a>
+                                <i class="fa fa-location-arrow"></i>Prioridades</a>
                         </li>
+                        <li>
+                            <a href="{{ url('tipoactividades') }}">
+                                <i class="fa fa-bars"></i>T. Actividades</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('tipoactividades') }}">
+                                <i class="fa fa-tag"></i>Estados</a>
+                        </li>
+                        </ul>
+                        </li>
+                        @endcan
+                        @can('mantenimientos-general')
                         <li>
                             <a href="{{ url('grupousuarios') }}">
-                                <i class="fas fa-table"></i>G. Trabajos</a>
+                                <i class="fa fa-group"></i>G. Trabajos</a>
                         </li>
-                        <li>
-                            <a href="{{ url('tipoactividades') }}">
-                                <i class="fas fa-table"></i>T. Actividades</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('tipoactividades') }}">
-                                <i class="fas fa-table"></i>Estados</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('proyectos') }}">
-                                <i class="fas fa-table"></i>Proyectos</a>
-                        </li>
+                        @endcan
+                      @can ('crear-proyecto')
+                            <li>
+                                <a href="{{ url('proyectos') }}">
+                                    <i class="fa fa-desktop"></i>Proyectos</a>
+                            </li>
+                      @endcan
+                      @can ('crear-actividad')
                         <li>
                             <a href="{{ url('actividades') }}">
-                                <i class="fas fa-table"></i>Definición de Actividades</a>
+                                <i class="fa fa-tasks"></i>Actividades</a>
                         </li>
-
+                        @endcan
+                        @can ('crear-avance')
+                        <li>
+                            <a href="{{ url('avances') }}">
+                                <i class="fa fa-sort-alpha-asc"></i>Avances</a>
+                        </li>
+                        @endcan
+                        @can ('reportes')
+                        <li>
+                            <a href="{{ url('reportes') }}">
+                                <i class="fa fa-list"></i>Reportes</a>
+                        </li>
+                        @endcan
                     </ul>
                 </nav>
             </div>

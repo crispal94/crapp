@@ -5,11 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-
-class RolUser extends Model
+class Historia extends Model
 {
-    	use SoftDeletes;
+  use SoftDeletes;
 
-      protected $table = 'role_user';
+  protected $table = 'historia_actividad';
 }

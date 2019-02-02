@@ -24,6 +24,9 @@ Route::get('vis',function(){
 
 Route::get ('pdfprueba', 'PdfController@github');
 
+Route::get ('crearoles', 'HomeController@crearoles');
+Route::get ('crearhabilidad', 'HomeController@crearhabilidad');
+
 Route::get('/test', function()
 {
 	$beautymail = app()->make(Snowfire\Beautymail\Beautymail::class);
@@ -45,6 +48,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+Route::group(['middleware' => 'auth'], function () {
 //USUARIOS
 Route::resource('usuarios','UsuariosController');
 Route::get('usuarios/{id}/delete', [
@@ -97,11 +102,14 @@ Route::get('estados/{id}/delete', [
 
 
 //PROYECTOS - CABECERA
+Route::group(['middleware' => 'can:crear-proyecto'], function () {
 Route::resource('proyectos','ProyectosController');
+Route::post('proyectos/bajaproyecto','ProyectosController@bajaproyecto');
 Route::get('proyectos/{id}/delete', [
     'as' => 'proyectos.delete',
     'uses' => 'ProyectosController@destroy',
 ]);
+});
 
 Route::get('proyectos/create/getrecursos','ProyectosController@getrecursos');
 Route::get('proyectos/{id}/edit/getrecursos','ProyectosController@getrecursos');
@@ -130,3 +138,4 @@ Route::post('reportes/proyectos',[
         'as' => 'reportes.proyectos',
         'uses' => 'ReportesController@imprimir'
     ]);
+});
