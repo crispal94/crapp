@@ -60,6 +60,9 @@ function getEstadoProyecto($id){
   $colorproyecto = 'Gris';
   $arreglocolores = [];
 foreach ($actividades as $actividad) {
+  $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
+  $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
+  $fechafin = date("Y-m-d H:i:s",strtotime($actividad->fechafin));
    $tipo = $actividad->tiempo->valor;
    $duracion = $actividad->duracion;
 
@@ -99,16 +102,15 @@ foreach ($actividades as $actividad) {
 
    switch ($tipo) {
      case 'Hora':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafin = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 minute"));
-       if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafin)){
+       if($fechahoy>$fechafin){
+         $color = 'rojo';
+      }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafin)){
         if($actividad->ultavance>=$acu){
           $color = 'azul';
         }else if((($acu-20)<=$actividad->ultavance)&&($acu>=$actividad->ultavance)){
@@ -145,9 +147,6 @@ foreach ($actividades as $actividad) {
        break;
 
      case 'Día':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
@@ -192,9 +191,6 @@ foreach ($actividades as $actividad) {
      break;
 
      case 'Semana':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
@@ -239,9 +235,6 @@ foreach ($actividades as $actividad) {
      break;
 
      case 'Mes':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
@@ -286,9 +279,6 @@ foreach ($actividades as $actividad) {
      break;
 
      case 'Año':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
@@ -378,12 +368,15 @@ if(count($arreglocolores)!=0)
 
 function getEstadoActividad($id){
   date_default_timezone_set('America/Bogota');
-  $fechahoy = date("Y-m-d H:i:s", strtotime('now'));
   $actividad  = Actividades::find($id);
+  $fechahoy = date("Y-m-d H:i:s", strtotime('now'));
+  $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
+  $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
+  $fechafin = date("Y-m-d H:i:s",strtotime($actividad->fechafin));
    $tipo = $actividad->tiempo->valor;
    $duracion = $actividad->duracion;
 
-   if($actividad->ultavance==null){
+   if(($actividad->ultavance==null)&&($fechahoy<=$fechafin)){
      $color = 'gris';
      $break;
    }else{
@@ -423,16 +416,15 @@ function getEstadoActividad($id){
 
    switch ($tipo) {
      case 'Hora':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafin = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 minute"));
-       if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafin)){
+       if($fechahoy>$fechafin){
+         $color = 'rojo';
+       }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafin)){
         if($actividad->ultavance>=$acu){
           $color = 'azul';
         }else if((($acu-20)<=$actividad->ultavance)&&($acu>=$actividad->ultavance)){
@@ -441,7 +433,7 @@ function getEstadoActividad($id){
           $color = 'rojo';
         }
         break;
-       }else{
+      }else{
        $fechainicio = $fechafin;
        $acu+=$vp;
        }
@@ -469,10 +461,6 @@ function getEstadoActividad($id){
        break;
 
      case 'Día':
-
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
@@ -517,9 +505,6 @@ function getEstadoActividad($id){
      break;
 
      case 'Semana':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
@@ -527,7 +512,6 @@ function getEstadoActividad($id){
        $tmp = [];
        $fechafin = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 day"));
        if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafin)){
-         //dd($acu);
         if($actividad->ultavance>=$acu){
           $color = 'azul';
         }else if((($acu-20)<=$actividad->ultavance)&&($acu>=$actividad->ultavance)){
@@ -564,9 +548,6 @@ function getEstadoActividad($id){
      break;
 
      case 'Mes':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;
@@ -611,9 +592,6 @@ function getEstadoActividad($id){
      break;
 
      case 'Año':
-     $arreglofechas = [];
-     $fechainicio = date("Y-m-d H:i:s", strtotime($actividad->fechainicio));
-     $fechault = date("Y-m-d H:i:s",strtotime($actividad->fecha_ultavance));
      $color = 'gris';
      if($fespecial){
      $acu = $vp;

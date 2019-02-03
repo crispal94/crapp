@@ -27,14 +27,26 @@ header {
 h1 {
   border-top: 1px solid  #5D6975;
   border-bottom: 1px solid  #5D6975;
-  color: #5D6975;
-  font-size: 2.4em;
+  color: black;
+
   line-height: 1.4em;
   font-weight: normal;
   text-align: center;
-  margin: 0 0 20px 0;
 
 }
+
+h2,h3{
+  color: black;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/*h1,h2,h3 {
+  color: black;
+  font-weight: normal;
+  text-align: center;
+  margin: auto;
+}*/
 
 .propertyValue{margin-left: 10px}
 
@@ -53,3 +65,5 @@ footer{
   color: #870B30;
   text-align: center;
 }
+
+.space{height: 100px}

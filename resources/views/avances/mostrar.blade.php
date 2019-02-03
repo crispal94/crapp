@@ -301,6 +301,8 @@
             var fechainicio;
             var tiporecurso;
             var userid;
+            var flag;
+            //var flag2;
 
             $(document).ready(function() {
                   $("#avance").slider({
@@ -360,10 +362,12 @@
                   $('#contenido').empty();
                   $('#mediumModal').modal();
                   $('#contenido').append(data.mensaje);
+                  flag = 1;
                 }else if(data.flag==2){
                   $('#contenido').empty();
                   $('#mediumModal').modal();
                   $('#contenido').append(data.mensaje);
+                  flag = 2;
                 }
 
                 //console.log(data.mensaje);
@@ -374,10 +378,13 @@
             }
 
             $('#mediumModal').on('hidden.bs.modal', function (e) {
+              if(flag==2){
               location.reload(true);
+              }
             });
 
             var idavance;
+            var valor;
             $('#avances tbody').on('click', '#editar', function (event) {
                  //console.log('s');
                  var table = $('#avances').DataTable();
@@ -399,7 +406,10 @@
 
              $('#avanceModal').on('show.bs.modal', function (e) {
                 $('#eobservacion').val('');
-                $("#eestado").val($("#eestado option:first").val());
+                ///$("#eestado").val($("#eestado option:first").val());
+                //$('#eestado option:eq(0)').prop('selected',true);
+                //$('#eestado').val(1).trigger('change.select2');
+                $('#eestado').val($('#eestado option:eq(0)').val()).trigger('change');
                 var input = '<input type="text" class="form-control" name="eavance" id="eavance">';
                 var input2 = '<label>Avance</label><br>';
                 $('#addavance').empty();
@@ -433,6 +443,7 @@
                    $('#mcontenido').empty();
                    $('#meditarModal').modal();
                    $('#mcontenido').append(data.mensaje);
+                   //flag = 1;
                  }else if(data.flag==2){
                    thisModal =$('#avanceModal');
     	             thisModal.modal('hide');

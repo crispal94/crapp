@@ -291,7 +291,7 @@ class ReportesController extends Controller
                  array_push($arreglo,$arregloactividad);
                }
              }
-          }else if($contotal==1){
+          }else if(count($query)==$contotal){
             $arregloactividad['avances'] = $arrato;
             array_push($arreglo,$arregloactividad);
           }
@@ -307,10 +307,12 @@ class ReportesController extends Controller
           'arreglo' => $arreglo
         ];
 
-        return view('pdf.proyecto',$data);
-      /* $pdf = PDF::loadView('pdf.proyecto',$data);
-        return $pdf->stream('reporte.pdf');*/
 
+      //  dd($arreglo);
+
+        //return view('pdf.proyecto',$data);
+        $pdf = PDF::loadView('pdf.proyecto',$data);
+        return $pdf->stream('reporte.pdf');
     }
 
 
@@ -332,9 +334,9 @@ class ReportesController extends Controller
 
     public function proestado(){
 
-       $valor = getEstadoActividad(43);
+       //$valor = getEstadoActividad(45);
       //$
-      //$valor = getAvanceProyecto(16);
+       $valor = getEstadoProyecto(17);
 
       dd($valor);
 

@@ -138,4 +138,22 @@ Route::post('reportes/proyectos',[
         'as' => 'reportes.proyectos',
         'uses' => 'ReportesController@imprimir'
     ]);
+
+//REPORTES NOVEDADES
+Route::get('novedades','ReportesNovedadesController@index');
+Route::get('novedades/getproyectos','ReportesNovedadesController@getproyectos');
+Route::get('novedades/getnovedades','ReportesNovedadesController@getnovedades');
+Route::post('novedades/novedades',[
+        'as' => 'reportes.novedades',
+        'uses' => 'ReportesNovedadesController@imprimir'
+    ]);
+
+
+//REPORTES HISTORIA
+Route::get('historia','ReportesNovedadesController@index');
+Route::get('historia/getproyectos','ReportesNovedadesController@getproyectos');
+Route::post('historia/imprimir',[
+        'as' => 'reportes.novedades',
+        'uses' => 'ReportesNovedadesController@imprimir'
+    ]);
 });

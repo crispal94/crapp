@@ -153,7 +153,7 @@ class AvancesController extends Controller
        $cvalor = 0;
      }
 
-       if($avance<$cvalor){
+       if($avance<=$cvalor){
          return response()->json(['flag'=>1,'mensaje'=>'El valor porcentual del avance es menor al ultimo ingresado, por favor elija un estado mayor al último ingresado']);
        }else{
          $secfinal = Avances::where('id_detalle',$id)->max('secuencial_avance');
@@ -229,13 +229,18 @@ class AvancesController extends Controller
       $secavanceant = $secavance;
       }
 
+      $maxsecuencial = Avances::where('id_detalle',$id)->max('secuencial_avance');
+
+      $avancemax = Avances::where('id_detalle',$id)->where('secuencial_avance',$maxsecuencial)->first();
+
+      $vavancemax = trim($avancemax->avance,'%');
 
       $avanceant = Avances::where('id_detalle',$id)->where('secuencial_avance',$secavanceant)->first();
 
       $vavanceant = trim($avanceant->avance,'%');
 
 
-      if(($avance<=$vavanceant)&&($secavanceant>=1)){
+      if(($avance<=$vavanceant)&&($secavanceant>=1)&&($vavanceant=='20')||(($secavance<$maxsecuencial)&&($avance==$vavancemax))){
       return response()->json(['flag'=>1,'mensaje'=>'Inconsistencia al modificar el avance por favor corrija los errores']);
       }else{
       $valorant = $eavance->avance;
