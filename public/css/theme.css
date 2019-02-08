@@ -328,8 +328,8 @@ section {
 
 .login-wrap {
     max-width: 540px;
-    padding-top: 50px;
-    padding-bottom: 53px;
+    padding-top: 84px;
+    padding-bottom: 90px;
     margin: 0 auto;
 }
 
@@ -1630,7 +1630,7 @@ section {
 
 .menu-sidebar .navbar__list .navbar__sub-list {
     display: none;
-    padding-left: 34px;
+    padding-left: 20px;
 }
 
 .menu-sidebar .navbar__list .navbar__sub-list li a {

@@ -30,4 +30,9 @@ class Proyectos extends Model
         return $this->hasMany('App\Actividades','id_cabecera','id');
     }
 
+    public function actividadesTrashed()
+      {
+          return $this->hasMany('App\Actividades','id_cabecera','id')->withTrashed();
+      }
+
 }

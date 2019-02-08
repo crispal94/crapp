@@ -19,6 +19,7 @@
 }
 
 .toptiempo{
+
     padding-top: 6%;
 }
 
@@ -28,12 +29,16 @@
   }
 }
 
+.modal-lg {
+    max-width: 85% !important;
+}
+
   </style>
 @endsection
 @section('content')
-  {!!Form::open(['route'=>'reportes.proyectos', 'method'=>'POST','id'=>'consolidado','target'=>'_blank'])!!}
+  {!!Form::open(['route'=>'reportes.historia', 'method'=>'POST','id'=>'consolidado','target'=>'_blank'])!!}
   <div class="row"> <!--style="margin-left: -65px;"-->
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                   <div class="card-header box-header">
                       <strong>Fecha</strong>
                  </div>
@@ -48,7 +53,7 @@
                   </section>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                   <div class="card-header box-header">
                       <strong>Supervisor</strong>
                  </div>
@@ -65,34 +70,18 @@
                   </section>
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                   <div class="card-header box-header">
-                      <strong>Usuario</strong>
+                      <strong>Tipo</strong>
                  </div>
                   <section class="card">
                     <div class="card-body text-secondary">
                       <div class="form-group">
-                      {!!Form::select('usuario',$arrusuarios,'N',['class'=>'form-control select2','autofocus','id'=>'usuario'])!!}
+                          {!!Form::select('tipo',['Todos'=>'Todos','Baja'=>'Baja','Completo'=>'Completo'],'Todos',['class'=>'form-control select2','autofocus','id'=>'tipo'])!!}
                     </div>
                     </div>
                   </section>
                 </div>
-
-                <div class="col-lg-3">
-                  <div class="card-header box-header">
-                      <strong>Grupo de Trabajo</strong>
-                 </div>
-                  <section class="card">
-                    <div class="card-body text-secondary">
-                      <div class="form-group">
-                      {!!Form::select('gtrabajo',$arrgrupo,'N',['class'=>'form-control select2','autofocus','id'=>'gtrabajo'])!!}
-                    </div>
-                    </div>
-                  </section>
-                </div>
-
-
-
   </div>
 
 
@@ -100,7 +89,7 @@
     <div class="col-lg-12">
       <input type="hidden" name="adatai" value="" id="adatai">
       <button type="button" class="btn btn-success" onclick="consultar();">Consultar</button>
-      <button type="submit" class="btn btn-primary" form="consolidado" formtarget="_blank" id="imprimir">Imprimir</button>
+      <button type="submit" class="btn btn-success">Imprimir</button>
       {!!Form::close()!!}
     </div>
   </div>
@@ -112,7 +101,9 @@
          <table id="proyectos" class="table table-striped table-bordered app" style="width:100%">
                 <thead>
                 <tr>
-                  <th></th>
+                  <th>Tipo</th>
+                  <th>Fecha Historia</th>
+                  <th>Observación</th>
                   <th>Estado</th>
                   <th>Avance</th>
                   <th>Nombre</th>
@@ -130,7 +121,9 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th></th>
+                  <th>Tipo</th>
+                  <th>Fecha Historia</th>
+                  <th>Observación</th>
                   <th>Estado</th>
                   <th>Avance</th>
                   <th>Nombre</th>
@@ -151,10 +144,12 @@
 
 @endsection
 
+
+
 @section('js')
 <script type="text/javascript">
 
-var tiporecurso;
+
 var fechadesde1, fechahasta1;
 $('#rangodefechas').daterangepicker({
             startDate: new Date(), endDate: new Date()
@@ -182,15 +177,17 @@ $('#rangodefechas').daterangepicker({
                   },
               "columnDefs": [
                             {
-                                "targets":[ 9 ],
+                                "targets":[ 11 ],
                                 "visible":false,
                             },
                             {
-                                "targets":[ 10 ],
+                                "targets":[ 12 ],
                                 "visible":false,
                             }
                       ],
           } );
+
+
 
           var ftodos=false;
           var flag=0;
@@ -208,7 +205,7 @@ $('#rangodefechas').daterangepicker({
           });
 
 
-      var adatai = [];
+        var adatai = [];
       function consultar(){
                 console.log('a');
                 if(ftodos==false){
@@ -219,43 +216,26 @@ $('#rangodefechas').daterangepicker({
                 var fechahasta ='';
                 }
 
-                if(($('#gtrabajo').val()=='N')&&($('#usuario').val()=='N')){
-                    console.log('a');
-                    tiporecurso = '';
-                }else if(($('#gtrabajo').val()=='N')&&($('#usuario').val()!='N')){
-                    tiporecurso = 'u';
-                }else if(($('#gtrabajo').val()!='N')&&($('#usuario').val()=='N')){
-                    tiporecurso = 'gt';
-                }else{
-                   tiporecurso = 'am';
-                }
+
                 var supervisor = $('#supervisor').val();
-                var usuario = $('#usuario').val();
-                var gtrabajo = $('#gtrabajo').val();
+                var tipo = $('#tipo').val();
 
                 var table = $('#proyectos').DataTable();
                 table.clear().draw();
 
-                $.get(pathname+'/getproyectos',{flag:flag,fechadesde:fechadesde,fechahasta:fechahasta,supervisor:supervisor,tiporecurso:tiporecurso,
-                  usuario:usuario,gtrabajo:gtrabajo},function(){
+                $.get(pathname+'/getproyectos',{flag:flag,fechadesde:fechadesde,fechahasta:fechahasta,supervisor:supervisor,
+                tipo:tipo},function(){
                 }).done(function(data){
                       var table = $('#proyectos').DataTable();
                         if(data.consulta.length>0){
+                         table.rows.add(data.consulta);
                          adatai = JSON.stringify(data.consulta);
-                         $('#adatai').val(adatai);
-                         table.rows.add(data.consulta); // Add new data
+                         $('#adatai').val(adatai); // Add new data
                          table.columns.adjust().draw();
                           }
                     });
       }
 
-      $('#proyectos tbody').on('click', '#seguimiento', function (event) {
-           var table = $('#proyectos').DataTable();
-           var $row = $(this).closest('tr');
-           var data = table.row($row).data();
-           var id = data[9];
-           var path = {!! json_encode(url('/')) !!};
-           window.open(pathname+'/seguimiento/'+id, "_blank");
-       });
+
 </script>
 @endsection

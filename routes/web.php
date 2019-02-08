@@ -150,10 +150,10 @@ Route::post('novedades/novedades',[
 
 
 //REPORTES HISTORIA
-Route::get('historia','ReportesNovedadesController@index');
-Route::get('historia/getproyectos','ReportesNovedadesController@getproyectos');
+Route::get('historia','ReportesHistoriaController@index');
+Route::get('historia/getproyectos','ReportesHistoriaController@getproyectos');
 Route::post('historia/imprimir',[
-        'as' => 'reportes.novedades',
-        'uses' => 'ReportesNovedadesController@imprimir'
+        'as' => 'reportes.historia',
+        'uses' => 'ReportesHistoriaController@imprimir'
     ]);
 });

@@ -336,7 +336,7 @@ class ReportesController extends Controller
 
        //$valor = getEstadoActividad(45);
       //$
-       $valor = getEstadoProyecto(17);
+       $valor = getEstadoProyecto(19);
 
       dd($valor);
 

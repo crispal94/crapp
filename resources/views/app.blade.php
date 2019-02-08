@@ -165,9 +165,23 @@
                         </li>
                         @endcan
                         @can ('reportes')
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-table"></i>Reportes</a>
+                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                         <li>
                             <a href="{{ url('reportes') }}">
-                                <i class="fa fa-list"></i>Reportes</a>
+                                <i class="fa fa-list"></i>Proyectos</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('novedades') }}">
+                                <i class="fa fa-list"></i>Novedades</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('historia') }}">
+                                <i class="fa fa-list"></i>Historia</a>
+                        </li>
+                        </ul>
                         </li>
                         @endcan
 
@@ -274,10 +288,24 @@
                         </li>
                         @endcan
                         @can ('reportes')
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+    								            <i class="fa fa-lock"></i>Reportes</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
                         <li>
                             <a href="{{ url('reportes') }}">
-                                <i class="fa fa-list"></i>Reportes</a>
+                                <i class="fa fa-list"></i>Proyectos</a>
                         </li>
+                        <li>
+                            <a href="{{ url('novedades') }}">
+                                <i class="fa fa-list"></i>Novedades</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('historia') }}">
+                                <i class="fa fa-list"></i>Historia</a>
+                        </li>
+                        </ul>
+                      </li>
                         @endcan
                     </ul>
                 </nav>
@@ -299,7 +327,7 @@
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                        <img src="{{asset('images/icon/avatar-01.jpg')}}" alt="John Doe" />
+                                        <img src="{{asset('images/icon/avatar.png')}}" alt="John Doe" />
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#">{{ Auth::user()->name }}</a>
