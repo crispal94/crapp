@@ -311,7 +311,7 @@ class ReportesController extends Controller
       //  dd($arreglo);
 
         //return view('pdf.proyecto',$data);
-        $pdf = PDF::loadView('pdf.proyecto',$data);
+        $pdf = PDF::loadView('pdf.proyecto',$data)->setPaper('a4')->setOrientation('landscape');
         return $pdf->stream('reporte.pdf');
     }
 
@@ -326,7 +326,7 @@ class ReportesController extends Controller
           'fecha' => $fecha,
           'aconsulta' => $aconsulta
         ];
-       $pdf = PDF::loadView('pdf.proyectostotal',$data);
+       $pdf = PDF::loadView('pdf.proyectostotal',$data)->setPaper('a4')->setOrientation('landscape');
         return $pdf->stream('reporteproyectos.pdf');
        //return view('pdf.proyectostotal',compact('aconsulta','fecha'));
     }
@@ -334,9 +334,9 @@ class ReportesController extends Controller
 
     public function proestado(){
 
-       //$valor = getEstadoActividad(45);
+       $valor = getEstadoActividad(49);
       //$
-       $valor = getEstadoProyecto(19);
+       //$valor = getEstadoProyecto(19);
 
       dd($valor);
 

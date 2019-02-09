@@ -157,3 +157,7 @@ Route::post('historia/imprimir',[
         'uses' => 'ReportesHistoriaController@imprimir'
     ]);
 });
+
+
+Route::get('404',['as'=>'404','uses'=>'ErrorController@notfound']);
+Route::get('500',['as'=>'500','uses'=>'ErrorController@fatal']);

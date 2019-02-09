@@ -240,7 +240,9 @@ class AvancesController extends Controller
       $vavanceant = trim($avanceant->avance,'%');
 
 
-      if(($avance<=$vavanceant)&&($secavanceant>=1)&&($vavanceant=='20')||(($secavance<$maxsecuencial)&&($avance==$vavancemax))){
+      if(($avance<=$vavanceant)&&($secavanceant>=1)&&($vavanceant=='20')||
+      (($secavance<$maxsecuencial)&&($avance==$vavancemax))||
+      (($secavance<$maxsecuencial)&&(($avance==100)&&($vavancemax<$avance)))){
       return response()->json(['flag'=>1,'mensaje'=>'Inconsistencia al modificar el avance por favor corrija los errores']);
       }else{
       $valorant = $eavance->avance;

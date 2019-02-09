@@ -43,6 +43,10 @@
           background: #200404 !important;
         }
 
+        .visible {
+          display:visible;
+        }
+
         /*body {
             background: #200404;
         }*/
@@ -67,10 +71,20 @@
                                 <div class="form-group">
                                     <label>Email</label>
                                     <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Contraseña</label>
                                     <input class="au-input au-input--full" type="password" name="password" placeholder="Contraseña">
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
 
                                 <button class="au-btn au-btn--block au-btn--login m-b-20" type="submit">Iniciar Sesión</button>

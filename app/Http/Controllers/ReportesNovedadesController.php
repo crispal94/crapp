@@ -161,7 +161,7 @@ class ReportesNovedadesController extends Controller
           'fechainicio' =>$proyecto->fechainicio,
           'fechafin' =>$proyecto->fechafin,
         ];
-       $pdf = PDF::loadView('pdf.novedades',$data);
+       $pdf = PDF::loadView('pdf.novedades',$data)->setPaper('a4')->setOrientation('landscape');
         return $pdf->stream('reportenovedades.pdf');
         //return view('pdf.novedades',$data);
     }
