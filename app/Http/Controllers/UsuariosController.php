@@ -188,6 +188,7 @@ class UsuariosController extends Controller
           if($cpass!=null){
           if (Hash::check($pantigua, $hashedPassword)) {
               $user->name = $data['name'];
+              $user->email = $data['email'];
               $user->nickname = $data['nickname'];
               $user->password = bcrypt($data['password']);
               $user->save();
@@ -209,6 +210,7 @@ class UsuariosController extends Controller
               return redirect()->back()->withInput();
           }}else{
              $user->name = $data['name'];
+             $user->email = $data['email'];
              $user->nickname = $data['nickname'];
              $user->save();
             /*$roluser->role_id = $roleId;
@@ -263,6 +265,7 @@ class UsuariosController extends Controller
           if($cpass!=null){
           if (Hash::check($pantigua, $hashedPassword)) {
               $user->name = $data['name'];
+              $user->email = $data['email'];
               $user->nickname = $data['nickname'];
               $user->password = bcrypt($data['password']);
               $user->id_roltipo = $data['id_roltipo'];
@@ -277,6 +280,7 @@ class UsuariosController extends Controller
               return redirect()->back()->withInput();
           }}else{
              $user->name = $data['name'];
+             $user->email = $data['email'];
              $user->nickname = $data['nickname'];
              $user->id_roltipo = $data['id_roltipo'];
              $rolestipo = RolesTipo::find($data['id_roltipo']);

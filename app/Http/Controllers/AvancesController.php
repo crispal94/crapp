@@ -117,10 +117,11 @@ class AvancesController extends Controller
       }*/
 
       $actividad = DB::select("select det.id, det.nombre as actividad, u.name as usuario,
-      det.duracion, det.fechainicio, det.fechafin,cab.nombre as proyecto
+      det.duracion, det.fechainicio, det.fechafin,cab.nombre as proyecto,pt.valor
       from det_actividad det
       inner join users u on (u.id = det.id_responsable)
       inner join cab_actividad cab on (cab.id = det.id_cabecera)
+      left join param_referenciales pt on (pt.id = det.id_refertiempo)
       where det.id = ? and det.deleted_at is null",[$id])[0];
 
       $avances = DB::select("select av.id, est.descripcion as estado, av.avance, av.fechaavance, av.observacion
@@ -196,7 +197,7 @@ class AvancesController extends Controller
          array_push($arregmail,$segui->avance);
          array_push($arregmail,$segui->fechaavance);
          array_push($arregmail,$emailactividad);
-        // Mail::to('crispal94@hotmail.com')->send(new NotificaAvance($arregmail));
+         Mail::to($emailactividad)->send(new NotificaAvance($arregmail));
          if($segui->avance=='100%'){
            $actividad->activo = 0;
          }

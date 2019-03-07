@@ -28,7 +28,7 @@
       <div id="logo">
         <img src="{{asset('images/icon/logo_ucsgtv.png')}}" class="rounded mx-auto d-block" alt="...">
       </div>
-      <h1 style="font-size: 1.9em">Total de Proyectos</h1>
+      <h1 style="font-size: 1.9em">Proyectos Activos</h1>
       <div class="container">
         <div class="row">
           <div id="company">

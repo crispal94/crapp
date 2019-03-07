@@ -215,7 +215,7 @@ class ProyectosController extends Controller
                  from users u
                  inner join roles_tipo r on (r.id = u.id_roltipo)
                  inner join roles ru on (ru.id = r.id_roles)
-                 where ru.title = 'Supervisor' and u.id = ? and u.deleted_at is null",[$data['supervisores']])[0];
+                 where (ru.title = 'Supervisor' or ru.title = 'Administrador') and u.id = ? and u.deleted_at is null",[$data['supervisores']])[0];
                  array_push($arregmail,$supervisores->usuario);
                  array_push($arregmail,$data['descripcion']);
                  array_push($arregmail,$data['fechainicio']);

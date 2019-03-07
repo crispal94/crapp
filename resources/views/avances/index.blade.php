@@ -65,6 +65,16 @@
                                     <p id="fechainicio" class="form-control-static"></p>
                                 </div>
                           </div>
+
+                          <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label"><strong>Fecha Fin</strong></label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <p id="fechafin" class="form-control-static"></p>
+                            </div>
+                        </div>
+
                         </div>
                      </div>
                     </div>
@@ -167,6 +177,7 @@
                   $('#descripcion').val(data.cont.descripcion);
                   $('#duracion').text(data.cont.duracion+' '+data.tiempo+'(s)');
                   $('#fechainicio').text(data.cont.fechainicio);
+                  $('#fechafin').text(data.cont.fechafin);
                   $('#responsable').text(data.responsable);
                   var table = $('#actividades').DataTable();
                   console.log(data.detalle);

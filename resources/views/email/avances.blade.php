@@ -94,7 +94,7 @@
                 <tr>
                     <td align="center" valign="top" style="padding: 40px 10px 40px 10px;">
                         <a href="http://litmus.com" target="_blank">
-                            <img alt="Logo" src="{{ $message->embed('images/icon/logo-sidebar.png') }}" width="200" height="200" style="display: block; font-family: 'Lato', Helvetica, Arial, sans-serif; color: #ffffff; font-size: 18px;" border="0">
+                            <img alt="Logo" src="{{ $message->embed('images/icon/lofo-final.png') }}" width="300" height="300" style="display: block; font-family: 'Lato', Helvetica, Arial, sans-serif; color: #ffffff; font-size: 18px;" border="0">
                         </a>
                     </td>
                 </tr>

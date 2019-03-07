@@ -20,6 +20,12 @@
       #company div {
       white-space: nowrap;
       }
+
+      h2,h3{
+
+            border-top: none;
+            border-bottom: none;
+    }
     </style>
 
   </head>
@@ -29,7 +35,7 @@
         <img src="{{asset('images/icon/logo_ucsgtv.png')}}" class="rounded mx-auto d-block" alt="...">
       </div>
       <h1>{{ $nombre }}</h1>
-      <h3>Novedades</h3>
+      <h3>Novedades en Actividades</h3>
       <div class="container">
         <div class="row">
           <div id="company">

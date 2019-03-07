@@ -647,6 +647,7 @@
                     $('#datetimepicker4').data("datetimepicker").date(new Date());
                     $('#grupotrabajo').DataTable().rows().deselect();
                     $('#posdet').animatescroll({padding:200});
+                    $('#actualizar').prop('disabled',true);
                   //  alert('');
                     /*var position = $('#posdet').offset().top;
                     $("body, html").animate({

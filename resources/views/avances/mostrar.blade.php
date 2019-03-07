@@ -83,10 +83,10 @@
                         <div class="col-lg-6">
                           <div class="row form-group">
                                 <div class="col col-md-3">
-                                    <label class=" form-control-label"><strong>Duración (semanas)</strong></label>
+                                    <label class=" form-control-label"><strong>Duración</strong></label>
                                 </div>
                                 <div class="col-12 col-md-9">
-                                    <p id="duracion" class="form-control-static">{{ $actividad->duracion }}</p>
+                                    <p id="duracion" class="form-control-static">{{ $actividad->duracion }} {{$actividad->valor}}(s)</p>
                                 </div>
                           </div>
                           <div class="row form-group">

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<link rel="icon" href="{{ asset('/images/icon/favicon-32x32.png')}}">
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
@@ -68,7 +68,7 @@
             <div class="header-mobile__bar">
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="{{ url('/') }}">
                             <img src="{{asset('images/icon/logo-sidebar.png')}}" alt="UCSGTV" />
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
@@ -195,8 +195,8 @@
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="#">
-                    <img src="{{asset('images/icon/logo-sidebar.png')}}" alt="UCSGTV" />
+                <a href="{{ url('/') }}">
+                    <img src="{{asset('images/icon/lofo-final.png')}}" alt="UCSGTV" />
                 </a>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
@@ -520,6 +520,37 @@
 			    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			          }
 			});
+
+            jQuery.fn.DataTable.ext.type.search.string = function ( data ) {
+            return ! data ?
+            '' :
+            typeof data === 'string' ?
+            data
+                .replace( /έ/g, 'ε' )
+                .replace( /[ύϋΰ]/g, 'υ' )
+                .replace( /ό/g, 'ο' )
+                .replace( /ώ/g, 'ω' )
+                .replace( /ά/g, 'α' )
+                .replace( /[ίϊΐ]/g, 'ι' )
+                .replace( /ή/g, 'η' )
+                .replace( /\n/g, ' ' )
+                .replace( /á/g, 'a' )
+                .replace( /é/g, 'e' )
+                .replace( /í/g, 'i' )
+                .replace( /ó/g, 'o' )
+                .replace( /ú/g, 'u' )
+                .replace( /ê/g, 'e' )
+                .replace( /î/g, 'i' )
+                .replace( /ô/g, 'o' )
+                .replace( /è/g, 'e' )
+                .replace( /ï/g, 'i' )
+                .replace( /ü/g, 'u' )
+                .replace( /ã/g, 'a' )
+                .replace( /õ/g, 'o' )
+                .replace( /ç/g, 'c' )
+                .replace( /ì/g, 'i' ) :
+            data;
+        };
 
 		});
 	</script>

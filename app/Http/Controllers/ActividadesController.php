@@ -188,6 +188,7 @@ class ActividadesController extends Controller
               $actividad->duracion = $duracionact;
               $actividad->id_refertiempo = $tiempo;
               $actividad->fechafin = $fechapf;
+              $actividad->activo = 1;
               $arregmail = [];
               array_push($arregmail,$usuario->name);
               array_push($arregmail,$proyecto->nombre);

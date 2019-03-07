@@ -179,6 +179,20 @@
                 "scrollY": 200,
                 "scrollX": true,
                 "order": [[ 4, "asc" ]],
+                "language": {
+                      "lengthMenu": "Mostrar _MENU_ Registros",
+                      "zeroRecords": "No hay registros...",
+                      "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                      "infoEmpty": "No hay registros",
+                      "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                      "search": "búsqueda:",
+                      "paginate": {
+                          "first":      "First",
+                          "last":       "Last",
+                          "next":       "Sigue",
+                          "previous":   "Previo"
+                      }
+                  },
                 "columnDefs" : [
                   {
                       "targets":[ 8 ],
