@@ -37,7 +37,7 @@
 @endsection
 @section('content')
 
-  <div class="row"> <!--style="margin-left: -65px;"-->
+  <div class="row" style="margin-top:30px"> <!--style="margin-left: -65px;"-->
                 <div class="col-lg-6">
                   <div class="card-header box-header">
                       <strong>Fecha</strong>

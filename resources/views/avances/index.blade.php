@@ -21,7 +21,7 @@
   </style>
 @endsection
 @section('content')
-    <div class="row"> <!--style="margin-left: -65px;"-->
+    <div class="row" style="margin-top:30px"> <!--style="margin-left: -65px;"-->
                 <div class="col-lg-12">
                   <section class="card">
                     <div class="card-header box-header">
@@ -31,12 +31,12 @@
                       <div class="row">
                         <div class="col-lg-6">
                           <div class="form-group">
-                              <label>Proyecto</label>
+                              <label><strong>Proyecto</strong></label>
                               {!!Form::select('nombreproyecto',$arrproy,'N',['class'=>'form-control select2','autofocus',
                                 'style'=>'width:100%;','id'=>'nombreproyecto'])!!}
                         </div>
                         <div class="form-group">
-                          <label>Descripción</label>
+                          <label><strong>Descripción</strong></label>
                          <textarea name="descripcion" id="descripcion" readonly rows="2" placeholder="..." class="form-control"></textarea>
                       </div>
                         </div>
@@ -138,7 +138,21 @@
                       "targets":[ 7 ],
                       "visible":false,
                   }
-                ]
+                ],
+                "language": {
+                        "lengthMenu": "Mostrar _MENU_ Registros",
+                        "zeroRecords": "No hay registros...",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        "infoEmpty": "No hay registros",
+                        "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                        "search": "búsqueda:",
+                        "paginate": {
+                            "first":      "First",
+                            "last":       "Last",
+                            "next":       "Sigue",
+                            "previous":   "Previo"
+                        }
+                    }
             } );
 
             $('#nombreproyecto').on('change', function() {
@@ -169,7 +183,7 @@
                  var data = table.row($row).data();
                  var id = data[7];
                  var path = {!! json_encode(url('/')) !!};
-                 window.open(pathname+'/seguimiento/'+id, "_blank");
+                 window.open(pathname+'/seguimiento/'+id, "_self");
              });
             </script>
             @endsection

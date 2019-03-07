@@ -30,7 +30,10 @@ class RolesController extends Controller
     public function index()
     {
         $roles = RolesTipo::all();
-        return view('roles.index',compact('roles'));
+        $url = 'roles';
+        $modulo = 'Seguridad';
+        $nombre = 'Roles';
+        return view('roles.index',compact('roles'  ,'url','modulo','nombre'));
     }
 
     /**
@@ -49,7 +52,10 @@ class RolesController extends Controller
       foreach($tipo as $t){
         $arrtipo[$t->id] = $t->title;
       }
-       return view ('roles.create',compact('arrtipo'));
+      $url = 'roles';
+      $modulo = 'Seguridad';
+      $nombre = 'Roles';
+       return view ('roles.create',compact('arrtipo','url','modulo','nombre'));
     }
 
     /**
@@ -113,13 +119,17 @@ class RolesController extends Controller
 
       //$tipo = ParamReferenciales::where('grupo','Seguridad')->where('clave','Roles')->get();
       $tipo = Roles::all();
-      
+
       $arrtipo  = [];
 
       foreach($tipo as $t){
-        $arrtipo[$t->id] = $t->valor;
+        $arrtipo[$t->id] = $t->title;
       }
-      return view ('roles.edit',compact('arrtipo','rol'));
+      $url = 'roles';
+        $modulo = 'Seguridad';
+        $nombre = 'Roles';
+
+      return view ('roles.edit',compact('arrtipo','rol','url','modulo','nombre'));
     }
 
     /**

@@ -23,8 +23,12 @@ class EstadosController extends Controller
 
     public function index()
     {
+      $url = 'estados';
+      $modulo = 'Generales';
+      $nombre = 'Estados';
+
        $estados = Estados::orderBy('id','asc')->get();
-       return view('estados.index',compact('estados'));
+       return view('estados.index',compact('estados','url','modulo','nombre'));
     }
 
     /**
@@ -34,7 +38,11 @@ class EstadosController extends Controller
      */
     public function create()
     {
-        return view('estados.create');
+      $url = 'estados';
+      $modulo = 'Generales';
+      $nombre = 'Estados';
+
+        return view('estados.create',compact('url','modulo','nombre'));
     }
 
     /**
@@ -93,7 +101,11 @@ class EstadosController extends Controller
         $valor = $estado->valor;
         $valor = trim($valor, '%');
         //dd($valor);
-        return view('estados.edit',compact('estado','valor'));
+        $url = 'estados';
+        $modulo = 'Generales';
+        $nombre = 'Estados';
+
+        return view('estados.edit',compact('estado','valor','url','modulo','nombre'));
     }
 
     /**

@@ -46,7 +46,7 @@
   </style>
 @endsection
 @section('content')
-    <div class="row"> <!--style="margin-left: -65px;"-->
+    <div class="row" style="margin-top:30px"> <!--style="margin-left: -65px;"-->
                 <div class="col-lg-12">
                   <section class="card">
                     <div class="card-header box-header">
@@ -97,6 +97,14 @@
                                     <p id="fechainicio" class="form-control-static">{{ $actividad->fechainicio }}</p>
                               </div>
                           </div>
+                          <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label class=" form-control-label"><strong>Fecha Fin</strong></label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <p id="fechainicio" class="form-control-static">{{ $actividad->fechafin }}</p>
+                          </div>
+                      </div>
                         </div>
                      </div>
                     </div>
@@ -112,7 +120,7 @@
                   <div class="row">
                       <div class="col-lg-4">
                         <div class="form-group">
-                              <label>Estado</label>
+                              <label><strong>Estado</strong></label>
                               @if ($bloqueo)
                                 <select class="form-control select2" name="estado" id="estado" disabled>
                                     <!--<option data-por="0" value="N" selected>Elija un Estado...</option>-->
@@ -134,7 +142,7 @@
 
                       <div class="col-lg-4">
                         <div class="form-group">
-                              <label>Avance</label><br>
+                              <label><strong>Avance</strong></label><br>
                               @if ($bloqueo)
                               <input type="text" class="form-control" name="avance" id="avance" disabled>
                               @else
@@ -146,7 +154,7 @@
 
                       <div class="col-lg-4">
                         <div class="form-group">
-                              <label>Observación</label>
+                              <label><strong>Observación</strong></label>
                               @if ($bloqueo)
                                 <textarea name="observacion" id="observacion" rows="2" placeholder="..." class="form-control" disabled></textarea>
                               @else
@@ -235,7 +243,7 @@
      <div class="row">
          <div class="col-lg-4">
            <div class="form-group">
-                 <label>Estado</label>
+                 <label><strong>Estado</strong></label>
 
                  <select class="form-control select2" name="eestado" id="eestado">
                      <!--<option data-por="0" value="N" selected>Elija un Estado...</option>-->
@@ -248,14 +256,14 @@
 
          <div class="col-lg-4">
            <div class="form-group" id="addavance">
-                 <label>Avance</label><br>
+                 <label><strong>Avance</strong></label><br>
 
            </div>
          </div>
 
          <div class="col-lg-4">
            <div class="form-group">
-                 <label>Observación</label>
+                 <label><strong>Observación</strong></label>
                  <textarea name="eobservacion" id="eobservacion" rows="2" placeholder="..." class="form-control"></textarea>
            </div>
          </div>
@@ -333,7 +341,21 @@
                     //  className: 'dt-body-center'
                   },
                 ],
-                'ordering': false
+                'ordering': false,
+                "language": {
+                        "lengthMenu": "Mostrar _MENU_ Registros",
+                        "zeroRecords": "No hay registros...",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        "infoEmpty": "No hay registros",
+                        "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                        "search": "búsqueda:",
+                        "paginate": {
+                            "first":      "First",
+                            "last":       "Last",
+                            "next":       "Sigue",
+                            "previous":   "Previo"
+                        }
+                    }
             } );
 
             $('#estado').on('change', function() {
@@ -411,7 +433,7 @@
                 //$('#eestado').val(1).trigger('change.select2');
                 $('#eestado').val($('#eestado option:eq(0)').val()).trigger('change');
                 var input = '<input type="text" class="form-control" name="eavance" id="eavance">';
-                var input2 = '<label>Avance</label><br>';
+                var input2 = '<label><strong>Avance</strong></label><br>';
                 $('#addavance').empty();
                 $('#addavance').append(input2);
                 $('#addavance').append(input);

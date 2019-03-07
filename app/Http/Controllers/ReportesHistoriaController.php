@@ -43,7 +43,11 @@ class ReportesHistoriaController extends Controller
         $arrsupervisores[$sus->id] = $sus->usuario;
       }
 
-        return view('reportes_historia.index',compact('arrsupervisores','role','roleid'));
+      $url = 'historia';
+      $modulo = 'Reportes';
+      $nombre = 'Historia';
+
+        return view('reportes_historia.index',compact('arrsupervisores','role','roleid','url','modulo','nombre'));
     }
 
     public function getproyectos(Request $request){

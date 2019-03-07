@@ -149,7 +149,7 @@
                 <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
                   <p style="margin: 0;">Actividad: <strong>{{ $data[2] }}</strong><br>
                   Fecha de Inicio: <strong>{{ $data[3] }}</strong><br>
-                  Duración: <strong>{{ $data[4] }}</strong></p>
+                  Duración: <strong>{{ $data[4] }} {{$data[5]}}</strong></p>
                 </td>
               </tr>
               <tr>

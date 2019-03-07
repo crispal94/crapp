@@ -37,7 +37,7 @@
 @endsection
 @section('content')
   {!!Form::open(['route'=>'reportes.historia', 'method'=>'POST','id'=>'consolidado','target'=>'_blank'])!!}
-  <div class="row"> <!--style="margin-left: -65px;"-->
+  <div class="row" style="margin-top:30px"> <!--style="margin-left: -65px;"-->
                 <div class="col-lg-4">
                   <div class="card-header box-header">
                       <strong>Fecha</strong>
@@ -88,7 +88,7 @@
   <div class="row" style="margin-bottom:20px;">
     <div class="col-lg-12">
       <input type="hidden" name="adatai" value="" id="adatai">
-      <button type="button" class="btn btn-success" onclick="consultar();">Consultar</button>
+      <button type="button" class="btn btn-primary" onclick="consultar();">Consultar</button>
       <button type="submit" class="btn btn-success">Imprimir</button>
       {!!Form::close()!!}
     </div>

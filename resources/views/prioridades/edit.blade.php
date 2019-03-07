@@ -7,14 +7,16 @@
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
           <div class="card-header box-header">
               <strong>Prioridades</strong>
          </div>
                 <div class="card-body card-block">
                   {!!Form::model($prioridad,['route'=> ['prioridades.update',$prioridad->id],'method'=>'PUT'])!!}
-                            @include('includes/errors')
+
                             <div class="form-group">
                               <label>Nombre</label>
                              {!!Form::text('descripcion',Null,['class'=>'form-control',
@@ -24,21 +26,6 @@
                               <label>Peso</label>
                              {!!Form::number('peso',Null,['class'=>'form-control',
                               'placeholder'=>'Ingrese dato','id'=>'peso','max'=>'100','min'=>'0','onkeypress'=>'return event.charCode >= 48 && event.charCode <= 57'])!!}
-                          </div>
-                          <div class="form-group">
-                              <label>Tiempo Alerta</label>
-                             {!!Form::text('tiempo_alerta',Null,['class'=>'form-control',
-                              'placeholder'=>'Ingrese dato','maxlength'=>'6','id'=>'alerta','onkeypress'=>'return event.charCode >= 48 && event.charCode <= 57'])!!}
-                          </div>
-                          <div class="form-group">
-                              <label>Tiempo Límite</label>
-                             {!!Form::text('tiempo_limite',Null,['class'=>'form-control',
-                              'placeholder'=>'Ingrese dato','maxlength'=>'6','id'=>'limite','onkeypress'=>'return event.charCode >= 48 && event.charCode <= 57'])!!}
-                          </div>
-                          <div class="form-group">
-                              <label>Tiempo Escala</label>
-                             {!!Form::text('tiempo_escala',Null,['class'=>'form-control',
-                              'placeholder'=>'Ingrese dato','maxlength'=>'6','id'=>'escala','onkeypress'=>'return event.charCode >= 48 && event.charCode <= 57'])!!}
                           </div>
 
                             <div class="box-footer">

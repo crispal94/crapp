@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\ParamReferenciales;
 
 class NotificaProyecto extends Mailable
 {
@@ -30,6 +31,10 @@ class NotificaProyecto extends Mailable
      */
     public function build()
     {
-        return $this->view('email.proyectos')->subject('Notificación de Proyecto');
+        $asunto = ParamReferenciales::valor('Correo','Asunto-Proyectos');
+        $cc = ParamReferenciales::valor('Correo','Email-Administrador');
+        return $this->view('email.proyectos')
+        ->subject($asunto)
+        ->cc($cc);
     }
 }

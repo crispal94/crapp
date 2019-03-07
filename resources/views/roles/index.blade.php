@@ -29,6 +29,9 @@
                     @include('includes/notificacion')
                   </div>
                   <section class="card">
+                    <div class="card-header box-header">
+                        <strong>Roles</strong>
+                   </div>
                     <div class="card-body text-secondary">
                       <a href="{{ route('roles.create', null) }}">
                         <button style="margin-bottom:10px;" class="au-btn au-btn-icon au-btn--green au-btn--small">
@@ -79,6 +82,20 @@ $(document).ready(function() {
     $('#example').DataTable( {
         "scrollY": 200,
         "scrollX": true,
+        "language": {
+                "lengthMenu": "Mostrar _MENU_ Registros",
+                "zeroRecords": "No hay registros...",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                "infoEmpty": "No hay registros",
+                "infoFiltered": "(filtrados de _MAX_ registros totales)",
+                "search": "búsqueda:",
+                "paginate": {
+                    "first":      "First",
+                    "last":       "Last",
+                    "next":       "Sigue",
+                    "previous":   "Previo"
+                }
+            }
     } );
 } );
 </script>

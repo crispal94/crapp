@@ -7,14 +7,16 @@
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
           <div class="card-header box-header">
               <strong>Tipo de Actividades</strong>
          </div>
                 <div class="card-body card-block">
                   {!!Form::model($tactividad,['route'=> ['tipoactividades.update',$tactividad->id],'method'=>'PUT'])!!}
-                            @include('includes/errors')
+
                             <div class="form-group">
                               <label>Descripción</label>
                              {!!Form::text('descripcion',null,['class'=>'form-control',

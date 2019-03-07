@@ -12,14 +12,15 @@
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
           <div class="card-header box-header">
               <strong>Estados</strong>
          </div>
                 <div class="card-body card-block">
                     {!!Form::open(['route'=>'estados.store', 'method'=>'POST','id'=>'formcrea'])!!}
-                            @include('includes/errors')
                             <div class="form-group">
                               <label>Descripción</label>
                              {!!Form::text('descripcion',Null,['class'=>'form-control',

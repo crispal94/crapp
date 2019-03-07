@@ -22,11 +22,15 @@ class GrupoUsuariosController extends Controller
      {
          $this->middleware('auth');
      }
-     
+
     public function index()
     {
         $grupos = GrupoUsuarios::all();
-        return view('grupousuarios.index',compact('grupos'));
+        $url = 'grupousuarios';
+        $modulo = '';
+        $nombre = 'Grupos de Trabajos';
+
+        return view('grupousuarios.index',compact('grupos','url','modulo','nombre'));
     }
 
     /**
@@ -37,7 +41,11 @@ class GrupoUsuariosController extends Controller
     public function create()
     {
         $usuarios = User::all();
-        return view('grupousuarios.create',compact('usuarios'));
+        $url = 'grupousuarios';
+        $modulo = '';
+        $nombre = 'Grupos de Trabajos';
+
+        return view('grupousuarios.create',compact('usuarios','url','modulo','nombre'));
     }
 
     /**
@@ -48,6 +56,7 @@ class GrupoUsuariosController extends Controller
      */
     public function store(Request $request)
     {
+      //dd($request);
       $data = $request->all();
       $rules = array(
           'descripcion'=>'required',
@@ -65,7 +74,7 @@ class GrupoUsuariosController extends Controller
            $input = array_filter($data,'strlen');
            $grupos->fill($input);
 
-           $lenusers = $request->lenusers;
+           /*$lenusers = $request->lenusers;
             $datousers=';';
             for ($i=0; $i < $lenusers; $i++) {
                 $contcheck = $i + 1;
@@ -75,9 +84,11 @@ class GrupoUsuariosController extends Controller
                     $id = $request->input($palabra);
                      $datousers.=$id.';';
                 }
-            }
+            }*/
+
+           //dd($datousers);
            $grupos->nickname = $request->lennickname;
-           $grupos->usuarios = $datousers;
+           $grupos->usuarios = $request->lenid;
            $grupos->save();
            Session::flash('message','Registro creado correctamente');
            return redirect()->action('GrupoUsuariosController@index');
@@ -114,7 +125,11 @@ class GrupoUsuariosController extends Controller
       foreach ($arrayidusers as $key => $value) {
           array_push($arrauidn, $value);
       }
-      return view('grupousuarios.edit',compact('usuarios','grupo','arrauidn'));
+      $url = 'grupousuarios';
+      $modulo = '';
+      $nombre = 'Grupos de Trabajos';
+
+      return view('grupousuarios.edit',compact('usuarios','grupo','arrauidn','url','modulo','nombre'));
     }
 
     /**
@@ -126,6 +141,7 @@ class GrupoUsuariosController extends Controller
      */
     public function update(Request $request, $id)
     {
+      //dd($request);
       $data = $request->all();
       $rules = array(
           'descripcion'=>'required',
@@ -143,7 +159,7 @@ class GrupoUsuariosController extends Controller
            $input = array_filter($data,'strlen');
            $grupos->fill($input);
 
-           $lenusers = $request->lenusers;
+           /*$lenusers = $request->lenusers;
             $datousers=';';
             for ($i=0; $i < $lenusers; $i++) {
                 $contcheck = $i + 1;
@@ -153,9 +169,9 @@ class GrupoUsuariosController extends Controller
                     $id = $request->input($palabra);
                      $datousers.=$id.';';
                 }
-            }
+            }*/
            $grupos->nickname = $request->lennickname;
-           $grupos->usuarios = $datousers;
+           $grupos->usuarios = $request->lenid;
            $grupos->save();
            Session::flash('message','Registro editado correctamente');
            return redirect()->action('GrupoUsuariosController@index');

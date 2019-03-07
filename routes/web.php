@@ -57,6 +57,16 @@ Route::get('usuarios/{id}/delete', [
     'uses' => 'UsuariosController@destroy',
 ]);
 
+Route::get('perfil/{id}/editar', [
+    'as' => 'profile.edicion',
+    'uses' => 'UsuariosController@perfil',
+]);
+
+Route::put('perfil/{id}/editar', [
+    'as' => 'profile.edicionpost',
+    'uses' => 'UsuariosController@perfilpost',
+]);
+
 //ROLES
 Route::resource('roles','RolesController');
 Route::get('roles/{id}/delete', [
@@ -119,6 +129,7 @@ Route::get('proyectos/{id}/edit/getrecursos','ProyectosController@getrecursos');
 Route::get('actividades','ActividadesController@index');
 Route::get('actividades/getproyectos','ActividadesController@getproyectos');
 Route::post('actividades/ingresaractividad','ActividadesController@ingresaractividad');
+Route::post('actividades/editaractividad','ActividadesController@editaractividad');
 
 
 //ACTIVIDADES - AVANCES - SEGUIMIENTO

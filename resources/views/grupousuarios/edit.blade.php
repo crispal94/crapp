@@ -7,14 +7,16 @@
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
           <div class="card-header box-header">
               <strong>Grupos de Trabajos</strong>
          </div>
                 <div class="card-body card-block">
                     {!!Form::model($grupo,['route'=> ['grupousuarios.update',$grupo->id],'method'=>'PUT','onsubmit'=>'return validar()'])!!}
-                            @include('includes/errors')
+
                                      <div class="form-group">
                                         <label>Nombre</label>
                                        {!!Form::text('descripcion',Null,['class'=>'form-control',
@@ -32,7 +34,7 @@
                                 <input type="checkbox" id="ntodos">
                                 Desmarcar Todos
                               </label>
-                                   <table id="usuarios" class="table table-striped table-bordered nowrap">
+                                   <table id="usuarios" class="table table-striped table-bordered nowrap" style="width:100%">
                                       <thead>
                                           <tr>
                                             <th></th>
@@ -40,6 +42,8 @@
                                             <th>Nombre</th>
                                             <th>Nickname</th>
                                             <th>Correo</th>
+                                            <th>Rol</th>
+
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -52,6 +56,7 @@
                                             <td>{{$us->name}}</td>
                                             <td>{{$us->nickname }}</td>
                                             <td>{{$us->email}}</td>
+                                            <td>{{ $us->roltipo->nombre }}</td>
                                           </tr>
                                           <?php ++$contador; ?>
                                           @endforeach
@@ -63,6 +68,7 @@
                                             <th>Nombre</th>
                                             <th>Nickname</th>
                                             <th>Correo</th>
+                                            <th>Rol</th>
                                           </tr>
                                       </tfoot>
                                    </table>
@@ -71,6 +77,7 @@
                           </div>
                     </div>
                               <input type="hidden" name="lenusers" id="lenusers">
+                              <input type="hidden" name="lenid" id="lenid">
                               <input type="hidden" name="lennickname" id="lennickname">
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Grabar</button>
@@ -95,7 +102,7 @@ $('#usuarios').DataTable({
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
                 "infoEmpty": "No hay registros",
                 "infoFiltered": "(filtrados de _MAX_ registros totales)",
-                "search": "búsQueda:",
+                "search": "búsqueda:",
                 "paginate": {
                     "first":      "First",
                     "last":       "Last",
@@ -105,7 +112,8 @@ $('#usuarios').DataTable({
             },
             // scrollY:        "500px",
              "ordering": false,
-             "pageLength": 100,
+             "scrollY": 200,
+             "scrollX": true,
             "order": [[ 1, "desc" ]],
         });
 
@@ -161,16 +169,19 @@ $('#usuarios').DataTable({
       $('#lenusers').val(len);
 
       var lnick = ';';
+      var lid = ';';
       table.$("input[id='cbox']").each(function(){
                if($(this).is(':checked')){
                 ++contador;
                 var $row = $(this).closest('tr');
                 var data = table.row($row,{filter:'applied'}).data();
                 lnick+=data[3]+';';
+                lid+=data[1]+';';
               }
             });
 
       $('#lennickname').val(lnick);
+      $('#lenid').val(lid);
 
       console.log(lnick);
 

@@ -15,14 +15,16 @@
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
           <div class="card-header box-header">
               <strong>Definición de Proyecto</strong>
          </div>
                 <div class="card-body card-block">
                     {!!Form::open(['route'=>'proyectos.store', 'method'=>'POST','id'=>'formcrea','onsubmit'=>'return validar()'])!!}
-                            @include('includes/errors')
+
                             <div class="form-group">
                               <label>Nombre</label>
                              {!!Form::text('nombre',Null,['class'=>'form-control',
@@ -31,13 +33,13 @@
                           <div class="form-group">
                             <label>Descripción</label>
                            {!!Form::text('descripcion',Null,['class'=>'form-control',
-                            'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombre'])!!}
+                            'placeholder'=>'Ingrese dato','maxlength'=>'10000','id'=>'nombre'])!!}
                         </div>
                           <div class="row form-group">
                                 <div class="col col-md-4">
                                   <label>Duración</label>
                                   {!!Form::text('duracion',Null,['class'=>'form-control',
-                                  'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombre'])!!}
+                                  'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'duracion'])!!}
                                 </div>
                                 <div class="col col-md-8">
                                   <div class="form-check-inline form-check toptiempo">
@@ -82,7 +84,7 @@
                         <label>Desea recibir notificaciones automáticas de actividades y avances?</label>
                         <div class="form-check-inline form-check">
                             <label for="inline-checkbox1" class="form-check-label ">
-                                <input type="checkbox" id="sinoti" name="notifica" value="s" class="form-check-input">Si
+                                <input type="checkbox" id="sinoti" name="notifica" value="s" class="form-check-input" checked>Si
                             </label>
                             <label for="inline-checkbox2" class="form-check-label ">
                                 <input type="checkbox" id="nonoti" name="notifica" value="n" class="form-check-input">No
@@ -101,6 +103,7 @@
 @section('js')
 <script type="text/javascript">
           $(function () {
+            $("#duracion").numeric(false);
             $('#datetimepicker4').datetimepicker({
                   format: 'YYYY-MM-DD HH:mm:ss',
                   allowInputToggle: true,

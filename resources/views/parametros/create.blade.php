@@ -7,14 +7,15 @@
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
           <div class="card-header box-header">
-              <strong>Parametros Referenciales</strong>
+              <strong>Parámetros Referenciales</strong>
          </div>
                 <div class="card-body card-block">
                       {!!Form::open(['route'=>'parametros.store','method'=>'POST'])!!}
-                            @include('includes/errors')
                             <div class="form-group">
                                   <label>Grupo</label>
                                   {!!Form::text('grupo',null,['class'=>'form-control',

@@ -19,6 +19,7 @@ use Mail;
 use App\Mail\NotificaAvance;
 use Bouncer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class AvancesController extends Controller
 {
@@ -40,7 +41,11 @@ class AvancesController extends Controller
       foreach($proyectos as $pro){
         $arrproy[$pro->id] = $pro->nombre;
       }
-      return view('avances.index',compact('arrproy'));
+      $url = 'avances';
+      $modulo = '';
+      $nombre = 'Avances';
+
+      return view('avances.index',compact('arrproy','url','modulo','nombre'));
     }
 
 
@@ -132,7 +137,13 @@ class AvancesController extends Controller
           $bloqueo = false;
         }
 
-        return view('avances.mostrar',compact('actividad','avances','estados','bloqueo'));
+        $url = URL::current(); //'avances';
+        $modulo = 'Avances';
+        $nombre = 'Seguimiento';
+
+
+
+        return view('avances.mostrar',compact('actividad','avances','estados','bloqueo','url','modulo','nombre'));
     }
 
     public function postavance($id,Request $request){
@@ -154,7 +165,7 @@ class AvancesController extends Controller
      }
 
        if($avance<=$cvalor){
-         return response()->json(['flag'=>1,'mensaje'=>'El valor porcentual del avance es menor al ultimo ingresado, por favor elija un estado mayor al último ingresado']);
+         return response()->json(['flag'=>1,'mensaje'=>'El valor porcentual del avance es menor al último ingresado, por favor elija un estado con un valor mayor al último avance ingresado']);
        }else{
          $secfinal = Avances::where('id_detalle',$id)->max('secuencial_avance');
          $nextsecuencial = $secfinal + 1;
@@ -173,6 +184,8 @@ class AvancesController extends Controller
          $usuariosupervisor = User::find($id_responsable);
          $usuarioactividad = User::find($idusactividad);
          $nsupervisor = $usuariosupervisor->name;
+         $emailsupervisor = $usuariosupervisor->email;
+         $emailactividad = $usuarioactividad->email;
          $nresponsable = $usuarioactividad->name;
          $estado = Estados::find($estado);
          $arregmail = [];
@@ -182,6 +195,7 @@ class AvancesController extends Controller
          array_push($arregmail,$estado->descripcion);
          array_push($arregmail,$segui->avance);
          array_push($arregmail,$segui->fechaavance);
+         array_push($arregmail,$emailactividad);
         // Mail::to('crispal94@hotmail.com')->send(new NotificaAvance($arregmail));
          if($segui->avance=='100%'){
            $actividad->activo = 0;
@@ -243,7 +257,7 @@ class AvancesController extends Controller
       if(($avance<=$vavanceant)&&($secavanceant>=1)&&($vavanceant=='20')||
       (($secavance<$maxsecuencial)&&($avance==$vavancemax))||
       (($secavance<$maxsecuencial)&&(($avance==100)&&($vavancemax<$avance)))){
-      return response()->json(['flag'=>1,'mensaje'=>'Inconsistencia al modificar el avance por favor corrija los errores']);
+      return response()->json(['flag'=>1,'mensaje'=>'Inconsistencia al modificar el avance, por favor corrija los errores']);
       }else{
       $valorant = $eavance->avance;
       $estadoant = $eavance->id_estado;
@@ -257,12 +271,15 @@ class AvancesController extends Controller
         $actividad->activo = 0;
 
       }
+      if($secavance==$maxsecuencial){
       $actividad->ultavance = $avance.'%';
       $actividad->fecha_ultavance = date("Y-m-d H:i:s");
+      }
       $actividad->save();
       $eavance->save();
 
       $novedades = new Novedades;
+      $novedades->id_cabecera = $id_cabecera;
       $novedades->id_avance = $idavance;
       $novedades->id_actividad = $id;
       $novedades->estado_nuevo = $eavance->avance;

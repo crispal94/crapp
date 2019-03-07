@@ -15,6 +15,8 @@ use App\User;
 use App\Mail\NotificaActividad;
 use Mail;
 use App\ParamReferenciales;
+use App\Prioridades;
+use App\TipoActividades;
 
 class ActividadesController extends Controller
 {
@@ -27,13 +29,28 @@ class ActividadesController extends Controller
     {
         //$proyectos = Proyectos::all();
         $proyectos = getRoleProyectoQuery();
+        $tipoactividades = TipoActividades::all();
+        $prioridades = Prioridades::all();
+
         $arrproy = ['N'=>'Ingrese Dato'];
         foreach($proyectos as $pro){
           $arrproy[$pro->id] = $pro->nombre;
         }
         $tiempo = ParamReferenciales::where('grupo','Proyecto')->where('clave','Tiempo')->orderBy('id', 'asc')->get();
 
-        return view('actividades.index',compact('arrproy','tiempo'));
+        $url = 'actividades';
+        $modulo = '';
+        $nombre = 'Actividades';
+
+        foreach($tipoactividades as $t){
+          $arrtipo[$t->id] = $t->descripcion;
+        }
+
+        foreach($prioridades as $p){
+          $arrprioridad[$p->id] = $p->descripcion;
+        }
+
+        return view('actividades.index',compact('arrproy','tiempo','url','modulo','nombre','arrtipo','arrprioridad'));
     }
 
     public function getproyectos(Request $request){
@@ -54,20 +71,34 @@ class ActividadesController extends Controller
       }
 
       $actividades = DB::select("
-      select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin, pt.valor
+      select det.id,det.nombre as actividad,ta.descripcion as tipoactividad, p.descripcion as prioridad, u.name as usuario,
+      det.id_refertiempo, det.id_prioridad,det.id_tipoactividad,det.id_responsable,
+      det.duracion, det.fechainicio, det.fechafin, pt.valor
       from det_actividad det
       inner join users u on (u.id = det.id_responsable)
+      left join prioridades p on (p.id = det.id_prioridad)
+      left join tipo_actividades ta on (ta.id = det.id_tipoactividad)
       left join param_referenciales pt on (pt.id = det.id_refertiempo)
       where det.id_cabecera = ? and det.deleted_at is null
       order by det.fechainicio asc",[$idpro]);
       $arreglotd = [];
       foreach($actividades as $act){
         $arr = [];
+        $botone = '<button class="btn btn-primary" id="editar">Editar</button>';
+        array_push($arr,$botone);
         array_push($arr,$act->actividad);
         array_push($arr,$act->usuario);
         array_push($arr,$act->duracion.' '.$act->valor.'(s)');
+        array_push($arr,$act->tipoactividad);
+        array_push($arr,$act->prioridad);
         array_push($arr,$act->fechainicio);
         array_push($arr,$act->fechafin);
+        array_push($arr,$act->id);
+        array_push($arr,$act->id_refertiempo);
+        array_push($arr,$act->id_prioridad);
+        array_push($arr,$act->id_tipoactividad);
+        array_push($arr,$act->duracion);
+        array_push($arr,$act->id_responsable);
         array_push($arreglotd,$arr);
       }
       if($tiporecurso=='gt'){
@@ -100,6 +131,8 @@ class ActividadesController extends Controller
         $tiporecurso = Input::get('tiporecurso');
         $idcabecera = Input::get('idcabecera');
         $nombreact = Input::get('nombreact');
+        $tipoactividad = Input::get('tipoactividad');
+        $prioridad = Input::get('prioridad');
         $duracionact = Input::get('duracionact');
         $fechainicio = Input::get('fechainicio');
         $tiempo = Input::get('tiempo');
@@ -108,26 +141,32 @@ class ActividadesController extends Controller
         $usuario = User::find($userid);
         $fechap = date("Y-m-d H:i:s", strtotime($fechainicio));
         $qtiempo = ParamReferenciales::find($tiempo);
+        $tiempomail = '';
         switch ($qtiempo->valor) {
           case 'Hora':
             $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." hour"));
+            $tiempomail = 'Hora(s)';
             break;
 
           case 'Día':
           $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." day"));
-            break;
+          $tiempomail = 'Día(s)';
+          break;
 
           case 'Semana':
           $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." week"));
-            break;
+          $tiempomail = 'Semana(s)';
+          break;
 
           case 'Mes':
           $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." month"));
-            break;
+          $tiempomail = 'Mes(es)';
+          break;
 
           case 'Año':
           $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." year"));
-            break;
+          $tiempomail = 'Año(s)';
+          break;
         }
 
         $ffinalproyecto = strtotime($proyecto->fechafin);
@@ -143,18 +182,32 @@ class ActividadesController extends Controller
               $actividad->id_cabecera = $idcabecera;
               $actividad->id_responsable = $v;
               $actividad->nombre = $nombreact;
+              $actividad->id_tipoactividad = $tipoactividad;
+              $actividad->id_prioridad = $prioridad;
               $actividad->fechainicio = $fechainicio;
               $actividad->duracion = $duracionact;
               $actividad->id_refertiempo = $tiempo;
               $actividad->fechafin = $fechapf;
+              $arregmail = [];
+              array_push($arregmail,$usuario->name);
+              array_push($arregmail,$proyecto->nombre);
+              array_push($arregmail,$actividad->nombre);
+              array_push($arregmail,$actividad->fechainicio);
+              array_push($arregmail,$actividad->duracion);
+              array_push($arregmail,$tiempomail);
+              Mail::to($usuario->email)->send(new NotificaActividad($arregmail));
               $actividad->save();
 
            }
 
            $actividades = DB::select("
-           select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin,det.fechafin,pt.valor
+           select det.id, det.nombre as actividad, u.name as usuario, ta.descripcion as tipoactividad,
+           det.id_refertiempo, det.id_prioridad,det.id_tipoactividad,det.id_responsable,
+           p.descripcion as prioridad ,det.duracion, det.fechainicio, det.fechafin,det.fechafin,pt.valor
            from det_actividad det
            inner join users u on (u.id = det.id_responsable)
+           left join prioridades p on (p.id = det.id_prioridad)
+           left join tipo_actividades ta on (ta.id = det.id_tipoactividad)
            left join param_referenciales pt on (pt.id = det.id_refertiempo)
            where det.id_cabecera = ? and det.deleted_at is null
            order by det.fechainicio asc",[$idcabecera]);
@@ -162,20 +215,32 @@ class ActividadesController extends Controller
            $arreglotd = [];
            foreach($actividades as $act){
              $arr = [];
+             $botone = '<button class="btn btn-primary" id="editar">Editar</button>';
+             array_push($arr,$botone);
              array_push($arr,$act->actividad);
              array_push($arr,$act->usuario);
+             array_push($arr,$act->tipoactividad);
+             array_push($arr,$act->prioridad);
              array_push($arr,$act->duracion.' '.$act->valor.'(s)');
              array_push($arr,$act->fechainicio);
              array_push($arr,$act->fechafin);
+             array_push($arr,$act->id);
+             array_push($arr,$act->id_refertiempo);
+             array_push($arr,$act->id_prioridad);
+             array_push($arr,$act->id_tipoactividad);
+             array_push($arr,$act->duracion);
+             array_push($arr,$act->id_responsable);
              array_push($arreglotd,$arr);
            }
 
-            return response()->json(['flag'=>2,'mensaje'=>'Actividad Ingresada y Sincronizada con éxito','detalle'=>$arreglotd]);
+            return response()->json(['flag'=>2,'mensaje'=>'Actividad ingresada y sincronizada con éxito','detalle'=>$arreglotd]);
         }else{
               $actividad = new Actividades;
               $actividad->id_cabecera = $idcabecera;
               $actividad->id_responsable = $userid;
               $actividad->nombre = $nombreact;
+              $actividad->id_tipoactividad = $tipoactividad;
+              $actividad->id_prioridad = $prioridad;
               $actividad->fechainicio = $fechainicio;
               $actividad->duracion = $duracionact;
               $actividad->id_refertiempo = $tiempo;
@@ -187,14 +252,18 @@ class ActividadesController extends Controller
               array_push($arregmail,$actividad->nombre);
               array_push($arregmail,$actividad->fechainicio);
               array_push($arregmail,$actividad->duracion);
-
-              //Mail::to('crispal94@hotmail.com')->send(new NotificaActividad($arregmail));
+              array_push($arregmail,$tiempomail);
+              Mail::to($usuario->email)->send(new NotificaActividad($arregmail));
               $actividad->save();
 
               $actividades = DB::select("
-              select det.nombre as actividad, u.name as usuario, det.duracion, det.fechainicio, det.fechafin,pt.valor
+              select det.id, det.nombre as actividad, u.name as usuario,ta.descripcion as tipoactividad, p.descripcion as prioridad,
+              det.id_refertiempo, det.id_prioridad,det.id_tipoactividad, det.id_responsable,
+              det.duracion, det.fechainicio, det.fechafin,pt.valor
               from det_actividad det
               inner join users u on (u.id = det.id_responsable)
+              left join prioridades p on (p.id = det.id_prioridad)
+              left join tipo_actividades ta on (ta.id = det.id_tipoactividad)
               left join param_referenciales pt on (pt.id = det.id_refertiempo)
               where det.id_cabecera = ? and det.deleted_at is null
               order by det.fechainicio asc",[$idcabecera]);
@@ -202,15 +271,186 @@ class ActividadesController extends Controller
               $arreglotd = [];
               foreach($actividades as $act){
                 $arr = [];
+                $botone = '<button class="btn btn-primary" id="editar">Editar</button>';
+                array_push($arr,$botone);
                 array_push($arr,$act->actividad);
                 array_push($arr,$act->usuario);
+                array_push($arr,$act->tipoactividad);
+                array_push($arr,$act->prioridad);
                 array_push($arr,$act->duracion.' '.$act->valor.'(s)');
                 array_push($arr,$act->fechainicio);
                 array_push($arr,$act->fechafin);
+                array_push($arr,$act->id);
+                array_push($arr,$act->id_refertiempo);
+                array_push($arr,$act->id_prioridad);
+                array_push($arr,$act->id_tipoactividad);
+                array_push($arr,$act->duracion);
+                array_push($arr,$act->id_responsable);
                 array_push($arreglotd,$arr);
               }
 
-              return response()->json(['flag'=>2,'mensaje'=>'Actividad Ingresada y Sincronizada con éxito','detalle'=>$arreglotd]);
+              return response()->json(['flag'=>2,'mensaje'=>'Actividad ingresada y sincronizada con éxito','detalle'=>$arreglotd]);
+          }
+       }
+    }
+
+
+    public function editaractividad(Request $request){
+        $idactividad = Input::get('idactividad');
+        $tiporecurso = Input::get('tiporecurso');
+        $idcabecera = Input::get('idcabecera');
+        $nombreact = Input::get('nombreact');
+        $tipoactividad = Input::get('tipoactividad');
+        $prioridad = Input::get('prioridad');
+        $duracionact = Input::get('duracionact');
+        $fechainicio = Input::get('fechainicio');
+        $tiempo = Input::get('tiempo');
+        $userid = Input::get('userid');
+        $proyecto = Proyectos::find($idcabecera);
+        $usuario = User::find($userid);
+        $fechap = date("Y-m-d H:i:s", strtotime($fechainicio));
+        $qtiempo = ParamReferenciales::find($tiempo);
+        $tiempomail = '';
+        switch ($qtiempo->valor) {
+          case 'Hora':
+            $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." hour"));
+            $tiempomail = 'Hora(s)';
+            break;
+
+          case 'Día':
+          $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." day"));
+          $tiempomail = 'Día(s)';
+          break;
+
+          case 'Semana':
+          $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." week"));
+          $tiempomail = 'Semana(s)';
+          break;
+
+          case 'Mes':
+          $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." month"));
+          $tiempomail = 'Mes(es)';
+          break;
+
+          case 'Año':
+          $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$duracionact." year"));
+          $tiempomail = 'Año(s)';
+          break;
+        }
+
+        $ffinalproyecto = strtotime($proyecto->fechafin);
+
+        if(strtotime($fechapf)>$ffinalproyecto){
+            return response()->json(['flag'=>1,'mensaje'=>'La fecha final de esta actividad supera la fecha final del proyecto, por favor cambie la duración de la actividad']);
+        }else{
+        if($tiporecurso=='gt'){
+          $ids = Input::get('ids');
+           $jids = json_decode($ids);
+           foreach($jids->indiceid as $k=>$v){
+              $actividad = Actividades::find($idactividad);
+              $actividad->id_cabecera = $idcabecera;
+              $actividad->id_responsable = $v;
+              $actividad->nombre = $nombreact;
+              $actividad->id_tipoactividad = $tipoactividad;
+              $actividad->id_prioridad = $prioridad;
+              $actividad->fechainicio = $fechainicio;
+              $actividad->duracion = $duracionact;
+              $actividad->id_refertiempo = $tiempo;
+              $actividad->fechafin = $fechapf;
+              $actividad->save();
+
+           }
+
+           $actividades = DB::select("
+           select det.id, det.nombre as actividad, u.name as usuario, ta.descripcion as tipoactividad,
+           det.id_refertiempo, det.id_prioridad,det.id_tipoactividad,det.id_responsable,
+           p.descripcion as prioridad ,det.duracion, det.fechainicio, det.fechafin,det.fechafin,pt.valor
+           from det_actividad det
+           inner join users u on (u.id = det.id_responsable)
+           left join prioridades p on (p.id = det.id_prioridad)
+           left join tipo_actividades ta on (ta.id = det.id_tipoactividad)
+           left join param_referenciales pt on (pt.id = det.id_refertiempo)
+           where det.id_cabecera = ? and det.deleted_at is null
+           order by det.fechainicio asc",[$idcabecera]);
+
+           $arreglotd = [];
+           foreach($actividades as $act){
+             $arr = [];
+             $botone = '<button class="btn btn-primary" id="editar">Editar</button>';
+             array_push($arr,$botone);
+             array_push($arr,$act->actividad);
+             array_push($arr,$act->usuario);
+             array_push($arr,$act->tipoactividad);
+             array_push($arr,$act->prioridad);
+             array_push($arr,$act->duracion.' '.$act->valor.'(s)');
+             array_push($arr,$act->fechainicio);
+             array_push($arr,$act->fechafin);
+             array_push($arr,$act->id);
+             array_push($arr,$act->id_refertiempo);
+             array_push($arr,$act->id_prioridad);
+             array_push($arr,$act->id_tipoactividad);
+             array_push($arr,$act->duracion);
+             array_push($arr,$act->id_responsable);
+             array_push($arreglotd,$arr);
+           }
+
+            return response()->json(['flag'=>2,'mensaje'=>'Actividad editada y sincronizada con éxito','detalle'=>$arreglotd]);
+        }else{
+              $actividad = Actividades::find($idactividad);
+              $actividad->id_cabecera = $idcabecera;
+              $actividad->id_responsable = $userid;
+              $actividad->nombre = $nombreact;
+              $actividad->id_tipoactividad = $tipoactividad;
+              $actividad->id_prioridad = $prioridad;
+              $actividad->fechainicio = $fechainicio;
+              $actividad->duracion = $duracionact;
+              $actividad->id_refertiempo = $tiempo;
+              $actividad->fechafin = $fechapf;
+              $actividad->activo = 1;
+              /*$arregmail = [];
+              array_push($arregmail,$usuario->name);
+              array_push($arregmail,$proyecto->nombre);
+              array_push($arregmail,$actividad->nombre);
+              array_push($arregmail,$actividad->fechainicio);
+              array_push($arregmail,$actividad->duracion);
+              array_push($arregmail,$tiempomail);
+              Mail::to($usuario->email)->send(new NotificaActividad($arregmail));*/
+              $actividad->save();
+
+              $actividades = DB::select("
+              select det.id, det.nombre as actividad, u.name as usuario,ta.descripcion as tipoactividad,
+              det.id_refertiempo, det.id_prioridad,det.id_tipoactividad,det.id_responsable,
+              p.descripcion as prioridad, det.duracion, det.fechainicio, det.fechafin,pt.valor
+              from det_actividad det
+              inner join users u on (u.id = det.id_responsable)
+              left join prioridades p on (p.id = det.id_prioridad)
+              left join tipo_actividades ta on (ta.id = det.id_tipoactividad)
+              left join param_referenciales pt on (pt.id = det.id_refertiempo)
+              where det.id_cabecera = ? and det.deleted_at is null
+              order by det.fechainicio asc",[$idcabecera]);
+
+              $arreglotd = [];
+              foreach($actividades as $act){
+                $arr = [];
+                $botone = '<button class="btn btn-primary" id="editar">Editar</button>';
+                array_push($arr,$botone);
+                array_push($arr,$act->actividad);
+                array_push($arr,$act->usuario);
+                array_push($arr,$act->tipoactividad);
+                array_push($arr,$act->prioridad);
+                array_push($arr,$act->duracion.' '.$act->valor.'(s)');
+                array_push($arr,$act->fechainicio);
+                array_push($arr,$act->fechafin);
+                array_push($arr,$act->id);
+                array_push($arr,$act->id_refertiempo);
+                array_push($arr,$act->id_prioridad);
+                array_push($arr,$act->id_tipoactividad);
+                array_push($arr,$act->duracion);
+                array_push($arr,$act->id_responsable);
+                array_push($arreglotd,$arr);
+              }
+
+              return response()->json(['flag'=>2,'mensaje'=>'Actividad editada y sincronizada con éxito','detalle'=>$arreglotd]);
           }
        }
     }

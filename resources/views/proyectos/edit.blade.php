@@ -1,20 +1,30 @@
 @extends('app')
 @section('css')
   <style type="text/css">
+  .toptiempo{
+      padding-top: 6%;
+  }
 
+  @media (max-width: 425px) {
+    .toptiempo{
+        padding-top: 5%;
+    }
+  }
   </style>
 @endsection
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
           <div class="card-header box-header">
               <strong>Definición de Proyecto</strong>
          </div>
                 <div class="card-body card-block">
                   {!!Form::model($proyecto,['route'=> ['proyectos.update',$proyecto->id],'method'=>'PUT'])!!}
-                            @include('includes/errors')
+
                             <div class="form-group">
                               <label>Nombre</label>
                              {!!Form::text('nombre',Null,['class'=>'form-control',
@@ -25,11 +35,31 @@
                            {!!Form::text('descripcion',Null,['class'=>'form-control',
                             'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombre'])!!}
                         </div>
-                        <div class="form-group">
-                          <label>Duración (semanas)</label>
-                         {!!Form::text('duracion',Null,['class'=>'form-control',
-                          'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombre'])!!}
-                      </div>
+                        <div class="row form-group">
+                              <div class="col col-md-4">
+                                <label>Duración</label>
+                                {!!Form::text('duracion',Null,['class'=>'form-control',
+                                'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'duracion'])!!}
+                              </div>
+                              <div class="col col-md-8">
+                                <div class="form-check-inline form-check toptiempo">
+                                  @php
+                                    $cont = 0;
+                                  @endphp
+                                    @foreach ($tiempo as $t)
+                                     @php ++$cont; @endphp
+                                     <label for="inline-radio1" class="form-check-label ">
+                                         @if ($proyecto->id_refertiempo==$t->id)
+                                           <input type="radio" id="tiempo{{ $cont }}" name="tiempo" value="{{ $t->id }}" class="form-check-input" checked>{{ $t->valor }}
+                                         @else
+                                           <input type="radio" id="tiempo{{ $cont }}" name="tiempo" value="{{ $t->id }}" class="form-check-input">{{ $t->valor }}
+                                         @endif
+
+                                     </label>
+                                    @endforeach
+                               </div>
+                              </div>
+                        </div>
                             <div class="form-group">
                               <label>Fecha Inicio</label>
                               <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
@@ -76,12 +106,13 @@
 @section('js')
 <script type="text/javascript">
           $(function () {
+            $("#duracion").numeric(false);
             $('#datetimepicker4').datetimepicker({
-                  format: 'YYYY-MM-DD',
+                  format: 'YYYY-MM-DD HH:mm:ss',
                   allowInputToggle: true,
                   widgetPositioning: {
                        horizontal: 'left',
-                       vertical: 'bottom'
+                       vertical: 'top'
                    },
                    defaultDate: new Date()
               });

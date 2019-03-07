@@ -20,11 +20,15 @@ class PrioridadesController extends Controller
      {
          $this->middleware('auth');
      }
-     
+
     public function index()
     {
         $prioridades = Prioridades::all();
-        return view('prioridades.index',compact('prioridades'));
+        $url = 'prioridades';
+        $modulo = 'Generales';
+        $nombre = 'Prioridades';
+
+        return view('prioridades.index',compact('prioridades','url','modulo','nombre'));
     }
 
     /**
@@ -34,7 +38,11 @@ class PrioridadesController extends Controller
      */
     public function create()
     {
-        return view ('prioridades.create');
+      $url = 'prioridades';
+        $modulo = 'Generales';
+        $nombre = 'Prioridades';
+
+        return view ('prioridades.create',compact('url','modulo','nombre'));
     }
 
     /**
@@ -48,10 +56,7 @@ class PrioridadesController extends Controller
       $data = $request->all();
       $rules = array(
       'descripcion' => 'required',
-      'peso' => 'required',
-      'tiempo_limite' => 'required',
-      'tiempo_alerta' => 'required',
-      'tiempo_escala' => 'required');
+      'peso' => 'required');
 
        $v = Validator::make($data,$rules);
        if($v->fails())
@@ -90,7 +95,11 @@ class PrioridadesController extends Controller
     public function edit($id)
     {
         $prioridad = Prioridades::find($id);
-        return view('prioridades.edit',compact('prioridad'));
+        $url = 'prioridades';
+        $modulo = 'Generales';
+        $nombre = 'Prioridades';
+
+        return view('prioridades.edit',compact('prioridad','url','modulo','nombre'));
     }
 
     /**
@@ -105,10 +114,7 @@ class PrioridadesController extends Controller
       $data = $request->all();
       $rules = array(
       'descripcion' => 'required',
-      'peso' => 'required',
-      'tiempo_limite' => 'required',
-      'tiempo_alerta' => 'required',
-      'tiempo_escala' => 'required');
+      'peso' => 'required');
 
        $v = Validator::make($data,$rules);
        if($v->fails())

@@ -25,6 +25,9 @@
                     @include('includes/notificacion')
                   </div>
                   <section class="card">
+                    <div class="card-header box-header">
+                        <strong>Proyectos</strong>
+                   </div>
                     <div class="card-body text-secondary">
                       <a href="{{ route('proyectos.create', null) }}">
                         <button style="margin-bottom:10px;" class="au-btn au-btn-icon au-btn--green au-btn--small">
@@ -65,7 +68,7 @@
                               @break
 
                           @case('azul')
-                              <span class="badge badge-warning">Estable</span>
+                              <span class="badge badge-primary">Estable</span>
                               @break
 
                           @default

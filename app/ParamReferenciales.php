@@ -14,4 +14,17 @@ class ParamReferenciales extends Model
   protected $fillable = [
       'grupo','clave','valor','descripcion'
   ];
+
+  public static function valor($grupo, $clave)
+	{
+		$registro = self::where('grupo', $grupo)->where('clave', $clave)->first();
+
+		if ($registro)
+		{
+			return $registro->valor;
+		} else{
+			return "";
+		}
+
+	}
 }

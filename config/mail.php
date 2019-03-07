@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.postmarkapp.com'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 2525),
+    'port' => env('MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@pure.ec'),
-        'name' => env('MAIL_FROM_NAME', 'Christian'),
+        'address' => env('MAIL_FROM_ADDRESS', 'actividades@ucsgrtv.com'),
+        'name' => env('MAIL_FROM_NAME', 'UCSG - Radio y Televisión'),
     ],
 
     /*

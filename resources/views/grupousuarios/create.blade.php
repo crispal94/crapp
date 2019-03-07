@@ -20,14 +20,16 @@ margin-right: 4px;
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
           <div class="card-header box-header">
               <strong>Grupos de Trabajos</strong>
          </div>
                 <div class="card-body card-block">
                     {!!Form::open(['route'=>'grupousuarios.store', 'method'=>'POST','id'=>'formcrea','onsubmit'=>'return validar()'])!!}
-                            @include('includes/errors')
+
                                      <div class="form-group">
                                         <label>Nombre</label>
                                        {!!Form::text('descripcion',Null,['class'=>'form-control',
@@ -45,7 +47,7 @@ margin-right: 4px;
                                 <input type="checkbox" id="ntodos">
                                 Desmarcar Todos
                               </label>
-                                   <table id="usuarios" class="table table-striped table-bordered nowrap">
+                                   <table id="usuarios" class="table table-striped table-bordered nowrap" style="width:100%">
                                       <thead>
                                           <tr>
                                             <th></th>
@@ -53,6 +55,7 @@ margin-right: 4px;
                                             <th>Nombre</th>
                                             <th>Nickname</th>
                                             <th>Correo</th>
+                                            <th>Rol</th>
                                           </tr>
                                         </thead>
                                         <tbody>
@@ -65,6 +68,7 @@ margin-right: 4px;
                                             <td>{{$us->name}}</td>
                                             <td>{{$us->nickname }}</td>
                                             <td>{{$us->email}}</td>
+                                            <td>{{ $us->roltipo->nombre }}</td>
                                           </tr>
                                           <?php ++$contador; ?>
                                           @endforeach
@@ -76,6 +80,7 @@ margin-right: 4px;
                                             <th>Nombre</th>
                                             <th>Nickname</th>
                                             <th>Correo</th>
+                                            <th>Rol</th>
                                           </tr>
                                       </tfoot>
                                    </table>
@@ -85,6 +90,7 @@ margin-right: 4px;
                     </div>
                               <input type="hidden" name="lenusers" id="lenusers">
                               <input type="hidden" name="lennickname" id="lennickname">
+                              <input type="hidden" name="lenid" id="lenid">
                                     <div class="box-footer">
                                         <button type="submit" class="btn btn-primary">Grabar</button>
                                     </div>
@@ -108,7 +114,7 @@ $('#usuarios').DataTable({
                 "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
                 "infoEmpty": "No hay registros",
                 "infoFiltered": "(filtrados de _MAX_ registros totales)",
-                "search": "búsQueda:",
+                "search": "búsqueda:",
                 "paginate": {
                     "first":      "First",
                     "last":       "Last",
@@ -161,16 +167,19 @@ $('#usuarios').DataTable({
       $('#lenusers').val(len);
 
       var lnick = ';';
+      var lid = ';';
       table.$("input[id='cbox']").each(function(){
                if($(this).is(':checked')){
                 ++contador;
                 var $row = $(this).closest('tr');
                 var data = table.row($row,{filter:'applied'}).data();
+                lid+=data[1]+';';
                 lnick+=data[3]+';';
               }
             });
 
       $('#lennickname').val(lnick);
+      $('#lenid').val(lid);
 
       console.log(lnick);
 

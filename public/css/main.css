@@ -12,7 +12,7 @@
 }
 header {
   padding: 10px 0;
-  margin-bottom: 30px;
+  margin-bottom: 12px;
 }
 
 #logo {
@@ -21,7 +21,7 @@ header {
 }
 
 #logo img {
-  width: 90px;
+  width: 140px;
 }
 
 h1 {
@@ -39,6 +39,8 @@ h2,h3{
   color: black;
   text-align: center;
   margin-bottom: 30px;
+  border-top: 1px solid  #5D6975;
+  border-bottom: 1px solid  #5D6975;
 }
 
 /*h1,h2,h3 {

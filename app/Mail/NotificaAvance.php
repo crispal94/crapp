@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\ParamReferenciales;
 
 class NotificaAvance extends Mailable
 {
@@ -30,6 +31,10 @@ class NotificaAvance extends Mailable
      */
     public function build()
     {
-        return $this->view('email.avances')->subject('Registro de avances');
+        $asunto = ParamReferenciales::valor('Correo','Asunto-Avances');
+        $cc = ParamReferenciales::valor('Correo','Email-Administrador');
+        return $this->view('email.avances')
+        ->subject($asunto)
+        ->cc($cc,$this->data[6]);
     }
 }

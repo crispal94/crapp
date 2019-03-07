@@ -47,7 +47,7 @@ function getAvanceProyecto($id){
 
   if(count($actividades)!=0){
   $promedio = $acu / count($actividades);
-  return $promedio.'%';
+  return round($promedio).'%';
   }else{
    return '0%';
   }
@@ -123,7 +123,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 minute"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
       }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
         if($actividad->ultavance>=$acu){
@@ -144,7 +146,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 hour"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -171,7 +175,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 hour"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
       }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -193,7 +199,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 day"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -219,7 +227,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 day"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -241,7 +251,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 week"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -267,7 +279,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 week"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -289,7 +303,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 month"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -315,7 +331,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 month"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -337,7 +355,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 year"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -456,7 +476,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 minute"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
       }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
         if($actividad->ultavance>=$acu){
@@ -477,7 +499,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 hour"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -503,7 +527,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 hour"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -525,7 +551,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 day"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -551,7 +579,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 day"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -573,7 +603,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 week"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -599,7 +631,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 week"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -621,7 +655,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 month"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -647,7 +683,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 month"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -669,7 +707,9 @@ foreach ($actividades as $actividad) {
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 year"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -788,7 +828,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 minute"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
         if($actividad->ultavance>=$acu){
@@ -809,7 +851,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 hour"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -835,7 +879,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 hour"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -857,7 +903,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 day"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -883,7 +931,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 day"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
         if($actividad->ultavance>=$acu){
@@ -904,7 +954,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 week"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -930,7 +982,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 week"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin&&$actividad->ultavance!='100%'){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -952,7 +1006,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 month"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){
@@ -978,7 +1034,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 month"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          //dd($acu);
@@ -1000,7 +1058,9 @@ function getEstadoActividad($id){
      for ($i=0; $i < $duracion ; $i++) {
        $tmp = [];
        $fechafins = date("Y-m-d H:i:s",strtotime($fechainicio."+ 1 year"));
-       if($fechahoy>$fechafin){
+       if($actividad->ultavance=='100%'){
+         $color = 'azul';
+       }else if($fechahoy>$fechafin){
          $color = 'rojo';
        }else if(($fechahoy>=$fechainicio)&&($fechahoy<=$fechafins)){
          if($actividad->ultavance>=$acu){

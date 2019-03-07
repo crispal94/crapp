@@ -1,20 +1,22 @@
 @extends('app')
 @section('css')
-  <style type="text/css">
 
-  </style>
 @endsection
 @section('content')
   <div class="row">
     <div class="col-md-12">
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
+
 
       <div class="card">
-                                    <div class="card-header">
+                                    <div class="card-header box-header">
                                         <strong>Usuarios</strong>
                                    </div>
-                                    <div class="card-body card-block">
+                                    <div class="card-body text-secondary">
                                       {!!Form::open(['route'=>'usuarios.store','method'=>'POST'])!!}
-        @include('includes/errors')
+
         <div class="form-group">
               <label>Nombre</label>
               {!!Form::text('name',null,['class'=>'form-control',

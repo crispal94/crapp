@@ -20,11 +20,14 @@ class TipoActividadesController extends Controller
      {
          $this->middleware('auth');
      }
-     
+
     public function index()
     {
+      $url = 'tipoactividades';
+        $modulo = 'Generales';
+        $nombre = 'Tipo de Actividades';
         $tactividades = TipoActividades::all();
-        return view('tipoactividades.index',compact('tactividades'));
+        return view('tipoactividades.index',compact('tactividades','url','modulo','nombre'));
     }
 
     /**
@@ -34,6 +37,9 @@ class TipoActividadesController extends Controller
      */
     public function create()
     {
+      $url = 'tipoactividades';
+      $modulo = 'Generales';
+      $nombre = 'Tipo de Actividades';
         $referencia = DB::select("select id, valor from param_referenciales where grupo = 'General-Actividades' and clave = 'Tipo'
         and deleted_at is null");
 
@@ -42,7 +48,7 @@ class TipoActividadesController extends Controller
             $arefer[$refer->id] = $refer->valor;
         }
 
-        return view('TipoActividades.create',compact('arefer'));
+        return view('TipoActividades.create',compact('arefer','url','modulo','nombre'));
     }
 
     /**
@@ -93,6 +99,10 @@ class TipoActividadesController extends Controller
      */
     public function edit($id)
     {
+      $url = 'tipoactividades';
+      $modulo = 'Generales';
+      $nombre = 'Tipo de Actividades';
+
       $referencia = DB::select("select id, valor from param_referenciales where grupo = 'General-Actividades' and clave = 'Tipo'
       and deleted_at is null");
 
@@ -103,7 +113,7 @@ class TipoActividadesController extends Controller
 
       $tactividad = TipoActividades::find($id);
 
-      return view('tipoactividades.edit',compact('arefer','tactividad'));
+      return view('tipoactividades.edit',compact('arefer','tactividad','url','modulo','nombre'));
     }
 
     /**

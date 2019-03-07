@@ -21,11 +21,14 @@ class ParamReferencialesController extends Controller
      {
          $this->middleware('auth');
      }
-     
+
     public function index()
     {
         $parametros = ParamReferenciales::all();
-        return view('parametros.index',compact('parametros'));
+        $url = 'parametros';
+        $modulo = 'Generales';
+        $nombre = 'Parámetros';
+        return view('parametros.index',compact('parametros','url','modulo','nombre'));
     }
 
     /**
@@ -35,7 +38,11 @@ class ParamReferencialesController extends Controller
      */
     public function create()
     {
-        return view('parametros.create');
+      $url = 'parametros';
+      $modulo = 'Generales';
+      $nombre = 'Parámetros';
+
+        return view('parametros.create',compact('url','modulo','nombre'));
     }
 
     /**
@@ -90,7 +97,10 @@ class ParamReferencialesController extends Controller
     public function edit($id)
     {
         $parametro = ParamReferenciales::find($id);
-        return view('parametros.edit',compact('parametro'));
+        $url = 'parametros';
+        $modulo = 'Generales';
+        $nombre = 'Parámetros';
+        return view('parametros.edit',compact('parametro','url','modulo','nombre'));
     }
 
     /**

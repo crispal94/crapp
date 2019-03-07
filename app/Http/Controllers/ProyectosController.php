@@ -33,8 +33,10 @@ class ProyectosController extends Controller
         left join grupos_trabajos gt on (gt.id = cab.id_grupo)
         left join param_referenciales pt on (pt.id = cab.id_refertiempo)
         where cab.deleted_at is null and cab.activo = 1");
-
-        return view('proyectos.index',compact('proyectos'));
+        $url = 'proyectos';
+        $modulo = '';
+        $nombre = 'Proyectos';
+        return view('proyectos.index',compact('proyectos','url','modulo','nombre'));
     }
 
     /**
@@ -48,7 +50,7 @@ class ProyectosController extends Controller
         from users u
         inner join roles_tipo r on (r.id = u.id_roltipo)
         inner join roles ru on (ru.id = r.id_roles)
-        where ru.title = 'Supervisor'");
+        where ru.title = 'Supervisor' or ru.title ='Administrador'");
 
         $arrsupervisores = [];
 
@@ -63,8 +65,11 @@ class ProyectosController extends Controller
         foreach($tiempo as $t){
           $arrtiempo[$t->id] = $t->valor;
         }*/
+        $url = 'proyectos';
+        $modulo = '';
+        $nombre = 'Proyectos';
 
-        return view('proyectos.create',compact('arrsupervisores','tiempo'));
+        return view('proyectos.create',compact('arrsupervisores','tiempo','url','modulo','nombre'));
     }
 
     public function getrecursos(Request $request){
@@ -169,25 +174,31 @@ class ProyectosController extends Controller
                $proyecto->activo = 1;
                $fechap = date("Y-m-d H:i:s", strtotime($request->input('fechainicio')));
                $qtiempo = ParamReferenciales::find($data['tiempo']);
+               $tiempomail = '';
                switch ($qtiempo->valor) {
                  case 'Hora':
                    $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." hour"));
+                   $tiempomail = 'Hora(s)';
                    break;
 
                  case 'Día':
                  $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." day"));
+                    $tiempomail = 'Día(s)';
                    break;
 
                  case 'Semana':
                  $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." week"));
+                 $tiempomail = 'Semana(s)';
                    break;
 
                  case 'Mes':
                  $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." month"));
+                 $tiempomail = 'Mes(es)';
                    break;
 
                  case 'Año':
                  $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." year"));
+                 $tiempomail = 'Año(s)';
                    break;
                }
 
@@ -209,7 +220,8 @@ class ProyectosController extends Controller
                  array_push($arregmail,$data['descripcion']);
                  array_push($arregmail,$data['fechainicio']);
                  array_push($arregmail,$data['duracion']);
-                // Mail::to('crispal94@hotmail.com')->send(new NotificaProyecto($arregmail));
+                 array_push($arregmail,$tiempomail);
+                 Mail::to($usuario->email)->send(new NotificaProyecto($arregmail));
                }
                if($data['op_recursos']=='u'){
                  $proyecto->id_user = $data['v_recursos'];
@@ -247,7 +259,7 @@ class ProyectosController extends Controller
         from users u
         inner join roles_tipo r on (r.id = u.id_roltipo)
         inner join roles ru on (ru.id = r.id_roles)
-        where ru.title = 'Supervisor'");
+        where ru.title = 'Supervisor' or ru.title ='Administrador'");
 
         $arrsupervisores = [];
 
@@ -257,6 +269,7 @@ class ProyectosController extends Controller
 
         $vrecur = $proyecto->tipo_recurso;
         $arrgrecur = [];
+        $tiempo = ParamReferenciales::where('grupo','Proyecto')->where('clave','Tiempo')->get();
         if($vrecur=='u'){
            $query = DB::select("select u.id as id, u.name as usuario
            from users u
@@ -275,7 +288,11 @@ class ProyectosController extends Controller
              $rselect = $proyecto->id_grupo;
            }
       //  dd($arrgrecur);
-        return view('proyectos.edit',compact('arrsupervisores','proyecto','arrgrecur','rselect'));
+      $url = 'proyectos';
+      $modulo = '';
+      $nombre = 'Proyectos';
+
+        return view('proyectos.edit',compact('arrsupervisores','proyecto','arrgrecur','rselect','tiempo','url','modulo','nombre'));
 
     }
 
@@ -308,8 +325,32 @@ class ProyectosController extends Controller
            $proyecto->descripcion = $data['descripcion'];
            $proyecto->duracion = $data['duracion'];
            $proyecto->fechainicio = $data['fechainicio'];
+           $proyecto->id_refertiempo = $data['tiempo'];
            $fechap = date("Y-m-d", strtotime($request->input('fechainicio')));
-           $fechapf = date("Y-m-d",strtotime($fechap."+ ".$request->input('duracion')." week"));
+           $fechap = date("Y-m-d H:i:s", strtotime($request->input('fechainicio')));
+           $qtiempo = ParamReferenciales::find($data['tiempo']);
+           switch ($qtiempo->valor) {
+             case 'Hora':
+               $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." hour"));
+               break;
+
+             case 'Día':
+             $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." day"));
+               break;
+
+             case 'Semana':
+             $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." week"));
+               break;
+
+             case 'Mes':
+             $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." month"));
+               break;
+
+             case 'Año':
+             $fechapf = date("Y-m-d H:i:s",strtotime($fechap."+ ".$data['duracion']." year"));
+               break;
+           }
+           //$fechapf = date("Y-m-d",strtotime($fechap."+ ".$request->input('duracion')." week"));
            $proyecto->fechafin = $fechapf;
            $proyecto->id_responsable  = $data['supervisores'];
            if($data['op_recursos']=='u'){

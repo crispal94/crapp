@@ -40,6 +40,12 @@ Notes:	decreasing heading by 0.4em with every subsequent heading level
 /*                   GENERIC                           */
 /*-----------------------------------------------------*/
 /* ----- Normalize ----- */
+
+.div-pad{
+  padding-top: 3%;
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -307,13 +313,32 @@ section {
 }
 
 .main-content {
-    padding-top: 116px;
-    min-height: 100vh;
+  /*padding-top: 50px;*/
+  min-height: 83vh;
 }
+
+@media (max-width: 1440px) {
+    .main-content {
+        padding-bottom: 3.5%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .main-content {
+        padding-bottom: 5.5%;
+    }
+}
+
 
 @media (max-width: 991px) {
     .main-content {
-        padding-top: 50px;
+    padding-bottom: 15%;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        min-height: 91.5vh;
     }
 }
 
@@ -4778,7 +4803,7 @@ section {
 
 /* ----- Breadcrumb ----- */
 .au-breadcrumb {
-    height: 75px;
+    height: 50px;
     background: #fff;
     position: relative;
     z-index: 0;
@@ -4786,7 +4811,7 @@ section {
 
 @media (max-width: 991px) {
     .au-breadcrumb {
-        height: 130px;
+        height: 35px;
     }
 
     .au-breadcrumb.m-t-75 {
@@ -4863,7 +4888,7 @@ section {
 
 .au-breadcrumb__list li {
     font-size: 14px;
-    color: #999;
+    color: #000;
 }
 
 .au-breadcrumb__list .list-inline-item:not(:last-child) {
@@ -4871,7 +4896,7 @@ section {
 }
 
 .au-breadcrumb__list .active a {
-    color: #999;
+    color: #007bff;
 }
 
 .au-breadcrumb__list .active a:hover {
@@ -6523,6 +6548,11 @@ section {
 
 .m-t-75 {
     margin-top: 75px;
+}
+
+.width-crumb-header{
+  left: -49px;
+  width: 120%;
 }
 
 .m-r-75 {

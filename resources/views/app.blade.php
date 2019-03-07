@@ -12,7 +12,7 @@
 
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>Gestión de Actividades</title>
 
     <!-- Fontfaces CSS-->
     <link href="{{asset('css/font-face.css')}}" rel="stylesheet" media="all">
@@ -22,6 +22,7 @@
 
     <!-- Bootstrap CSS-->
     <link href="{{asset('vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" media="all">
+
 
     <!-- Vendor CSS-->
     <link href="{{asset('vendor/animsition/animsition.min.css')}}" rel="stylesheet" media="all">
@@ -134,7 +135,7 @@
                                 <i class="fa fa-bars"></i>T. Actividades</a>
                         </li>
                         <li>
-                            <a href="{{ url('tipoactividades') }}">
+                            <a href="{{ url('estados') }}">
                                 <i class="fa fa-tag"></i>Estados</a>
                         </li>
                         </ul>
@@ -257,7 +258,7 @@
                                 <i class="fa fa-bars"></i>T. Actividades</a>
                         </li>
                         <li>
-                            <a href="{{ url('tipoactividades') }}">
+                            <a href="{{ url('estados') }}">
                                 <i class="fa fa-tag"></i>Estados</a>
                         </li>
                         </ul>
@@ -327,7 +328,7 @@
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                        <img src="{{asset('images/icon/avatar.png')}}" alt="John Doe" />
+                                        <img src="{{asset('images/icon/avatar.png')}}" alt="..." />
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#">{{ Auth::user()->name }}</a>
@@ -336,7 +337,7 @@
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                  <img src="{{asset('images/icon/avatar-01.jpg')}}" alt="John Doe" />
+                                                  <img src="{{asset('images/icon/avatar.png')}}" alt="..." />
                                                     </a>
                                                 </div>
                                                 <div class="content">
@@ -348,22 +349,14 @@
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-account"></i>Account</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
-                                                </div>
-                                                <div class="account-dropdown__item">
-                                                    <a href="#">
-                                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
+                                                    <a href="{{ route('profile.edicion', Auth::user()->id) }}">
+                                                        <i class=""></i>Perfil</a>
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
                                                 <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                                    <i class="zmdi zmdi-power"></i>Cerrar Sesión</a>
                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                                         @csrf
                                                     </form>
@@ -379,6 +372,47 @@
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
+            <section class="au-breadcrumb m-t-75 width-crumb-header">
+                <div class="section__content section__content--p30" style="padding-left: 0px;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="au-breadcrumb-content">
+                                    <div class="au-breadcrumb-left">
+                                        <i class="fa fa-home" aria-hidden="true"></i>
+                                        <ul class="list-unstyled list-inline au-breadcrumb__list">
+                                            <li class="list-inline-item seprate">
+                                                <a href="{{ route('home') }}" style="color:#000;">Inicio</a>
+                                            </li>
+                                            <li class="list-inline-item seprate">
+                                                <span>/</span>
+                                            </li>
+                                            @if ($modulo!='')
+                                              @if($modulo=='Avances')
+                                                <li class="list-inline-item seprate">
+                                                  <a href="{{ url('avances') }}">{{ $modulo }}</a>
+                                                </li>
+                                              @else
+                                                <li class="list-inline-item seprate">
+                                                    <span>{{ $modulo }}</span>
+                                                </li>
+                                              @endif
+                                              <li class="list-inline-item seprate">
+                                                  <span>/</span>
+                                              </li>
+                                            @endif
+                                            <li class="list-inline-item active">
+                                              <a href="{{ url($url) }}">{{ $nombre }}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">

@@ -26,7 +26,7 @@
   <body>
     <header class="clearfix ">
       <div id="logo">
-        <img src="{{asset('images/icon/lofo-final.png')}}" class="rounded mx-auto d-block" alt="...">
+        <img src="{{asset('images/icon/logo_ucsgtv.png')}}" class="rounded mx-auto d-block" alt="...">
       </div>
       <h1>{{ $nombre }}</h1>
       <h3>Novedades</h3>
@@ -106,7 +106,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="copyright">
-          <p>Copyright © 2018. All rights reserved.</p>
+          <p>Copyright © 2019. All rights reserved.</p>
           </div>
         </div>
       </div>

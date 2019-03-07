@@ -12,6 +12,8 @@ use Redirect;
 use App\User;
 use App\RolesTipo;
 use Bouncer;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 
 class UsuariosController extends Controller
 {
@@ -30,7 +32,10 @@ class UsuariosController extends Controller
     {
       //$usuario = User::with('roles:description')->orderBy('id')->get();
       $usuarios = User::all();
-      return view('usuarios.index',compact('usuarios'));
+      $url = 'usuarios';
+      $modulo = 'Seguridad';
+      $nombre = 'Usuarios';
+      return view('usuarios.index',compact('usuarios','url','modulo','nombre'));
     }
 
     /**
@@ -45,7 +50,11 @@ class UsuariosController extends Controller
        foreach($qrol as $r){
            $arrol[$r->id] = $r->nombre;
        }
-       return view('usuarios.create',compact('arrol'));
+       $url = 'usuarios';
+       $modulo = 'Seguridad';
+       $nombre = 'Usuarios';
+
+       return view('usuarios.create',compact('arrol','url','modulo','nombre'));
     }
 
     /**
@@ -127,7 +136,95 @@ class UsuariosController extends Controller
         }
         /*$rolide = RolUser::where('user_id',$id)->first();
         $rolid = $rolide->role_id;*/
-        return view('usuarios.edit',compact('usuario','arrol','rolid','pagina'));
+        $url = 'usuarios';
+        $modulo = 'Seguridad';
+        $nombre = 'Usuarios';
+        return view('usuarios.edit',compact('usuario','arrol','rolid','pagina','url','modulo','nombre'));
+    }
+
+    public function perfil($id){
+      $usuario = User::find($id);
+      $qrol = DB::select("select id,nombre from roles_tipo where deleted_at is null");
+      $arrol = [];
+      foreach($qrol as $r){
+          $arrol[$r->id] = $r->nombre;
+      }
+      /*$rolide = RolUser::where('user_id',$id)->first();
+      $rolid = $rolide->role_id;*/
+      $url = URL::current();//'usuarios';
+      $modulo = '';
+      $nombre = 'Perfil';
+      return view('usuarios.perfil',compact('usuario','arrol','rolid','pagina','url','modulo','nombre'));
+
+    }
+
+
+    public function perfilpost(Request $request, $id)
+    {
+      $data = $request->all();
+      $cpass = $request->get('cpass');
+      $roleId = $request->get('id_roltipo');
+      if($cpass!=null){
+       $rules = array(
+       'name' => 'required|string|max:255',
+       'password' => 'required|string|min:1|confirmed');
+       }else{
+        $rules = array(
+       'name' => 'required|string|max:255');
+       }
+
+       $v = Validator::make($data,$rules);
+      if($v->fails())
+      {
+          return redirect()->back()
+              ->withErrors($v->errors())
+              ->withInput();
+      }
+      else{
+          $pantigua = $request->get('password_old');
+          $user = User::find($id);
+          //$roluser = RolUser::where('user_id',$id)->first();
+          $hashedPassword = $user->password;
+          if($cpass!=null){
+          if (Hash::check($pantigua, $hashedPassword)) {
+              $user->name = $data['name'];
+              $user->nickname = $data['nickname'];
+              $user->password = bcrypt($data['password']);
+              $user->save();
+              //$user->roles()->attach($roleId);
+              /*$roluser->user_id = $roleId;
+              $roluser->save();*/
+              Session::flash('message','Perfil editado correctamente');
+              $user = Auth::user();
+               if($user->isAn('admin')){
+                  return redirect()->action('ProyectosController@index');
+               }else if($user->isA('super')){
+                 return redirect()->action('ActividadesController@index');
+               }else if($user->isA('recur')){
+                 return redirect()->action('AvancesController@index');
+               }
+              //return redirect()->action('HomeController@index');
+          }else{
+              Session::flash('error','Contraseña no coincide con el sistema');
+              return redirect()->back()->withInput();
+          }}else{
+             $user->name = $data['name'];
+             $user->nickname = $data['nickname'];
+             $user->save();
+            /*$roluser->role_id = $roleId;
+            $roluser->save();*/
+              Session::flash('message','Perfil editado correctamente');
+              $user = Auth::user();
+               if($user->isAn('admin')){
+                  return redirect()->action('ProyectosController@index');
+               }else if($user->isA('super')){
+                 return redirect()->action('ActividadesController@index');
+               }else if($user->isA('recur')){
+                 return redirect()->action('AvancesController@index');
+               }
+              //return redirect()->action('HomeController@index');
+          }
+          }
     }
 
     /**

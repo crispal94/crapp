@@ -30,21 +30,30 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-
+         if($user->isAn('admin')){
+            return redirect()->action('ProyectosController@index');
+         }else if($user->isA('super')){
+           return redirect()->action('ActividadesController@index');
+         }else if($user->isA('recur')){
+           return redirect()->action('AvancesController@index');
+         }
+        //  return view('app');
         /*$administrador = Bouncer::is($user)->a('admin');
         dd($administrador);*/
-        return view('app');
+
 
         /*if($administrador){
           return 'es administrador';
         }else{
           return 'no es administrador';
         }*/
+
+
     }
 
     public function email(){
       $to_name = 'Christian Palacios';
-      $to_email = 'chrispalacios94@gmail.com';
+      $to_email = 'crispal94@hotmail.com';
       $data = array('name'=>"Sam Jose", "body" => "Test mail");
 
       Mail::to($to_email)->send(new Prueba($data));

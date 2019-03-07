@@ -65,8 +65,11 @@ class ReportesController extends Controller
         $arrgrupo[$gr->id] = $gr->descripcion;
       }
 
+      $url = 'reportes';
+      $modulo = 'Reportes';
+      $nombre = 'Proyectos';
 
-      return view('reportes.index',compact('arrsupervisores','arrusuarios','arrgrupo','role','roleid'));
+      return view('reportes.index',compact('arrsupervisores','arrusuarios','arrgrupo','role','roleid','url','modulo','nombre'));
 
     }
 
@@ -189,7 +192,11 @@ class ReportesController extends Controller
         array_push($arreglotd,$arr);
       }
 
-      return view ('reportes.mostrar',compact('arreglotd','proyecto','supervisor','tiporecurso','tiempo'));
+      $url = 'reportes';
+      $modulo = 'Reportes';
+      $nombre = 'Proyectos';
+
+      return view ('reportes.mostrar',compact('arreglotd','proyecto','supervisor','tiporecurso','tiempo','url','modulo','nombre'));
     }
 
 
@@ -207,7 +214,7 @@ class ReportesController extends Controller
               left join seg_actividades seg on (det.id = seg.id_detalle)
               left join param_referenciales pt on (pt.id = det.id_refertiempo)
               left join estado est on (est.id = seg.id_estado)
-              where det.id_cabecera = ? order by det.id",[$id]);
+              where det.id_cabecera = ? order by det.id,seg.id",[$id]);
 
         $primera = true;
 
@@ -311,7 +318,7 @@ class ReportesController extends Controller
       //  dd($arreglo);
 
         //return view('pdf.proyecto',$data);
-        $pdf = PDF::loadView('pdf.proyecto',$data)->setPaper('a4')->setOrientation('landscape');
+        $pdf = PDF::loadView('pdf.proyecto',$data);//->setPaper('a4');
         return $pdf->stream('reporte.pdf');
     }
 
@@ -334,9 +341,9 @@ class ReportesController extends Controller
 
     public function proestado(){
 
-       $valor = getEstadoActividad(49);
+        $valor = getEstadoActividad(51);
       //$
-       //$valor = getEstadoProyecto(19);
+       //$valor = getEstadoProyecto(23);
 
       dd($valor);
 

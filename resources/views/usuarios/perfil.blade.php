@@ -12,7 +12,7 @@
                                         <strong>Usuarios</strong>
                                    </div>
                                     <div class="card-body card-block">
-  {!!Form::model($usuario,['route'=> ['usuarios.update',$usuario->id],'method'=>'PUT','onsubmit'=>'return validar();'])!!}
+  {!!Form::model($usuario,['route'=> ['profile.edicionpost',$usuario->id],'method'=>'PUT','onsubmit'=>'return validar();'])!!}
 						@if(Session::has('error'))
 							<div class="alert alert-danger alert-dismissible" role="alert">
 	 				 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -53,10 +53,7 @@
 									<label>Confirmar Contraseña</label>
 									<?php echo Form::password('password_confirmation', ['class' => 'form-control','placeholder'=>'Ingrese dato','maxlength'=>'100','disabled','id'=>'password_confirmation']); ?>
 						</div>
-            <div class="form-group">
-									<label>Rol</label>
-									{!!Form::select('id_roltipo',$arrol,null,['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'genr_id'])!!}
-						</div>
+
 						<div class="box-footer">
 					      <button type="submit" class="btn btn-primary">Grabar</button>
 					    </div>
@@ -92,4 +89,4 @@
   		}
   	}
   </script>
-@show
+@endsection

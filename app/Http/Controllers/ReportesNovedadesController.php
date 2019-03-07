@@ -43,7 +43,11 @@ class ReportesNovedadesController extends Controller
         $arrsupervisores[$sus->id] = $sus->usuario;
       }
 
-        return view('reportes_novedades.index',compact('arrsupervisores','role','roleid'));
+      $url = 'novedades';
+      $modulo = 'Reportes';
+      $nombre = 'Novedades';
+
+        return view('reportes_novedades.index',compact('arrsupervisores','role','roleid','url','modulo','nombre'));
     }
 
     public function getproyectos(Request $request){
@@ -61,7 +65,7 @@ class ReportesNovedadesController extends Controller
         left join users us on (us.id = cab.id_responsable)
         left join grupos_trabajos gt on (gt.id = cab.id_grupo)
         left join param_referenciales pt on (pt.id = cab.id_refertiempo)
-        left join seg_novedades nov on (nov.id_cabecera = cab.id)
+        inner join seg_novedades nov on (nov.id_cabecera = cab.id)
         where cab.deleted_at is null group by cab.id";
 
         if($supervisor!='N'){
@@ -70,7 +74,7 @@ class ReportesNovedadesController extends Controller
 
 
         if($flag==0){
-                 $qbase.= " and (fechainicio BETWEEN '$fechadesde' and DATE_ADD('$fechahasta',INTERVAL 1 DAY))";
+                 $qbase.= " and (fecha_nuevo BETWEEN '$fechadesde' and DATE_ADD('$fechahasta',INTERVAL 1 DAY))";
         }
 
         $query = DB::select($qbase);

@@ -26,7 +26,7 @@
   <body>
     <header class="clearfix ">
       <div id="logo">
-        <img src="{{asset('images/icon/lofo-final.png')}}" class="rounded mx-auto d-block" alt="...">
+        <img src="{{asset('images/icon/logo_ucsgtv.png')}}" class="rounded mx-auto d-block" alt="...">
       </div>
       <h1 style="font-size: 1.9em">Historial de Proyectos</h1>
       <div class="container">
@@ -114,7 +114,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="copyright">
-          <p>Copyright © 2018. All rights reserved.</p>
+          <p>Copyright © 2019. All rights reserved.</p>
           </div>
         </div>
       </div>

@@ -32,7 +32,7 @@
 @endsection
 @section('content')
   {!!Form::open(['route'=>'reportes.proyectos', 'method'=>'POST','id'=>'consolidado','target'=>'_blank'])!!}
-  <div class="row"> <!--style="margin-left: -65px;"-->
+  <div class="row" style="margin-top:30px"> <!--style="margin-left: -65px;"-->
                 <div class="col-lg-3">
                   <div class="card-header box-header">
                       <strong>Fecha</strong>
@@ -255,7 +255,7 @@ $('#rangodefechas').daterangepicker({
            var data = table.row($row).data();
            var id = data[9];
            var path = {!! json_encode(url('/')) !!};
-           window.open(pathname+'/seguimiento/'+id, "_blank");
+           window.open(pathname+'/seguimiento/'+id, "_self");
        });
 </script>
 @endsection

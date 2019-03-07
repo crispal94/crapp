@@ -70,10 +70,10 @@
                             {{ csrf_field() }}
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
-                                    @if ($errors->has('email'))
+                                    <input class="au-input au-input--full" type="login" name="login" placeholder="Email o nickname">
+                                    @if ($errors->has('login'))
                                         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('email') }}</strong>
+                                            <strong>{{ $errors->first('login') }}</strong>
                                         </span>
                                     @endif
                                 </div>

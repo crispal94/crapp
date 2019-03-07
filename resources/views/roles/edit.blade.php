@@ -7,14 +7,16 @@
 @section('content')
   <div class="row">
     <div class="col-md-12">
-
+      <div class="card-body">
+        @include('includes/errors')
+      </div>
       <div class="card">
                                     <div class="card-header box-header">
                                         <strong>Roles</strong>
                                    </div>
                                     <div class="card-body card-block">
                                     {!!Form::model($rol,['route'=> ['roles.update',$rol->id],'method'=>'PUT'])!!}
-        @include('includes/errors')
+
         <div class="form-group">
               <label>Nombre</label>
               {!!Form::text('nombre',null,['class'=>'form-control',
@@ -22,7 +24,7 @@
         </div>
              <div class="form-group">
 									<label>Tipo</label>
-									{!!Form::select('id_roles',$arrtipo,'U',['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'genr_id'])!!}
+									{!!Form::select('id_roles',$arrtipo,null,['class'=>'form-control select2','autofocus','style'=>'width:100%;','id'=>'genr_id'])!!}
 						</div>
         <div class="box-footer">
             <button type="submit" class="btn btn-primary">Grabar</button>

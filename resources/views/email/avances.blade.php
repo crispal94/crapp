@@ -140,7 +140,7 @@
               <!-- COPY -->
               <tr>
                 <td bgcolor="#ffffff" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
-                  <p style="margin: 0;">Hola <strong>{{$data[0]}}</strong> Se ha registrado un avance de la actividad <strong>{{ $data[1] }}</strong> a cargo de <strong>{{ $data[2] }}</strong>
+                  <p style="margin: 0;">Hola <strong>{{$data[0]}}</strong>. Se ha registrado un avance de la actividad <strong>{{ $data[1] }}</strong> a cargo de <strong>{{ $data[2] }}</strong>
                   </p>
                 </td>
               </tr>
