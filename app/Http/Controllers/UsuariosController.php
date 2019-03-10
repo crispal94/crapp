@@ -139,7 +139,7 @@ class UsuariosController extends Controller
         $url = 'usuarios';
         $modulo = 'Seguridad';
         $nombre = 'Usuarios';
-        return view('usuarios.edit',compact('usuario','arrol','rolid','pagina','url','modulo','nombre'));
+        return view('usuarios.edit',compact('usuario','arrol','url','modulo','nombre'));
     }
 
     public function perfil($id){
@@ -154,7 +154,7 @@ class UsuariosController extends Controller
       $url = URL::current();//'usuarios';
       $modulo = '';
       $nombre = 'Perfil';
-      return view('usuarios.perfil',compact('usuario','arrol','rolid','pagina','url','modulo','nombre'));
+      return view('usuarios.perfil',compact('usuario','arrol','url','modulo','nombre'));
 
     }
 
