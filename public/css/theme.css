@@ -317,9 +317,17 @@ section {
   min-height: 83vh;
 }
 
+
+
 @media (max-width: 1440px) {
     .main-content {
         padding-bottom: 3.5%;
+    }
+}
+
+@media (max-width: 1280px) {
+    .main-content {
+        padding-bottom: 29.3%;
     }
 }
 
