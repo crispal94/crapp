@@ -46,7 +46,7 @@
                     <div class="card-body text-secondary">
                       <div class="form-group">
 
-                       <input style="width: 90%; display:inline;" class="form-control" id="rangodefechas">
+                       <input style="width: 89%; display:inline; padding:0;" class="form-control" id="rangodefechas">
                        <input type="checkbox" id="ctodos">
                     </div>
                     </div>
