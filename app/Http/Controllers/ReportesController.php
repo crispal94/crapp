@@ -334,7 +334,7 @@ class ReportesController extends Controller
           'aconsulta' => $aconsulta
         ];
        $pdf = PDF::loadView('pdf.proyectostotal',$data)->setPaper('a4')->setOrientation('landscape');
-        return $pdf->download('reporteproyectos.pdf');
+        return $pdf->stream('reporteproyectos.pdf');
        //return view('pdf.proyectostotal',compact('aconsulta','fecha'));
     }
 
