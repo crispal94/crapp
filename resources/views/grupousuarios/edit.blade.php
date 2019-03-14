@@ -188,7 +188,10 @@ $('#usuarios').DataTable({
       //return false;
 
       if(contador<2){
-        alert('Elija mas de 2 usuarios para crear un grupo');
+        //alert('Elija mas de 2 usuarios para crear un grupo');
+        $('#acontenido').empty();
+        $('#malertamodal').modal();
+        $('#acontenido').append('Elija mas de 2 usuarios para crear un grupo');
         return false;
       }
     }

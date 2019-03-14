@@ -199,7 +199,7 @@
         </div>
     </div>
     <div class="box-footer">
-        <button type="button" class="btn btn-primary" onclick="ingresaractividades();">Ingresar</button>
+        <button type="button" class="btn btn-primary" onclick="ingresaractividades();" id="ingresar" disabled='true'>Ingresar</button>
         <button type="button" class="btn btn-primary" onclick="editaractividades();" id="actualizar" disabled='true'>Actualizar</button>
   </div>
         </div>
@@ -252,6 +252,8 @@
                       "scrollY": 200,
                       "scrollX": true
                   } );
+
+                  $('#tiempo1').prop('checked',true);
 
                   $('#detactividades').DataTable( {
                       "scrollY": 200,
@@ -420,6 +422,7 @@
                       scrollTop: position
                    });*/
                    $('#posdet').animatescroll({padding:200});
+                   $('#ingresar').prop('disabled',false);
                 });
               });
 
@@ -450,6 +453,15 @@
 
              function ingresaractividades(){
                console.log(tiporecurso);
+
+               console.log($('#nombreact').val());
+               console.log($('#duracionact').val());
+
+               if($('#nombreact').val()==''||$('#duracionact').val()==''){
+                      $('#acontenido').empty();
+                      $('#actividadModal').modal();
+                      $('#acontenido').append('Existen espacios vacíos. Por favor llenos los campos para poder ingresar la actividad');
+               }else{
                if(tiporecurso=='gt'){
                      var table = $('#grupotrabajo').DataTable();
                      var dataid = table.row( { selected: true } ).data();
@@ -458,7 +470,10 @@
                   var arrgid = [];
                   arrgid.push(dataid[3]);
                    if(rows<=0){
-                     alert('Por favor elija un responsable para la nueva actividad');
+                     //alert('Por favor elija un responsable para la nueva actividad');
+                     $('#acontenido').empty();
+                      $('#actividadModal').modal();
+                      $('#acontenido').append('Por favor elija un responsable para la nueva actividad');
                    }else{
                      etid = {
                         'indiceid': arrgid,
@@ -522,7 +537,8 @@
                 	   } );*/
                     //location.reload(true);
                   }
-               });
+                    });
+                }
              }
 
              var ided;
@@ -582,6 +598,11 @@
                 var userided;
 
              function editaractividades(){
+                if($('#nombreact').val()==''||$('#duracionact').val()==''){
+                      $('#acontenido').empty();
+                      $('#actividadModal').modal();
+                      $('#acontenido').append('Existen espacios vacíos. Por favor llenos los campos para poder ingresar la actividad');
+               }else{
                 if (tiporecurso=='u') {
                     nombreed = $("#nombreact").val();
                     duracioned = $('#duracionact').val();
@@ -601,7 +622,10 @@
                   var arrgid = [];
                   arrgid.push(dataid[3]);
                    if(rows<=0){
-                     alert('Por favor elija un responsable para la nueva actividad');
+                     //alert('Por favor elija un responsable para la nueva actividad');
+                     $('#acontenido').empty();
+                      $('#actividadModal').modal();
+                      $('#acontenido').append('Por favor elija un responsable para la nueva actividad');
                    }else{
                      etid = {
                         'indiceid': arrgid,
@@ -656,6 +680,7 @@
                     //location.reload(true);
                   }
                });
+              }
              }
 
 

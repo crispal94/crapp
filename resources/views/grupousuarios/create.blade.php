@@ -101,6 +101,29 @@ margin-right: 4px;
   </div>
 @endsection
 @section('js')
+<div class="modal fade" id="malertamodal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mediumModalLabel">Alerta</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="acontenido">
+
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+@endsection
+@section('js')
 <script type="text/javascript">
 $('#usuarios').DataTable({
            "dom": "<'row'<'col-md-4'i><'col-md-4'f><'col-md-4'p>>" +
@@ -186,7 +209,10 @@ $('#usuarios').DataTable({
       //return false;
 
       if(contador<2){
-        alert('Elija mas de 2 usuarios para crear un grupo');
+        //alert('Elija mas de 2 usuarios para crear un grupo');
+        $('#acontenido').empty();
+        $('#malertamodal').modal();
+        $('#acontenido').append('Elija mas de 2 usuarios para crear un grupo');
         return false;
       }
     }

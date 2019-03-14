@@ -458,6 +458,13 @@
                var observacion = $('#eobservacion').val();
              //  var avance = $('#avance').val();
                var avance = $("#eavance").slider("getValue");
+               if((observacion==''||observacion==null)||
+              (avance==''||avance==null)){
+            //  alert('Existen espacios en blancos');
+            $('#contenido').empty();
+            $('#mediumModal').modal();
+            $('#contenido').append('Existen espacios en blancos');
+             }else{
                $.post(pathname+'/editaravance',{idavance:idavance,estado:estado,observacion:observacion,avance:avance},function(){
 
                }).done(function(data){
@@ -478,7 +485,7 @@
                    tabled.columns.adjust().draw();
                  }
                 });
-
+               }
              }
 
 
