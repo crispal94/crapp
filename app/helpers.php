@@ -1083,5 +1083,4 @@ function getEstadoActividad($id){
    return $color;
 }
 
-
 ?>

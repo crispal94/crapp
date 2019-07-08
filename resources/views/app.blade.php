@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="icon" href="{{ asset('/images/icon/favicon-32x32.png')}}">
+
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
@@ -26,7 +27,8 @@
 
     <!-- Vendor CSS-->
     <link href="{{asset('vendor/animsition/animsition.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet" media="all">
+    <link href="{{asset('vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css')}}" rel="stylesheet"
+        media="all">
     <link href="{{asset('vendor/wow/animate.css')}}" rel="stylesheet" media="all">
     <link href="{{asset('vendor/css-hamburgers/hamburgers.min.css')}}" rel="stylesheet" media="all">
     <link href="{{asset('vendor/slick/slick.css')}}" rel="stylesheet" media="all">
@@ -38,26 +40,27 @@
     <link href="{{asset('css/style.min.css')}}" rel="stylesheet" media="all">
 
     <!--Datatable-->
-     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css')}}">
 
-     <link rel="stylesheet" href="{{ asset('css/select.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/select.bootstrap4.min.css')}}">
 
-      <link rel="stylesheet" href="{{ asset('css/bootstrap-colorpicker.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-colorpicker.css')}}">
 
-      <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css')}}">
 
-      <link rel="stylesheet" href="{{ asset('css/bootstrap-slider.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-slider.min.css')}}">
 
-      <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
 
 
-     <style type="text/css">
-     .alinear{
-       float: left;
-     }
-     </style>
+    <style type="text/css">
+        .alinear {
+            float: left;
+        }
 
-     @yield('css')
+    </style>
+
+    @yield('css')
 
 </head>
 
@@ -103,42 +106,42 @@
 
                         @can ('mantenimientos-general')
                         <li class="has-sub">
-                          <a class="js-arrow" href="#">
-  								            <i class="fa fa-lock"></i>Seguridad</a>
-                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                        <li>
-                            <a href="{{ url('usuarios') }}">
-                                <i class="fa fa-user"></i>Usuarios</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('roles') }}">
-                                <i class="fa fa-check-square"></i>Roles</a>
-                        </li>
-                        </ul>
+                            <a class="js-arrow" href="#">
+                                <i class="fa fa-lock"></i>Seguridad</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="{{ url('usuarios') }}">
+                                        <i class="fa fa-user"></i>Usuarios</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('roles') }}">
+                                        <i class="fa fa-check-square"></i>Roles</a>
+                                </li>
+                            </ul>
                         </li>
                         @endcan
                         @can('mantenimientos-general')
                         <li class="has-sub">
-                          <a class="js-arrow" href="#">
-                              <i class="fas fa-table"></i>Generales</a>
-                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                        <li>
-                            <a href="{{ url('parametros') }}">
-                                <i class="fa fa-pencil-square"></i>Parametros</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('prioridades') }}">
-                                <i class="fa fa-location-arrow"></i>Prioridades</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('tipoactividades') }}">
-                                <i class="fa fa-bars"></i>T. Actividades</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('estados') }}">
-                                <i class="fa fa-tag"></i>Estados</a>
-                        </li>
-                        </ul>
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-table"></i>Generales</a>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="{{ url('parametros') }}">
+                                        <i class="fa fa-pencil-square"></i>Parametros</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('prioridades') }}">
+                                        <i class="fa fa-location-arrow"></i>Prioridades</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('tipoactividades') }}">
+                                        <i class="fa fa-bars"></i>T. Actividades</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('estados') }}">
+                                        <i class="fa fa-tag"></i>Estados</a>
+                                </li>
+                            </ul>
                         </li>
                         @endcan
                         @can('mantenimientos-general')
@@ -148,10 +151,10 @@
                         </li>
                         @endcan
                         @can ('crear-proyecto')
-                          <li>
-                              <a href="{{ url('proyectos') }}">
-                                  <i class="fa fa-desktop"></i>Proyectos</a>
-                          </li>
+                        <li>
+                            <a href="{{ url('proyectos') }}">
+                                <i class="fa fa-desktop"></i>Proyectos</a>
+                        </li>
                         @endcan
                         @can ('crear-actividad')
                         <li>
@@ -169,20 +172,20 @@
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-table"></i>Reportes</a>
-                        <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                        <li>
-                            <a href="{{ url('reportes') }}">
-                                <i class="fa fa-list"></i>Proyectos</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('novedades') }}">
-                                <i class="fa fa-list"></i>Novedades</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('historia') }}">
-                                <i class="fa fa-list"></i>Historia</a>
-                        </li>
-                        </ul>
+                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                                <li>
+                                    <a href="{{ url('reportes') }}">
+                                        <i class="fa fa-list"></i>Proyectos</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('novedades') }}">
+                                        <i class="fa fa-list"></i>Novedades</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('historia') }}">
+                                        <i class="fa fa-list"></i>Historia</a>
+                                </li>
+                            </ul>
                         </li>
                         @endcan
 
@@ -226,42 +229,42 @@
                         </li>-->
                         @can ('mantenimientos-general')
                         <li class="has-sub">
-                          <a class="js-arrow" href="#">
-  								            <i class="fa fa-lock"></i>Seguridad</a>
-                        <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{ url('usuarios') }}">
-                                <i class="fa fa-user"></i>Usuarios</a>
-                        </li>
-                        <li>
-                            <a  href="{{ url('roles') }}">
-                                <i class="fa fa-check-square"></i>Roles</a>
-                        </li>
-                        </ul>
+                            <a class="js-arrow" href="#">
+                                <i class="fa fa-lock"></i>Seguridad</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="{{ url('usuarios') }}">
+                                        <i class="fa fa-user"></i>Usuarios</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('roles') }}">
+                                        <i class="fa fa-check-square"></i>Roles</a>
+                                </li>
+                            </ul>
                         </li>
                         @endcan
                         @can('mantenimientos-general')
                         <li class="has-sub">
-                          <a class="js-arrow" href="#">
-                              <i class="fas fa-table"></i>Generales</a>
-                        <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{ url('parametros') }}">
-                                <i class="fa fa-pencil-square"></i>Parametros</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('prioridades') }}">
-                                <i class="fa fa-location-arrow"></i>Prioridades</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('tipoactividades') }}">
-                                <i class="fa fa-bars"></i>T. Actividades</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('estados') }}">
-                                <i class="fa fa-tag"></i>Estados</a>
-                        </li>
-                        </ul>
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-table"></i>Generales</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="{{ url('parametros') }}">
+                                        <i class="fa fa-pencil-square"></i>Parametros</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('prioridades') }}">
+                                        <i class="fa fa-location-arrow"></i>Prioridades</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('tipoactividades') }}">
+                                        <i class="fa fa-bars"></i>T. Actividades</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('estados') }}">
+                                        <i class="fa fa-tag"></i>Estados</a>
+                                </li>
+                            </ul>
                         </li>
                         @endcan
                         @can('mantenimientos-general')
@@ -270,13 +273,13 @@
                                 <i class="fa fa-group"></i>G. Trabajos</a>
                         </li>
                         @endcan
-                      @can ('crear-proyecto')
-                            <li>
-                                <a href="{{ url('proyectos') }}">
-                                    <i class="fa fa-desktop"></i>Proyectos</a>
-                            </li>
-                      @endcan
-                      @can ('crear-actividad')
+                        @can ('crear-proyecto')
+                        <li>
+                            <a href="{{ url('proyectos') }}">
+                                <i class="fa fa-desktop"></i>Proyectos</a>
+                        </li>
+                        @endcan
+                        @can ('crear-actividad')
                         <li>
                             <a href="{{ url('actividades') }}">
                                 <i class="fa fa-tasks"></i>Actividades</a>
@@ -291,22 +294,22 @@
                         @can ('reportes')
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-    								            <i class="fa fa-lock"></i>Reportes</a>
-                        <ul class="list-unstyled navbar__sub-list js-sub-list">
-                        <li>
-                            <a href="{{ url('reportes') }}">
-                                <i class="fa fa-list"></i>Proyectos</a>
+                                <i class="fa fa-lock"></i>Reportes</a>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="{{ url('reportes') }}">
+                                        <i class="fa fa-list"></i>Proyectos</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('novedades') }}">
+                                        <i class="fa fa-list"></i>Novedades</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('historia') }}">
+                                        <i class="fa fa-list"></i>Historia</a>
+                                </li>
+                            </ul>
                         </li>
-                        <li>
-                            <a href="{{ url('novedades') }}">
-                                <i class="fa fa-list"></i>Novedades</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('historia') }}">
-                                <i class="fa fa-list"></i>Historia</a>
-                        </li>
-                        </ul>
-                      </li>
                         @endcan
                     </ul>
                 </nav>
@@ -328,7 +331,7 @@
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                        <img src="{{asset('images/icon/avatar.png')}}" alt="..." />
+                                            <img src="{{asset('images/icon/avatar.png')}}" alt="..." />
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#">{{ Auth::user()->name }}</a>
@@ -337,7 +340,7 @@
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                  <img src="{{asset('images/icon/avatar.png')}}" alt="..." />
+                                                        <img src="{{asset('images/icon/avatar.png')}}" alt="..." />
                                                     </a>
                                                 </div>
                                                 <div class="content">
@@ -357,9 +360,10 @@
                                                 <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                                     <i class="zmdi zmdi-power"></i>Cerrar Sesión</a>
-                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                                        @csrf
-                                                    </form>
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                    style="display: none;">
+                                                    @csrf
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -388,21 +392,21 @@
                                                 <span>/</span>
                                             </li>
                                             @if ($modulo!='')
-                                              @if($modulo=='Avances')
-                                                <li class="list-inline-item seprate">
-                                                  <a href="{{ url('avances') }}">{{ $modulo }}</a>
-                                                </li>
-                                              @else
-                                                <li class="list-inline-item seprate">
-                                                    <span>{{ $modulo }}</span>
-                                                </li>
-                                              @endif
-                                              <li class="list-inline-item seprate">
-                                                  <span>/</span>
-                                              </li>
+                                            @if($modulo=='Avances')
+                                            <li class="list-inline-item seprate">
+                                                <a href="{{ url('avances') }}">{{ $modulo }}</a>
+                                            </li>
+                                            @else
+                                            <li class="list-inline-item seprate">
+                                                <span>{{ $modulo }}</span>
+                                            </li>
+                                            @endif
+                                            <li class="list-inline-item seprate">
+                                                <span>/</span>
+                                            </li>
                                             @endif
                                             <li class="list-inline-item active">
-                                              <a href="{{ url($url) }}">{{ $nombre }}</a>
+                                                <a href="{{ url($url) }}">{{ $nombre }}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -416,7 +420,7 @@
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                      @yield('content')
+                        @yield('content')
                     </div>
                 </div>
             </div>
@@ -428,26 +432,27 @@
             <!-- END PAGE CONTAINER-->
 
             <!--MODAL PARA MOSTRAR ALERTAR-->
-            <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-lg" role="document">
+            <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="mediumModalLabel">Alerta</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <p id="contenido">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mediumModalLabel">Alerta</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="contenido">
 
-                        </p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-                      </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                        </div>
                     </div>
-                  </div>
-             </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -498,62 +503,63 @@
 
 
     <script type="text/javascript">
-    var pathname = window.location.pathname;
-		$(function () {
+        var pathname = window.location.pathname;
+        $(function () {
 
-			$("input[type=text]").focus(function(){
-  				this.select();
-			});
+            $("input[type=text]").focus(function () {
+                this.select();
+            });
 
-			$(".select2").select2();
+            $(".select2").select2();
 
-			$(document).ajaxStart(function () {
-		        $('html, body').css("cursor", "wait");
-		    });
-		    $(document).ajaxComplete(function () {
-		        $('html, body').css("cursor", "default");
-		    });
+            $(document).ajaxStart(function () {
+                $('html, body').css("cursor", "wait");
+            });
+            $(document).ajaxComplete(function () {
+                $('html, body').css("cursor", "default");
+            });
 
 
-			$.ajaxSetup({
-			  headers: {
-			    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			          }
-			});
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-            jQuery.fn.DataTable.ext.type.search.string = function ( data ) {
-            return ! data ?
-            '' :
-            typeof data === 'string' ?
-            data
-                .replace( /έ/g, 'ε' )
-                .replace( /[ύϋΰ]/g, 'υ' )
-                .replace( /ό/g, 'ο' )
-                .replace( /ώ/g, 'ω' )
-                .replace( /ά/g, 'α' )
-                .replace( /[ίϊΐ]/g, 'ι' )
-                .replace( /ή/g, 'η' )
-                .replace( /\n/g, ' ' )
-                .replace( /á/g, 'a' )
-                .replace( /é/g, 'e' )
-                .replace( /í/g, 'i' )
-                .replace( /ó/g, 'o' )
-                .replace( /ú/g, 'u' )
-                .replace( /ê/g, 'e' )
-                .replace( /î/g, 'i' )
-                .replace( /ô/g, 'o' )
-                .replace( /è/g, 'e' )
-                .replace( /ï/g, 'i' )
-                .replace( /ü/g, 'u' )
-                .replace( /ã/g, 'a' )
-                .replace( /õ/g, 'o' )
-                .replace( /ç/g, 'c' )
-                .replace( /ì/g, 'i' ) :
-            data;
-        };
+            jQuery.fn.DataTable.ext.type.search.string = function (data) {
+                return !data ?
+                    '' :
+                    typeof data === 'string' ?
+                    data
+                    .replace(/έ/g, 'ε')
+                    .replace(/[ύϋΰ]/g, 'υ')
+                    .replace(/ό/g, 'ο')
+                    .replace(/ώ/g, 'ω')
+                    .replace(/ά/g, 'α')
+                    .replace(/[ίϊΐ]/g, 'ι')
+                    .replace(/ή/g, 'η')
+                    .replace(/\n/g, ' ')
+                    .replace(/á/g, 'a')
+                    .replace(/é/g, 'e')
+                    .replace(/í/g, 'i')
+                    .replace(/ó/g, 'o')
+                    .replace(/ú/g, 'u')
+                    .replace(/ê/g, 'e')
+                    .replace(/î/g, 'i')
+                    .replace(/ô/g, 'o')
+                    .replace(/è/g, 'e')
+                    .replace(/ï/g, 'i')
+                    .replace(/ü/g, 'u')
+                    .replace(/ã/g, 'a')
+                    .replace(/õ/g, 'o')
+                    .replace(/ç/g, 'c')
+                    .replace(/ì/g, 'i') :
+                    data;
+            };
 
-		});
-	</script>
+        });
+
+    </script>
 
 
     @yield('js')
