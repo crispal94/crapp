@@ -170,4 +170,9 @@ Route::resource('spactividades', 'ActividadesSpController');
 Route::post('spactividades/eliminaractividad', 'ActividadesSpController@destroy');
 
 //REGISTRO DE HORARIOS
-Route::get('horarios','HorariosController@index');
+Route::get('horarios', 'HorariosController@index');
+Route::get('horarios/gethorarios', 'HorariosController@gethorarios');
+Route::post('horarios/ingresarhorario', 'HorariosController@ingresarhorario');
+Route::post('horarios/editarhorario', 'HorariosController@editarhorario');
+Route::post('horarios/eliminarhorario', 'HorariosController@eliminarhorario');
+Route::get('horarios/getHorarioId', "HorariosController@getHorarioId");

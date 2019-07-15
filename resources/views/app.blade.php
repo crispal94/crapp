@@ -52,12 +52,13 @@
 
     <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('css/timetablejs.css') }}">
+
 
     <style type="text/css">
         .alinear {
             float: left;
         }
-
     </style>
 
     @yield('css')
@@ -499,6 +500,7 @@
     <script src="{{ asset('js/animatescroll.js') }}"></script>
     <script src="{{ asset('js/bootstrap-slider.min.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.js') }}"></script>
+    <script src="{{ asset('js/timetable.js') }}"></script>
 
 
 
