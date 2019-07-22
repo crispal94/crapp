@@ -44,6 +44,7 @@
                             <th>Responsable</th>
                             <th>Duración</th>
                             <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
                             <th>id</th>
                         </tr>
                     </thead>
@@ -63,6 +64,7 @@
                             <td>{{$act->usuario}}</td>
                             <td>{{$act->duracion}} {{$act->valor}}</td>
                             <td>{{$act->fechainicio}}</td>
+                            <td>{{$act->fechafin}}</td>
                             <td>{{$act->id}}</td>
                         </tr>
                         @endforeach
@@ -74,6 +76,7 @@
                             <th>Responsable</th>
                             <th>Duración</th>
                             <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
                             <th>id</th>
                         </tr>
                     </tfoot>

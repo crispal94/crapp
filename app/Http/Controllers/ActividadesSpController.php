@@ -26,7 +26,8 @@ class ActividadesSpController extends Controller
         $nombre = 'Actividades sin Planificación';
 
         $actividades = DB::table('sp_actividad')
-            ->select('ta.descripcion as tipoactividad', 'sp_actividad.nombre', 'u.name as usuario', 'sp_actividad.duracion', 'sp_actividad.fechainicio', 'sp_actividad.id', 'pt.valor')
+            ->select('ta.descripcion as tipoactividad', 'sp_actividad.nombre', 'u.name as usuario', 'sp_actividad.duracion', 
+             'sp_actividad.fechainicio', 'sp_actividad.id', 'pt.valor','sp_actividad.fechafin')
             ->join('users as u', 'u.id', '=', 'sp_actividad.id_responsable')
             ->leftJoin('param_referenciales as pt', 'pt.id', '=', 'sp_actividad.id_refertiempo')
             ->leftJoin('tipo_actividades as ta', 'ta.id', '=', 'sp_actividad.id_tipoactividad')
@@ -72,7 +73,41 @@ class ActividadesSpController extends Controller
         $actividad->nombre = $request->nombreact;
         $actividad->fechainicio = $request->fechainicio;
         $actividad->duracion = $request->duracion;
+        $duracionact = $request->duracion;
         $actividad->id_refertiempo = $request->tiempo;
+        $fechap = date("Y-m-d H:i:s", strtotime($request->fechainicio));
+
+        $qtiempo = ParamReferenciales::find($request->tiempo);
+        $tiempomail = '';
+        switch ($qtiempo->valor) {
+            case 'Hora':
+                $fechapf = date("Y-m-d H:i:s", strtotime($fechap . "+ " . $duracionact . " hour"));
+                $tiempomail = 'Hora(s)';
+                break;
+
+            case 'Día':
+                $fechapf = date("Y-m-d H:i:s", strtotime($fechap . "+ " . $duracionact . " day"));
+                $tiempomail = 'Día(s)';
+                break;
+
+            case 'Semana':
+                $fechapf = date("Y-m-d H:i:s", strtotime($fechap . "+ " . $duracionact . " week"));
+                $tiempomail = 'Semana(s)';
+                break;
+
+            case 'Mes':
+                $fechapf = date("Y-m-d H:i:s", strtotime($fechap . "+ " . $duracionact . " month"));
+                $tiempomail = 'Mes(es)';
+                break;
+
+            case 'Año':
+                $fechapf = date("Y-m-d H:i:s", strtotime($fechap . "+ " . $duracionact . " year"));
+                $tiempomail = 'Año(s)';
+                break;
+        }
+        //dd($fechapf);
+
+        $actividad->fechafin = $fechapf;
         $actividad->save();
         Session::flash('message', 'Registro creado correctamente');
         return redirect()->action('ActividadesSpController@index');

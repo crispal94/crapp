@@ -18,7 +18,7 @@ $(document).ready(function() {
         },
         columnDefs: [
             {
-                targets: [5],
+                targets: [6],
                 visible: false
             }
         ]
