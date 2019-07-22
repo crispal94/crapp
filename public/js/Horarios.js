@@ -52,6 +52,7 @@ let id_responsable,
     descripcion,
     fechainicio,
     fechafin,
+    duracion,
     idHorario;
 const ingresarhorarios = function() {
     id_responsable = $("#id_responsable").val();
@@ -64,6 +65,9 @@ const ingresarhorarios = function() {
     fechafin = $("#rangodefechas")
         .data("daterangepicker")
         .endDate.format("YYYY-MM-DD HH:mm");
+    let rfechainicio = moment(fechainicio);
+    let rfechafin = moment(fechafin);
+    duracion = rfechafin.diff(rfechainicio, "hours");
 
     $.post(
         pathname + "/ingresarhorario",
@@ -73,6 +77,7 @@ const ingresarhorarios = function() {
             lugar: lugar,
             descripcion: descripcion,
             fechainicio: fechainicio,
+            duracion: duracion,
             fechafin: fechafin
         },
         function() {}
@@ -252,6 +257,13 @@ const eliminarhorarios = function() {
             $("#acontenido").append(data.mensaje);
         }
     });
+};
+
+const nuevohorarios = function() {
+    cleanElements();
+    $("#ingresar").prop("disabled", false);
+    $("#actualizar").prop("disabled", true);
+    $("#eliminar").prop("disabled", true);
 };
 
 const cleanElements = function() {

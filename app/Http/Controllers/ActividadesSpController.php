@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ActividadesSp;
+use App\Mail\NotificaActividadSp;
 use App\ParamReferenciales;
 use App\TipoActividades;
 use DB;
@@ -10,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Session;
+use Mail;
+
 
 class ActividadesSpController extends Controller
 {
@@ -76,7 +79,7 @@ class ActividadesSpController extends Controller
         $duracionact = $request->duracion;
         $actividad->id_refertiempo = $request->tiempo;
         $fechap = date("Y-m-d H:i:s", strtotime($request->fechainicio));
-
+        $usuario = Auth::user();
         $qtiempo = ParamReferenciales::find($request->tiempo);
         $tiempomail = '';
         switch ($qtiempo->valor) {
@@ -108,6 +111,13 @@ class ActividadesSpController extends Controller
         //dd($fechapf);
 
         $actividad->fechafin = $fechapf;
+        $arregmail = [];
+        array_push($arregmail, $usuario->name);
+        array_push($arregmail, $actividad->nombre);
+        array_push($arregmail, $actividad->fechainicio);
+        array_push($arregmail, $actividad->duracion);
+        array_push($arregmail, $tiempomail);
+        Mail::to('albertopl20095@gmail.com')->send(new NotificaActividadSp($arregmail));
         $actividad->save();
         Session::flash('message', 'Registro creado correctamente');
         return redirect()->action('ActividadesSpController@index');

@@ -18,7 +18,6 @@
     td a {
         margin-right: 4px;
     }
-
 </style>
 @endsection
 @section('content')
@@ -196,9 +195,9 @@
         var $row = $(this).closest('tr');
         var data = table.row($row).data();
         var id = data[7];
-        var path = {
-            !!json_encode(url('/')) !!
-        };
+        // var path = {
+        //     !!json_encode(url('/')) !!
+        // };
         window.open(pathname + '/seguimiento/' + id, "_self");
     });
 

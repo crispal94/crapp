@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\ActividadesSp;
 use App\Horarios;
 use App\TipoActividades;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use App\Mail\NotificaActividadSp;
+use Mail;
+
+
 
 class HorariosController extends Controller
 {
@@ -92,7 +97,10 @@ class HorariosController extends Controller
         $lugar = Input::get('lugar');
         $descripcion = Input::get('descripcion');
         $fechainicio = Input::get('fechainicio');
+        $duracion = Input::get('duracion');
         $fechafin = Input::get('fechafin');
+        $usuario = User::find($id_responsable);
+
         $horario = new Horarios;
         $horario->id_responsable = $id_responsable;
         $horario->id_tipoactividad = $id_tipoactividad;
@@ -101,6 +109,28 @@ class HorariosController extends Controller
         $horario->fechainicio = $fechainicio;
         $horario->fechafin = $fechafin;
         $horario->save();
+
+        $idHorario = $horario->id;
+
+        $actividad = new ActividadesSp;
+        $actividad->id_actividad_horario = $idHorario;
+        $actividad->id_responsable = $id_responsable;
+        $actividad->id_tipoactividad = $id_tipoactividad;
+        $actividad->nombre = $lugar;
+        $actividad->fechainicio = $fechainicio;
+        $actividad->duracion = $duracion;
+        $actividad->fechafin = $fechafin;
+        $actividad->id_refertiempo = 12;
+
+        $arregmail = [];
+        array_push($arregmail, $usuario->name);
+        array_push($arregmail, $actividad->nombre);
+        array_push($arregmail, $actividad->fechainicio);
+        array_push($arregmail, $actividad->duracion);
+        array_push($arregmail, 'Hora(s)');
+        Mail::to('albertopl20095@gmail.com')->send(new NotificaActividadSp($arregmail));
+
+        $actividad->save();
 
         $queryhorario = DB::select("select u.name, DATE_FORMAT(ah.fechainicio, '%Y-%m-%d %H:%i') fechainicio,
         DATE_FORMAT(ah.fechafin, '%Y-%m-%d %H:%i') fechafin, ah.lugar, ah.id

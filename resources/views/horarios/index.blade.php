@@ -55,7 +55,8 @@
                 <strong>Definición</strong>
             </div>
             <div class="card-body text-secondary" id="posdet2">
-                <div class="form-group">
+                <button type="button" class="btn btn-primary" onclick="nuevohorarios();" id="nuevo">Nuevo</button>
+                <div class="form-group" style="margin-top:1%">
                     <label><strong>Tipo de Actividad</strong></label>
                     {!!Form::select('id_tipoactividad',$arrtipo,null,['class'=>'form-control select2','autofocus',
                     'style'=>'width:100%;','id'=>'id_tipoactividad'])!!}
@@ -82,7 +83,7 @@
                 <input type="hidden" id="idHorario">
                 <div class="box-footer">
                     <button type="button" class="btn btn-primary" onclick="ingresarhorarios();"
-                        id="ingresar">Ingresar</button>
+                        id="ingresar">Guardar</button>
                     <button type="button" class="btn btn-primary" onclick="editarhorarios();" id="actualizar"
                         disabled>Actualizar</button>
                     <button type="button" class="btn btn-danger" onclick="eliminarhorarios();" id="eliminar"
