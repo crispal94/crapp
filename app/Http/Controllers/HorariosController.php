@@ -9,6 +9,7 @@ use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Mail;
 
 class HorariosController extends Controller
 {
