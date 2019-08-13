@@ -10,7 +10,8 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Mail;
-use Mail\NotificaActividadSp;
+use App\Mail\NotificaActividadSp;
+
 
 class HorariosController extends Controller
 {

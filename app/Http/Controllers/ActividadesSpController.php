@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Session;
-use Mail\NotificaActividadSp;
+use App\Mail\NotificaActividadSp;
 use Mail;
 
 class ActividadesSpController extends Controller
