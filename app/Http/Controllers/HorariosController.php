@@ -9,10 +9,6 @@ use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use App\Mail\NotificaActividadSp;
-use Mail;
-
-
 
 class HorariosController extends Controller
 {
@@ -97,11 +93,17 @@ class HorariosController extends Controller
         $lugar = Input::get('lugar');
         $descripcion = Input::get('descripcion');
         $fechainicio = Input::get('fechainicio');
+        
         $duracion = Input::get('duracion');
         $fechafin = Input::get('fechafin');
         $usuario = User::find($id_responsable);
 
-        $horario = new Horarios;
+        $qfecha = DB::select("select * from actividades_horario WHERE (? BETWEEN fechainicio AND fechafin) and deleted_at is null", [$fechainicio]);
+
+        if(!empty($qfecha)){
+            return response()->json(['flag' => 1,'mensaje'=>'No se puede registrar esta actividad dentro de esta fecha, ya se encuentra registrado este horario']);
+        }else {
+           $horario = new Horarios;
         $horario->id_responsable = $id_responsable;
         $horario->id_tipoactividad = $id_tipoactividad;
         $horario->lugar = $lugar;
@@ -121,6 +123,7 @@ class HorariosController extends Controller
         $actividad->duracion = $duracion;
         $actividad->fechafin = $fechafin;
         $actividad->id_refertiempo = 12;
+        $actividad->estado = 1;
 
         $arregmail = [];
         array_push($arregmail, $usuario->name);
@@ -152,7 +155,8 @@ class HorariosController extends Controller
             array_push($resp, $q->name);
         }
 
-        return response()->json(['flag' => 2, 'horarios' => $queryhorario, 'responsables' => $resp, 'mensaje' => 'Actividad ingresada y sincronizada con éxito.']);
+        return response()->json(['flag' => 2, 'horarios' => $queryhorario, 'responsables' => $resp, 'mensaje' => 'Actividad ingresada y sincronizada con éxito.']); 
+        }        
     }
 
     public function editarhorario(Request $request)

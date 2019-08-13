@@ -168,6 +168,9 @@ Route::get('500', ['as' => '500', 'uses' => 'ErrorController@fatal']);
 //ACTIVIDADES
 Route::resource('spactividades', 'ActividadesSpController');
 Route::post('spactividades/eliminaractividad', 'ActividadesSpController@destroy');
+Route::post('spactividades/finalizaractividad', 'ActividadesSpController@finalizaractividad');
+Route::post('spactividades/create/ingresarFecha', 'ActividadesSpController@ingresarFecha');
+Route::post('spactividades/{id}/edit/editarFecha', 'ActividadesSpController@editarFecha');
 
 //REGISTRO DE HORARIOS
 Route::get('horarios', 'HorariosController@index');
@@ -176,3 +179,11 @@ Route::post('horarios/ingresarhorario', 'HorariosController@ingresarhorario');
 Route::post('horarios/editarhorario', 'HorariosController@editarhorario');
 Route::post('horarios/eliminarhorario', 'HorariosController@eliminarhorario');
 Route::get('horarios/getHorarioId', "HorariosController@getHorarioId");
+
+//REPORTES
+Route::get('reportesactividades', 'ReportesActividadesController@index');
+Route::get('reportesactividades/getactividades', 'ReportesActividadesController@getactividades');
+Route::post('reportesactividades/actividades', [
+    'as' => 'reportesactividades.actividades',
+    'uses' => 'ReportesActividadesController@imprimir',
+]);

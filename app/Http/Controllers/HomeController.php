@@ -31,11 +31,11 @@ class HomeController extends Controller
     {
         $user = Auth::user();
          if($user->isAn('admin')){
-            return redirect()->action('ProyectosController@index');
+            return redirect()->action('HorariosController@index');
          }else if($user->isA('super')){
            return redirect()->action('ActividadesController@index');
          }else if($user->isA('recur')){
-           return redirect()->action('AvancesController@index');
+           return redirect()->action('ActividadesSpController@index');
          }
         //  return view('app');
         /*$administrador = Bouncer::is($user)->a('admin');
@@ -180,18 +180,40 @@ class HomeController extends Controller
       'title' => 'Mantenimientos Generales',
       ]);*/
 
-      $reportes = Bouncer::ability()->firstOrCreate([
-      'name' => 'reportes',
-      'title' => 'Reportes',
+      // $reportes = Bouncer::ability()->firstOrCreate([
+      // 'name' => 'reportes',
+      // 'title' => 'Reportes',
+      // ]);
+
+      // $super = Bouncer::role()->firstOrCreate([
+      // 'name' => 'super',
+      // 'title' => 'Supervisor',
+      // ]);
+
+      // Bouncer::allow($super)->to($reportes);
+
+      $actividadesSp = Bouncer::ability()->firstOrCreate([
+      'name' => 'actividades-sinplanificacion',
+      'title' => 'Actividades Sin Planificación',
+      ]);
+      
+      $horarios = Bouncer::ability()->firstOrCreate([
+      'name' => 'horarios',
+      'title' => 'Horarios',
       ]);
 
-      $super = Bouncer::role()->firstOrCreate([
-      'name' => 'super',
-      'title' => 'Supervisor',
+      $recur = Bouncer::role()->firstOrCreate([
+      'name' => 'recur',
+      'title' => 'Recurso',
       ]);
 
-      Bouncer::allow($super)->to($reportes);
+      Bouncer::disallow($recur)->to('horarios');
 
+
+      //Bouncer::allow($recur)->to($actividadesSp);
+      //Bouncer::allow($recur)->to($horarios);
+
+     
       echo 'OK';
 
 

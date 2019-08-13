@@ -2,21 +2,19 @@
 
 return array(
 
-
     'pdf' => array(
         'enabled' => true,
-        'binary'  => '/usr/local/bin/wkhtmltopdf-amd64',
+        'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"',
         'timeout' => false,
         'options' => array(),
-        'env'     => array(),
+        'env' => array(),
     ),
     'image' => array(
         'enabled' => true,
-        'binary'  => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"',
+        'binary' => '"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"',
         'timeout' => false,
         'options' => array(),
-        'env'     => array(),
+        'env' => array(),
     ),
-
 
 );

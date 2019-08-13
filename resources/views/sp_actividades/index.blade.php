@@ -39,18 +39,32 @@
                 <table id="actividades" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th>Acción</th>
                             <th>Nombre</th>
                             <th>Responsable</th>
+                            <th>Descripción</th>
                             <th>Duración</th>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
+                            <th></th>
                             <th>id</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($actividades as $act)
                         <tr>
+                            <td><button type="button" class="btn btn-primary" id="finalizar">Finalizar</button></td>
+                            <td>{{$act->nombre}}</td>
+                            <td>{{$act->usuario}}</td>
+                            <td>@if($act->idhorario==null)
+                                {{$act->descripcionsp}}
+                                @else
+                                {{$act->descripcionhorario}}
+                                @endif
+                            </td>
+                            <td>{{$act->duracion}} {{$act->valor}}</td>
+                            <td>{{$act->fechainicio}}</td>
+                            <td>{{$act->fechafin}}</td>
                             <td>
                                 <div class="table-data-feature alinear">
                                     <a href="{{ route('spactividades.edit', $act->id) }}">
@@ -60,23 +74,20 @@
                                             class="zmdi zmdi-delete"></i></button>
                                 </div>
                             </td>
-                            <td>{{$act->nombre}}</td>
-                            <td>{{$act->usuario}}</td>
-                            <td>{{$act->duracion}} {{$act->valor}}</td>
-                            <td>{{$act->fechainicio}}</td>
-                            <td>{{$act->fechafin}}</td>
                             <td>{{$act->id}}</td>
                         </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th></th>
+                            <th>Acción</th>
                             <th>Nombre</th>
                             <th>Responsable</th>
+                            <th>Descripción</th>
                             <th>Duración</th>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
+                            <th></th>
                             <th>id</th>
                         </tr>
                     </tfoot>
@@ -108,6 +119,30 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
                 <button type="button" class="btn btn-primary" onclick="eliminaractividad();">SI</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmarmodalf" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="smallmodalLabel">Confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="ccontenidof">
+
+                </p>
+                <input type="hidden" name="idactividadf" id="idactividadf">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                <button type="button" class="btn btn-primary" onclick="finalizaractividad();">SI</button>
             </div>
         </div>
     </div>

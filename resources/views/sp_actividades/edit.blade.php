@@ -23,11 +23,15 @@
                 <strong>Definición de Actividades</strong>
             </div>
             <div class="card-body card-block">
-                {!!Form::model($actividad,['route'=> ['spactividades.update',$actividad->id],'method'=>'PUT'])!!}
                 <div class="form-group">
                     <label><strong>Nombre</strong></label>
                     {!!Form::text('nombreact',$actividad->nombre,['class'=>'form-control',
                     'placeholder'=>'Ingrese dato','maxlength'=>'100','id'=>'nombreact'])!!}
+                </div>
+                <div class="form-group">
+                    <label><strong>Descripción</strong></label>
+                    <textarea name="descripcion" id="descripcion" rows="2" placeholder="..."
+                        class="form-control">{{$actividad->descripcion}}</textarea>
                 </div>
                 <div class="form-group">
                     <label><strong>Tipo de Actividad</strong></label>
@@ -73,10 +77,9 @@
                 </div>
                 <div class="box-footer">
                     <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-primary" onclick="editaractividad();">Guardar</button>
                     </div>
                 </div>
-                {!!Form::close()!!}
             </div>
         </div>
     </div>
@@ -173,6 +176,71 @@
         }
         
     }
+
+    function editaractividad() {
+        let nombreact = $('#nombreact').val();
+        let duracionact = $('#duracionact').val();
+        let tipoactividad = $('#tipoactividad').val();
+        let descripcion = $('#descripcion').val();
+        let tiempo =  $("input:radio[name='tiempo']:checked").length;
+        let tiempov = $("input:radio[name='tiempo']:checked").val();
+        let conterror = 0;
+        let fecha = $("#datetimepicker4").find("input").val();
+        let contfecha = 0;
+
+        if(nombreact==''||nombreact==null){
+            ++conterror;
+        }
+
+        if(duracionact==''||duracionact==null){
+            ++conterror;
+        }
+
+        if(descripcion==''||descripcion==null){
+            ++conterror;
+        }
+
+        if(tiempo==0){
+            ++conterror;
+        }
+        if(conterror>0){
+        $('#acontenido').empty();
+        $('#actividadModal').modal();
+        $('#acontenido').append(
+        'Existen espacios vacíos. Por favor llenos los campos para poder ingresar la actividad');
+        }else {
+            $.post(
+        pathname + "/editarFecha",
+        {
+        fecha: fecha,
+        nombreact: nombreact,
+        descripcion: descripcion,
+        duracionact: duracionact,
+        tipoactividad: tipoactividad,
+        tiempo:tiempov
+        },
+        function() {}
+        ).done(function(data) {
+            if(data.flag==1){
+                $('#acontenido').empty();
+                $('#actividadModal').modal();
+                $('#acontenido').append(
+                'No se puede registrar esta actividad dentro de esta fecha, ya se encuentra registrada una actividad planificada');
+            }else if(data.flag==2){
+                $('#acontenido').empty();
+                $('#actividadModal').modal();
+                $('#acontenido').append(data.mensaje);
+                fmodal = true;
+            }
+        });
+        }
+    }
+
+    $('#actividadModal').on('hidden.bs.modal', function (e) {
+    if(fmodal){
+        window.open('/spactividades', "_self");
+    }
+    });
 
 </script>
 @endsection

@@ -28,23 +28,33 @@ $(document).ready(function() {
     });
 });
 
-$("#rangodefechas").daterangepicker(
-    {
-        startDate: new Date(),
-        endDate: new Date(),
-        drops: "up",
-        timePicker: true,
-        minDate: moment().startOf("day"),
-        maxDate: moment().endOf("day"),
-        locale: {
-            format: "YYYY-MM-DD hh:mm A"
+$("#rangodefechas")
+    .daterangepicker(
+        {
+            startDate: new Date(),
+            endDate: moment()
+                .add(1, "hours")
+                .format("HH:mm:ss"),
+            //moment(startTime, 'HH:mm:ss').add(durationInMinutes, 'minutes').format('HH:mm');
+            timePicker: true,
+            timePicker24Hour: true,
+            timePickerIncrement: 1,
+            timePickerSeconds: true,
+            drops: "down",
+            minDate: moment().startOf("day"),
+            maxDate: moment().endOf("day"),
+            locale: {
+                format: "HH:mm:ss"
+            }
+        },
+        function(start, end, label) {
+            fechadesde1 = start.format("YYYY-MM-DD HH:mm:ss");
+            fechahasta1 = end.format("YYYY-MM-DD HH:mm:ss");
         }
-    },
-    function(start, end, label) {
-        fechadesde1 = start.format("YYYY-MM-DD HH:mm:ss");
-        fechahasta1 = end.format("YYYY-MM-DD HH:mm:ss");
-    }
-);
+    )
+    .on("show.daterangepicker", function(ev, picker) {
+        picker.container.find(".calendar-table").hide();
+    });
 
 let id_responsable,
     id_tipoactividad,
@@ -68,54 +78,63 @@ const ingresarhorarios = function() {
     let rfechainicio = moment(fechainicio);
     let rfechafin = moment(fechafin);
     duracion = rfechafin.diff(rfechainicio, "hours");
-
-    $.post(
-        pathname + "/ingresarhorario",
-        {
-            id_responsable: id_responsable,
-            id_tipoactividad: id_tipoactividad,
-            lugar: lugar,
-            descripcion: descripcion,
-            fechainicio: fechainicio,
-            duracion: duracion,
-            fechafin: fechafin
-        },
-        function() {}
-    ).done(function(data) {
-        if (data.flag == 2) {
-            $(".timetable").empty();
-            let timetable = new Timetable();
-            timetable.setScope(6, 23);
-            timetable.addLocations(data.responsables);
-            data.horarios.forEach(function(element) {
-                let fechainicio = moment(element.fechainicio);
-                let fechafin = moment(element.fechafin);
-                let options = {
-                    data: {
-                        id: element.id
-                    },
-                    onClick: function(event, timetable, clickEvent) {
-                        getHorarioIndex(event, timetable, clickEvent);
-                    }
-                };
-                timetable.addEvent(
-                    element.lugar,
-                    element.name,
-                    fechainicio.toDate(),
-                    fechafin.toDate(),
-                    options
-                );
-            });
-            let renderer = new Timetable.Renderer(timetable);
-            renderer.draw(".timetable");
-            $("#posdet").animatescroll({
-                padding: 200
-            });
-            $("#acontenido").empty();
-            $("#actividadModal").modal();
-            $("#acontenido").append(data.mensaje);
-        }
-    });
+    let compareDates = moment(fechainicio).isSame(fechafin);
+    debugger;
+    if (rfechainicio == rfechafin) {
+        console.log("a");
+    } else {
+        $.post(
+            pathname + "/ingresarhorario",
+            {
+                id_responsable: id_responsable,
+                id_tipoactividad: id_tipoactividad,
+                lugar: lugar,
+                descripcion: descripcion,
+                fechainicio: fechainicio,
+                duracion: duracion,
+                fechafin: fechafin
+            },
+            function() {}
+        ).done(function(data) {
+            if (data.flag == 1) {
+                $("#acontenido").empty();
+                $("#actividadModal").modal();
+                $("#acontenido").append(data.mensaje);
+            } else if (data.flag == 2) {
+                $(".timetable").empty();
+                let timetable = new Timetable();
+                timetable.setScope(0, 23);
+                timetable.addLocations(data.responsables);
+                data.horarios.forEach(function(element) {
+                    let fechainicio = moment(element.fechainicio);
+                    let fechafin = moment(element.fechafin);
+                    let options = {
+                        data: {
+                            id: element.id
+                        },
+                        onClick: function(event, timetable, clickEvent) {
+                            getHorarioIndex(event, timetable, clickEvent);
+                        }
+                    };
+                    timetable.addEvent(
+                        element.lugar,
+                        element.name,
+                        fechainicio.toDate(),
+                        fechafin.toDate(),
+                        options
+                    );
+                });
+                let renderer = new Timetable.Renderer(timetable);
+                renderer.draw(".timetable");
+                $("#posdet").animatescroll({
+                    padding: 200
+                });
+                $("#acontenido").empty();
+                $("#actividadModal").modal();
+                $("#acontenido").append(data.mensaje);
+            }
+        });
+    }
 };
 
 const getHorarioIndex = function(event, timetable, clickEvent) {

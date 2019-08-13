@@ -294,14 +294,18 @@
                                 <i class="fa fa-tasks"></i>Actividades</a>
                         </li>
                         @endcan
+                        @can ('actividades-sinplanificacion')
                         <li>
                             <a href="{{ url('spactividades') }}">
                                 <i class="fa fa-tasks"></i>Actividades SP</a>
                         </li>
+                        @endcan
+                        @can ('horarios')
                         <li>
                             <a href="{{ url('horarios') }}">
                                 <i class="fa fa-tasks"></i>Horarios</a>
                         </li>
+                        @endcan
                         @can ('crear-avance')
                         <li>
                             <a href="{{ url('avances') }}">
@@ -324,6 +328,10 @@
                                 <li>
                                     <a href="{{ url('historia') }}">
                                         <i class="fa fa-list"></i>Historia</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('reportesactividades') }}">
+                                        <i class="fa fa-list"></i>Actividades SP</a>
                                 </li>
                             </ul>
                         </li>

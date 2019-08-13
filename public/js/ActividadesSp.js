@@ -18,7 +18,7 @@ $(document).ready(function() {
         },
         columnDefs: [
             {
-                targets: [6],
+                targets: [8],
                 visible: false
             }
         ]
@@ -29,11 +29,31 @@ $("#actividades tbody").on("click", "#eliminar", function(event) {
     let table = $("#actividades").DataTable();
     let $row = $(this).closest("tr");
     let data = table.row($row).data();
-    let id = data[5];
+    let id = data[8];
     $("#ccontenido").empty();
     $("#idactividad").val(id);
     $("#ccontenido").append("Desea eliminar esta actividad?");
     $("#confirmarmodal").modal();
+});
+
+$("#actividades tbody").on("click", "#finalizar", function(event) {
+    var table = $("#actividades").DataTable();
+    var $row = $(this).closest("tr");
+    var data = table.row($row).data();
+    var id = data[8];
+    $("#ccontenidof").empty();
+    $("#idactividadf").val(id);
+    var mensaje = `<div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                    <label>Observación</label>
+                                    <textarea name="observacion" id="observacion" rows="2" placeholder="..." class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>`;
+    $("#ccontenidof").append("Desea finalizar esta actividad?");
+    $("#ccontenidof").append(mensaje);
+    $("#confirmarmodalf").modal();
 });
 
 function eliminaractividad() {
@@ -51,8 +71,25 @@ function eliminaractividad() {
     });
 }
 
+function finalizaractividad() {
+    let idactividad = $("#idactividadf").val();
+    let observacion = $("#observacion").val();
+    $.post(
+        pathname + "/finalizaractividad",
+        { idactividad: idactividad, observacion: observacion },
+        function() {}
+    ).done(function(data) {
+        if (data.flag == 2) {
+            $("#econtenido").empty();
+            $("#econtenido").append(data.mensaje);
+            $("#exitomodal").modal();
+        }
+    });
+}
+
 $("#exitomodal").on("show.bs.modal", function(e) {
     $("#confirmarmodal").modal("hide");
+    $("#confirmarmodalf").modal("hide");
 });
 
 $("#exitomodal").on("hidden.bs.modal", function(e) {
