@@ -73,7 +73,7 @@ class HorariosController extends Controller
     public function getHorarioId(Request $request)
     {
         $idHorario = Input::get('id');
-        $queryIdHorario = DB::select("select u.name, fechainicio, fechafin, ah.lugar,
+        $queryIdHorario = DB::select("select u.name, ah.fechainicio, ah.fechafin, ah.lugar,
         ah.id idhorario, ta.id idtactividad, u.id iduser, ah.descripcion
         from actividades_horario ah
         inner join users u on (u.id = ah.id_responsable)
