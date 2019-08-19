@@ -71,16 +71,17 @@ class HorariosController extends Controller
     public function getHorarioId(Request $request)
     {
         $idHorario = Input::get('id');
-        $queryIdHorario = DB::select("select u.name, fechainicio, fechafin, ah.lugar,
-        ah.id idhorario, ta.id idtactividad, u.id iduser, ah.descripcion
+        $queryIdHorario = DB::select("select u.name, DATE_FORMAT(ah.fechainicio, '%Y-%m-%d %H:%i') fechainicio,
+        DATE_FORMAT(ah.fechafin, '%Y-%m-%d %H:%i') fechafin, ah.lugar, ah.id
         from actividades_horario ah
         inner join users u on (u.id = ah.id_responsable)
-        inner join tipo_actividades ta on (ta.id = ah.id_tipoactividad)
-        where ah.deleted_at is null and ah.id = ? and
-        (fechainicio >= CURDATE()
-        AND fechainicio < CURDATE() + INTERVAL 1 DAY) and
-        (fechafin >= CURDATE()
-        AND fechafin < CURDATE() + INTERVAL 1 DAY)
+        inner join sp_actividad sp on (sp.id_actividad_horario = ah.id)
+        where ah.deleted_at is null and
+        sp.estado = '1' and
+        (ah.fechainicio >= CURDATE()
+        AND ah.fechainicio < CURDATE() + INTERVAL 1 DAY) and
+        (ah.fechafin >= CURDATE()
+        AND ah.fechafin < CURDATE() + INTERVAL 1 DAY)
         order by u.name,ah.fechainicio,ah.fechafin", [$idHorario]);
 
         return response()->json(['flag' => 2, 'horario' => $queryIdHorario]);
