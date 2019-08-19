@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use App\ActividadesSp;
 use App\Horarios;
+use App\Mail\NotificaActividadSp;
 use App\TipoActividades;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Mail;
-use App\Mail\NotificaActividadSp;
-
 
 class HorariosController extends Controller
 {
@@ -96,49 +95,49 @@ class HorariosController extends Controller
         $lugar = Input::get('lugar');
         $descripcion = Input::get('descripcion');
         $fechainicio = Input::get('fechainicio');
-        
+
         $duracion = Input::get('duracion');
         $fechafin = Input::get('fechafin');
         $usuario = User::find($id_responsable);
 
-        $qfecha = DB::select("select * from actividades_horario WHERE (? BETWEEN fechainicio AND fechafin) and deleted_at is null", [$fechainicio]);
+        $qfecha = DB::select("select * from actividades_horario WHERE (? BETWEEN fechainicio AND fechafin) and id_responsable = ? and deleted_at is null", [$fechainicio, $id_responsable]);
 
-        if(!empty($qfecha)){
-            return response()->json(['flag' => 1,'mensaje'=>'No se puede registrar esta actividad dentro de esta fecha, ya se encuentra registrado este horario']);
-        }else {
-           $horario = new Horarios;
-        $horario->id_responsable = $id_responsable;
-        $horario->id_tipoactividad = $id_tipoactividad;
-        $horario->lugar = $lugar;
-        $horario->descripcion = $descripcion;
-        $horario->fechainicio = $fechainicio;
-        $horario->fechafin = $fechafin;
-        $horario->save();
+        if (!empty($qfecha)) {
+            return response()->json(['flag' => 1, 'mensaje' => 'No se puede registrar esta actividad dentro de esta fecha, ya se encuentra registrado este horario']);
+        } else {
+            $horario = new Horarios;
+            $horario->id_responsable = $id_responsable;
+            $horario->id_tipoactividad = $id_tipoactividad;
+            $horario->lugar = $lugar;
+            $horario->descripcion = $descripcion;
+            $horario->fechainicio = $fechainicio;
+            $horario->fechafin = $fechafin;
+            $horario->save();
 
-        $idHorario = $horario->id;
+            $idHorario = $horario->id;
 
-        $actividad = new ActividadesSp;
-        $actividad->id_actividad_horario = $idHorario;
-        $actividad->id_responsable = $id_responsable;
-        $actividad->id_tipoactividad = $id_tipoactividad;
-        $actividad->nombre = $lugar;
-        $actividad->fechainicio = $fechainicio;
-        $actividad->duracion = $duracion;
-        $actividad->fechafin = $fechafin;
-        $actividad->id_refertiempo = 12;
-        $actividad->estado = 1;
+            $actividad = new ActividadesSp;
+            $actividad->id_actividad_horario = $idHorario;
+            $actividad->id_responsable = $id_responsable;
+            $actividad->id_tipoactividad = $id_tipoactividad;
+            $actividad->nombre = $lugar;
+            $actividad->fechainicio = $fechainicio;
+            $actividad->duracion = $duracion;
+            $actividad->fechafin = $fechafin;
+            $actividad->id_refertiempo = 12;
+            $actividad->estado = 1;
 
-        $arregmail = [];
-        array_push($arregmail, $usuario->name);
-        array_push($arregmail, $actividad->nombre);
-        array_push($arregmail, $actividad->fechainicio);
-        array_push($arregmail, $actividad->duracion);
-        array_push($arregmail, 'Hora(s)');
-        Mail::to('albertopl20095@gmail.com')->send(new NotificaActividadSp($arregmail));
+            $arregmail = [];
+            array_push($arregmail, $usuario->name);
+            array_push($arregmail, $actividad->nombre);
+            array_push($arregmail, $actividad->fechainicio);
+            array_push($arregmail, $actividad->duracion);
+            array_push($arregmail, 'Hora(s)');
+            Mail::to('albertopl20095@gmail.com')->send(new NotificaActividadSp($arregmail));
 
-        $actividad->save();
+            $actividad->save();
 
-        $queryhorario = DB::select("select u.name, DATE_FORMAT(ah.fechainicio, '%Y-%m-%d %H:%i') fechainicio,
+            $queryhorario = DB::select("select u.name, DATE_FORMAT(ah.fechainicio, '%Y-%m-%d %H:%i') fechainicio,
         DATE_FORMAT(ah.fechafin, '%Y-%m-%d %H:%i') fechafin, ah.lugar, ah.id
         from actividades_horario ah
         inner join users u on (u.id = ah.id_responsable)
@@ -149,17 +148,17 @@ class HorariosController extends Controller
         AND fechafin < CURDATE() + INTERVAL 1 DAY)
         order by u.name,ah.fechainicio,ah.fechafin");
 
-        $queryresp = DB::select('select u.name from actividades_horario ah
+            $queryresp = DB::select('select u.name from actividades_horario ah
         inner join users u on (u.id = ah.id_responsable)
         group by ah.id_responsable');
 
-        $resp = [];
-        foreach ($queryresp as $q) {
-            array_push($resp, $q->name);
-        }
+            $resp = [];
+            foreach ($queryresp as $q) {
+                array_push($resp, $q->name);
+            }
 
-        return response()->json(['flag' => 2, 'horarios' => $queryhorario, 'responsables' => $resp, 'mensaje' => 'Actividad ingresada y sincronizada con éxito.']); 
-        }        
+            return response()->json(['flag' => 2, 'horarios' => $queryhorario, 'responsables' => $resp, 'mensaje' => 'Actividad ingresada y sincronizada con éxito.']);
+        }
     }
 
     public function editarhorario(Request $request)
